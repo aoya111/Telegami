@@ -1,5 +1,6 @@
 package com.aoya.televip.hooks
 
+import com.aoya.televip.TeleVip
 import com.aoya.televip.core.Config
 import com.aoya.televip.utils.Hook
 import com.aoya.televip.utils.HookStage
@@ -13,6 +14,8 @@ class ShowDeletedMessages :
     ) {
     override fun init() {
         var allowDelete = false
+
+        if (TeleVip.packageName == "tw.nekomimi.nekogram") return
 
         findClass("org.telegram.messenger.MessagesController")
             .hook("deleteMessages", HookStage.BEFORE) {

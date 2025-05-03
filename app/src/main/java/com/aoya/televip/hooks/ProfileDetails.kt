@@ -18,8 +18,8 @@ import de.robv.android.xposed.XposedBridge
 import de.robv.android.xposed.XposedHelpers.callMethod
 import de.robv.android.xposed.XposedHelpers.getLongField
 import de.robv.android.xposed.XposedHelpers.getObjectField
-import de.robv.android.xposed.XposedHelpers.getStaticIntField
 import com.aoya.televip.core.i18n.TranslationManager as i18n
+import com.aoya.televip.core.obfuscate.ResolverManager as resolver
 
 class ProfileDetails :
     Hook(
@@ -29,21 +29,29 @@ class ProfileDetails :
     override fun init() {
         val ctx = TeleVip.context
         var activeContactId = 0L
-        findClass("org.telegram.ui.ProfileActivity").hook("createActionBarMenu", HookStage.AFTER) { param ->
+        findClass(
+            "org.telegram.ui.ProfileActivity",
+        ).hook(resolver.getMethod("org.telegram.ui.ProfileActivity", "createActionBarMenu"), HookStage.AFTER) { param ->
             val o = param.thisObject()
             try {
-                val msgCtrl = callMethod(o, "getMessagesController")
+                val msgCtrl = callMethod(o, resolver.getMethod("org.telegram.ui.ActionBar.BaseFragment", "getMessagesController"))
 
                 val chatId = getLongField(o, "chatId")
                 val userId = getLongField(o, "userId")
                 val otherItem = getObjectField(o, "otherItem") ?: return@hook
 
-                val chat = callMethod(msgCtrl, "getChat", chatId)
-                val user = callMethod(msgCtrl, "getUser", userId)
+                val chat = callMethod(msgCtrl, resolver.getMethod("org.telegram.messenger.MessagesController", "getChat"), chatId)
+                val user = callMethod(msgCtrl, resolver.getMethod("org.telegram.messenger.MessagesController", "getUser"), userId)
 
-                val userMenu = getStaticIntField(findClass("org.telegram.messenger.R\$drawable"), "msg_filled_menu_users")
+                val userMenu = getResource("msg_filled_menu_users", "drawable")
                 val addSubItem: (Int, String) -> Any? = { itemId, label ->
-                    callMethod(otherItem, "addSubItem", itemId, userMenu, label)
+                    callMethod(
+                        otherItem,
+                        resolver.getMethod("org.telegram.ui.ActionBar.ActionBarMenuItem", "addSubItem"),
+                        itemId,
+                        userMenu,
+                        label,
+                    )
                 }
 
                 if (chat != null) {
@@ -63,7 +71,9 @@ class ProfileDetails :
             }
         }
 
-        findClass("org.telegram.ui.ProfileActivity\$6").hook("onItemClick", HookStage.AFTER) { param ->
+        findClass(
+            "org.telegram.ui.ProfileActivity\$6",
+        ).hook(resolver.getMethod("org.telegram.ui.ProfileActivity\$6", "onItemClick"), HookStage.AFTER) { param ->
             val itemId = param.arg<Int>(0)
             if (itemId == 45) {
                 (
@@ -94,7 +104,12 @@ class ProfileDetails :
                 layout.setPadding(30, 30, 30, 30)
                 layout.addView(editText)
 
-                val appCtx = callMethod(getObjectField(param.thisObject(), "this$0"), "getParentActivity") as Context
+                val appCtx =
+                    callMethod(
+                        getObjectField(param.thisObject(), "this$0"),
+                        resolver.getMethod("org.telegram.ui.ProfileActivity", "getParentActivity"),
+                    )
+                        as Context
                 AlertDialogBuilder(appCtx)
                     .setTitle(i18n.get("change_name"))
                     .setView(layout)
@@ -123,22 +138,26 @@ class ProfileDetails :
             }
         }
 
-        findClass("org.telegram.ui.ProfileActivity").hook("createView", HookStage.AFTER) { param ->
+        // TODO: make this work with Nekogram
+        findClass(
+            "org.telegram.ui.ProfileActivity",
+        ).hook(resolver.getMethod("org.telegram.ui.ProfileActivity", "createView"), HookStage.AFTER) { param ->
             val o = param.thisObject()
-            // val ctx = getStaticObjectField(findClass("org.telegram.messenger.ApplicationLoader"), "applicationContext") as Context
             val nameTextView = getObjectField(o, "nameTextView") as Array<*>
             val simpleTextView1 = nameTextView.get(1) ?: return@hook
+            XposedBridge.log("nameTextView: $simpleTextView1")
             callMethod(
                 simpleTextView1,
                 "setOnClickListener",
                 View.OnClickListener { _ ->
                     try {
                         val userId = getLongField(o, "userId")
-                        val msgController = callMethod(o, "getMessagesController")
-                        val user = callMethod(msgController, "getUser", userId)
+                        val msgCtrl =
+                            callMethod(o, resolver.getMethod("org.telegram.ui.ActionBar.BaseFragment", "getMessagesController"))
+                        val user = callMethod(msgCtrl, resolver.getMethod("org.telegram.messenger.MessagesController", "getUser"), userId)
 
                         if (user != null) {
-                            val userName = getObjectField(user, "username") as String
+                            val userName = getObjectField(user, resolver.getField("org.telegram.tgnet.TLRPC.User", "username")) as String
                             (
                                 ctx.getSystemService(
                                     Context.CLIPBOARD_SERVICE,

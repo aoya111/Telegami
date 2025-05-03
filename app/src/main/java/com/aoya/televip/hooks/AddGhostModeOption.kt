@@ -21,6 +21,7 @@ import de.robv.android.xposed.XposedHelpers.getObjectField
 import de.robv.android.xposed.XposedHelpers.newInstance
 import java.util.ArrayList
 import com.aoya.televip.core.i18n.TranslationManager as i18n
+import com.aoya.televip.core.obfuscate.ResolverManager as resolver
 
 class AddGhostModeOption :
     Hook(
@@ -32,35 +33,38 @@ class AddGhostModeOption :
     override fun init() {
         findClass(
             "org.telegram.messenger.UserConfig",
-        ).hook("setCurrentUser", HookStage.AFTER) { param ->
+        ).hook(resolver.getMethod("org.telegram.messenger.UserConfig", "setCurrentUser"), HookStage.AFTER) { param ->
             val tgUser = param.arg<Any>(0)
 
             val user =
                 User(
-                    getLongField(tgUser, "id"),
-                    getObjectField(tgUser, "username") as String,
-                    getObjectField(tgUser, "phone") as String,
+                    getLongField(tgUser, resolver.getField("org.telegram.tgnet.TLRPC.User", "id")),
+                    getObjectField(tgUser, resolver.getField("org.telegram.tgnet.TLRPC.User", "username")) as String,
+                    getObjectField(tgUser, resolver.getField("org.telegram.tgnet.TLRPC.User", "phone")) as String,
                 )
 
             Config.initialize(TeleVip.packageName, user)
         }
 
-        findClass("org.telegram.ui.Adapters.DrawerLayoutAdapter").hook("resetItems", HookStage.AFTER) { param ->
+        val drawerLayoutAdapter = "org.telegram.ui.Adapters.DrawerLayoutAdapter"
+        findClass(drawerLayoutAdapter).hook(resolver.getMethod(drawerLayoutAdapter, "resetItems"), HookStage.AFTER) { param ->
+            val o = param.thisObject()
+
             @Suppress("UNCHECKED_CAST")
-            val items = getObjectField(param.thisObject(), "items") as ArrayList<Any>
+            val items = getObjectField(o, resolver.getField(drawerLayoutAdapter, "items")) as ArrayList<Any>
 
             val settingsIcon =
                 items
                     .filterNotNull()
                     .find {
-                        getIntField(it, "id") == 8
+                        getIntField(it, resolver.getField("$drawerLayoutAdapter\$Item", "id")) == 8
                     }?.let {
-                        getIntField(it, "icon")
+                        getIntField(it, resolver.getField("$drawerLayoutAdapter\$Item", "icon"))
                     }
 
             val newItem =
                 newInstance(
-                    findClass("org.telegram.ui.Adapters.DrawerLayoutAdapter\$Item"),
+                    findClass("$drawerLayoutAdapter\$Item"),
                     itemID,
                     i18n.get("ghost_mode"),
                     settingsIcon,
@@ -69,10 +73,17 @@ class AddGhostModeOption :
             items.add(newItem)
         }
 
-        findClass("org.telegram.ui.LaunchActivity").hook("lambda\$onCreate\$6", HookStage.AFTER) { param ->
+        findClass(
+            "org.telegram.ui.LaunchActivity",
+        ).hook(resolver.getMethod("org.telegram.ui.LaunchActivity", "lambda\$onCreate\$6"), HookStage.AFTER) { param ->
             val o = param.thisObject() as Activity
 
-            val result = callMethod(getObjectField(o, "drawerLayoutAdapter") ?: return@hook, "getId", param.arg<Int>(1)) as Int
+            val result =
+                callMethod(
+                    getObjectField(o, "drawerLayoutAdapter") ?: return@hook,
+                    resolver.getMethod(drawerLayoutAdapter, "getId"),
+                    param.arg<Int>(1),
+                ) as Int
             if (result == itemID) {
                 val layout = LinearLayout(o)
                 layout.setOrientation(LinearLayout.VERTICAL)
@@ -106,7 +117,7 @@ class AddGhostModeOption :
                         }
                     }.setNegativeButton(i18n.get("developer_channel")) { dialog ->
                         try {
-                            val drawerLayoutContainer = getObjectField(param.thisObject(), "drawerLayoutContainer")
+                            val drawerLayoutContainer = getObjectField(o, "drawerLayoutContainer")
                             if (drawerLayoutContainer != null) {
                                 callStaticMethod(
                                     findClass("org.telegram.messenger.browser.Browser"),

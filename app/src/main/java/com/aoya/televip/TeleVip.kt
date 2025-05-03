@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.widget.Toast
 import com.aoya.televip.core.i18n.TranslationManager
+import com.aoya.televip.core.obfuscate.ResolverManager
 import com.aoya.televip.utils.HookManager
 import dalvik.system.DexClassLoader
 import java.io.File
@@ -33,6 +34,7 @@ object TeleVip {
         this.context = app
 
         TranslationManager.init(context)
+        ResolverManager.init(context.packageName)
 
         val newModule = File(context.filesDir, "televip.dex")
         File(modulePath).copyTo(newModule, true)

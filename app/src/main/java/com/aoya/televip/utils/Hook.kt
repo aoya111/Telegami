@@ -4,6 +4,7 @@ import com.aoya.televip.TeleVip
 import com.aoya.televip.core.Config
 import de.robv.android.xposed.XposedHelpers.callMethod
 import de.robv.android.xposed.XposedHelpers.callStaticMethod
+import com.aoya.televip.core.obfuscate.ResolverManager as resolver
 
 abstract class Hook(
     val hookName: String,
@@ -21,7 +22,7 @@ abstract class Hook(
 
     protected fun isHookEnabled(): Boolean = Config.isHookEnabled(hookName)
 
-    protected fun findClass(name: String): Class<*> = TeleVip.loadClass(name)
+    protected fun findClass(name: String): Class<*> = TeleVip.loadClass(resolver.get(name))
 
     protected val isDark: Boolean
         get() {
@@ -29,11 +30,14 @@ abstract class Hook(
                 val currentThemeInfo =
                     callStaticMethod(
                         findClass("org.telegram.ui.ActionBar.Theme"),
-                        "getActiveTheme",
+                        resolver.getMethod("org.telegram.ui.ActionBar.Theme", "getActiveTheme"),
                     )
 
                 if (currentThemeInfo != null) {
-                    return callMethod(currentThemeInfo, "isDark") as Boolean
+                    return callMethod(
+                        currentThemeInfo,
+                        resolver.getMethod("org.telegram.ui.ActionBar.Theme\$ThemeInfo", "isDark"),
+                    ) as Boolean
                 }
             } catch (e: Exception) {
                 return false

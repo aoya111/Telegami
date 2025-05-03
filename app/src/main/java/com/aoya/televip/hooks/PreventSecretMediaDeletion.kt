@@ -5,6 +5,7 @@ import com.aoya.televip.utils.HookStage
 import com.aoya.televip.utils.hook
 import de.robv.android.xposed.XposedHelpers.getObjectField
 import de.robv.android.xposed.XposedHelpers.setObjectField
+import com.aoya.televip.core.obfuscate.ResolverManager as resolver
 
 class PreventSecretMediaDeletion :
     Hook(
@@ -14,15 +15,23 @@ class PreventSecretMediaDeletion :
     override fun init() {
         findClass(
             "org.telegram.ui.ChatActivity",
-        ).hook("sendSecretMessageRead", HookStage.BEFORE) { param -> param.setResult(null) }
+        ).hook(
+            resolver.getMethod("org.telegram.ui.ChatActivity", "sendSecretMessageRead"),
+            HookStage.BEFORE,
+        ) { param -> param.setResult(null) }
 
         findClass(
             "org.telegram.ui.ChatActivity",
-        ).hook("sendSecretMediaDelete", HookStage.BEFORE) { param -> param.setResult(null) }
+        ).hook(
+            resolver.getMethod("org.telegram.ui.ChatActivity", "sendSecretMediaDelete"),
+            HookStage.BEFORE,
+        ) { param -> param.setResult(null) }
 
         findClass(
             "org.telegram.ui.SecretMediaViewer",
         ).hook("openMedia", HookStage.BEFORE) { param ->
+            param.setArg(1, null)
+            param.setArg(2, null)
             val forwardingMessage = param.argNullable<Any>(0) ?: return@hook
             val msgOwner = getObjectField(forwardingMessage, "messageOwner") ?: return@hook
             setObjectField(msgOwner, "ttl", 0x7FFFFFFF)

@@ -1,5 +1,6 @@
 package com.aoya.televip.utils
 
+import com.aoya.televip.TeleVip
 import com.aoya.televip.core.Config
 import com.aoya.televip.hooks.AddChatNavigation
 import com.aoya.televip.hooks.AddGhostModeOption
@@ -13,10 +14,9 @@ import com.aoya.televip.hooks.HidePhoneNumber
 import com.aoya.televip.hooks.HideSeenStatus
 import com.aoya.televip.hooks.HideStoryViewStatus
 import com.aoya.televip.hooks.HideTyping
-import com.aoya.televip.hooks.MarkDeletedMessages
+// import com.aoya.televip.hooks.MarkDeletedMessages
 import com.aoya.televip.hooks.PreventSecretMediaDeletion
 import com.aoya.televip.hooks.ProfileDetails
-import com.aoya.televip.hooks.ShowDeleteMessageBtn
 import com.aoya.televip.hooks.ShowDeletedMessages
 import com.aoya.televip.hooks.UnlockChannelFeatures
 import kotlinx.coroutines.Dispatchers
@@ -35,8 +35,7 @@ class HookManager {
                     ApplyColor(),
                     BoostDownload(),
                     ProfileDetails(),
-                    ShowDeleteMessageBtn(),
-                    MarkDeletedMessages(),
+                    // MarkDeletedMessages(),
                     AddChatNavigation(),
                 )
 
@@ -50,10 +49,17 @@ class HookManager {
         }
         runBlocking(Dispatchers.IO) {
             val hookList =
-                listOf(
+                mutableListOf(
                     HideSeenStatus(),
                     HideStoryViewStatus(),
-                    HideOnlineStatus(),
+                )
+
+            if (TeleVip.packageName != "tw.nekomimi.nekogram") {
+                hookList.add(HideOnlineStatus())
+            }
+
+            hookList.addAll(
+                listOf(
                     HidePhoneNumber(),
                     HideTyping(),
                     ShowDeletedMessages(),
@@ -61,7 +67,8 @@ class HookManager {
                     UnlockChannelFeatures(),
                     AllowSaveVideos(),
                     FakePremium(),
-                )
+                ),
+            )
 
             Config.onUserSet = { _ ->
                 hookList.forEach { hook ->
@@ -72,10 +79,8 @@ class HookManager {
                     hooks = hookList.associateBy { it::class }.toMutableMap()
 
                     hooks.values.forEach { hook ->
-                        if (Config.isHookEnabled(hook.hookName)) {
-                            hook.init()
-                        } else {
-                        }
+                        if (!Config.isHookEnabled(hook.hookName)) return@forEach
+                        hook.init()
                     }
                 }
             }

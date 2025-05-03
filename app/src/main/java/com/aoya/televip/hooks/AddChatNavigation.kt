@@ -12,8 +12,8 @@ import com.aoya.televip.utils.hook
 import de.robv.android.xposed.XposedBridge
 import de.robv.android.xposed.XposedHelpers.callMethod
 import de.robv.android.xposed.XposedHelpers.getObjectField
-import de.robv.android.xposed.XposedHelpers.getStaticIntField
 import com.aoya.televip.core.i18n.TranslationManager as i18n
+import com.aoya.televip.core.obfuscate.ResolverManager as resolver
 
 class AddChatNavigation :
     Hook(
@@ -24,11 +24,10 @@ class AddChatNavigation :
         var isshow = false
 
         try {
-            val drawableClass =
-                findClass("org.telegram.messenger.R\$drawable")
-
             if (!isshow) {
-                findClass("org.telegram.ui.ChatActivity").hook("createView", HookStage.AFTER) { param ->
+                findClass(
+                    "org.telegram.ui.ChatActivity",
+                ).hook(resolver.getMethod("org.telegram.ui.ChatActivity", "createView"), HookStage.AFTER) { param ->
                     val headerItem = getObjectField(param.thisObject(), "headerItem")
                     if (TeleVip.packageName != "xyz.nextalone.nagram") {
                         val pkgNames =
@@ -45,17 +44,17 @@ class AddChatNavigation :
                         if (TeleVip.packageName !in pkgNames) {
                             callMethod(
                                 headerItem,
-                                "lazilyAddSubItem",
+                                resolver.getMethod("org.telegram.ui.ActionBar.ActionBarMenuItem", "lazilyAddSubItem"),
                                 70,
-                                getStaticIntField(drawableClass, "msg_go_up"),
+                                getResource("msg_go_up", "drawable"),
                                 i18n.get("go_to_first_msg"),
                             )
                         }
                         callMethod(
                             headerItem,
-                            "lazilyAddSubItem",
+                            resolver.getMethod("org.telegram.ui.ActionBar.ActionBarMenuItem", "lazilyAddSubItem"),
                             71,
-                            getStaticIntField(drawableClass, "player_new_order"),
+                            getResource("player_new_order", "drawable"),
                             i18n.get("go_to_msg"),
                         )
                     }
@@ -76,10 +75,20 @@ class AddChatNavigation :
                 val id = param.arg<Int>(0)
                 val chatActivity = getObjectField(param.thisObject(), "this$0")
                 if (id == 70) {
-                    callMethod(chatActivity, "scrollToMessageId", 1, 0, true, 0, true, 0)
+                    callMethod(
+                        chatActivity,
+                        resolver.getMethod("org.telegram.ui.ChatActivity", "scrollToMessageId"),
+                        1,
+                        0,
+                        true,
+                        0,
+                        true,
+                        0,
+                    )
                 } else if (id == 71) {
-                    val ctx = callMethod(chatActivity, "getContext") as Context
-                    val getResourceProvider = callMethod(chatActivity, "getResourceProvider")
+                    val ctx = callMethod(chatActivity, resolver.getMethod("org.telegram.ui.ChatActivity", "getContext")) as Context
+                    val getResourceProvider =
+                        callMethod(chatActivity, resolver.getMethod("org.telegram.ui.ChatActivity", "getResourceProvider"))
 
                     val editText = EditText(ctx)
                     if (!isDark) {
@@ -109,7 +118,16 @@ class AddChatNavigation :
                                 val inputText = editText.text.toString().trim()
 
                                 if (inputText.isNotEmpty()) {
-                                    callMethod(chatActivity, "scrollToMessageId", inputText.toInt(), 0, true, 0, true, 0)
+                                    callMethod(
+                                        chatActivity,
+                                        resolver.getMethod("org.telegram.ui.ChatActivity", "scrollToMessageId"),
+                                        inputText.toInt(),
+                                        0,
+                                        true,
+                                        0,
+                                        true,
+                                        0,
+                                    )
 
                                     dialog.dismiss()
                                 }

@@ -6,32 +6,34 @@ import com.aoya.televip.TeleVip
 import de.robv.android.xposed.XposedHelpers.callMethod
 import de.robv.android.xposed.XposedHelpers.newInstance
 import java.lang.reflect.Proxy
+import com.aoya.televip.core.obfuscate.ResolverManager as resolver
 
 class AlertDialogBuilder(
     val ctx: Context,
     val resourcesProvider: Any? = null,
 ) {
+    private val alertDialogName = "org.telegram.ui.ActionBar.AlertDialog"
     private var alertDialog: Any
     private var onClickListenerClass: Class<*>
 
     init {
         alertDialog =
             newInstance(
-                TeleVip.loadClass("org.telegram.ui.ActionBar.AlertDialog\$Builder"),
+                TeleVip.loadClass("$alertDialogName\$Builder"),
                 ctx,
                 resourcesProvider,
             )
 
-        onClickListenerClass = TeleVip.loadClass("org.telegram.ui.ActionBar.AlertDialog\$OnButtonClickListener")
+        onClickListenerClass = TeleVip.loadClass(resolver.get("$alertDialogName\$OnButtonClickListener"))
     }
 
     fun setTitle(title: String): AlertDialogBuilder {
-        callMethod(alertDialog, "setTitle", title)
+        callMethod(alertDialog, resolver.getMethod(alertDialogName, "setTitle"), title)
         return this
     }
 
     fun setView(layout: LinearLayout): AlertDialogBuilder {
-        callMethod(alertDialog, "setView", layout)
+        callMethod(alertDialog, resolver.getMethod(alertDialogName, "setView"), layout)
         return this
     }
 
@@ -41,7 +43,7 @@ class AlertDialogBuilder(
     ): AlertDialogBuilder {
         callMethod(
             alertDialog,
-            "setPositiveButton",
+            resolver.getMethod(alertDialogName, "setPositiveButton"),
             text,
             Proxy.newProxyInstance(
                 ctx.classLoader,
@@ -63,7 +65,7 @@ class AlertDialogBuilder(
     ): AlertDialogBuilder {
         callMethod(
             alertDialog,
-            "setNegativeButton",
+            resolver.getMethod(alertDialogName, "setNegativeButton"),
             text,
             Proxy.newProxyInstance(
                 ctx.classLoader,
@@ -80,7 +82,7 @@ class AlertDialogBuilder(
     }
 
     fun show() {
-        callMethod(alertDialog, "show")
+        callMethod(alertDialog, resolver.getMethod(alertDialogName, "show"))
     }
 }
 
