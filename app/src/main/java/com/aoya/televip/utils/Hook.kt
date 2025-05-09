@@ -55,5 +55,7 @@ abstract class Hook(
             TeleVip.context.packageName,
         )
 
-    protected fun getAttribute(name: String): Int = TeleVip.context.resources.getIdentifier(name, "attr", TeleVip.context.packageName)
+    protected fun getAttribute(name: String): Int = getResource(name, "attr")
+
+    protected fun getStringResource(name: String): String = TeleVip.context.getString(getResource(name, "string"))
 }

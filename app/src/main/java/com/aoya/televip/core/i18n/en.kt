@@ -33,6 +33,8 @@ object I18NenUS : Translation {
             "deleted" to "deleted",
             "copied_to_clipboard" to "Copied '{item}' to the clipboard",
             "offline_status" to "You are currently offline",
+            "ProfileCopyUserId" to "Copy ID",
+            "ProfileCopyChatId" to "Copy ID",
         )
 
     override fun get(key: String): String = map[key] ?: key

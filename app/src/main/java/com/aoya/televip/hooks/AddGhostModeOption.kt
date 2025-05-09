@@ -9,7 +9,7 @@ import com.aoya.televip.TeleVip
 import com.aoya.televip.core.Config
 import com.aoya.televip.core.Constants
 import com.aoya.televip.core.User
-import com.aoya.televip.ui.AlertDialogBuilder
+import com.aoya.televip.ui.actionbar.AlertDialog
 import com.aoya.televip.utils.Hook
 import com.aoya.televip.utils.HookStage
 import com.aoya.televip.utils.hook
@@ -101,7 +101,8 @@ class AddGhostModeOption :
                     checkBoxes.add(checkBox)
                     layout.addView(checkBox)
                 }
-                AlertDialogBuilder(o)
+                AlertDialog
+                    .Builder(o)
                     .setTitle(i18n.get("ghost_mode_title"))
                     .setView(layout)
                     .setPositiveButton(i18n.get("save")) { dialog ->

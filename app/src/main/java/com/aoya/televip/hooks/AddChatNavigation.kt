@@ -5,7 +5,7 @@ import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.LinearLayout.LayoutParams
 import com.aoya.televip.TeleVip
-import com.aoya.televip.ui.AlertDialogBuilder
+import com.aoya.televip.ui.actionbar.AlertDialog
 import com.aoya.televip.utils.Hook
 import com.aoya.televip.utils.HookStage
 import com.aoya.televip.utils.hook
@@ -110,7 +110,8 @@ class AddChatNavigation :
                     layout.setPadding(30, 30, 30, 30)
                     layout.addView(editText)
 
-                    AlertDialogBuilder(ctx, getResourceProvider)
+                    AlertDialog
+                        .Builder(ctx, getResourceProvider)
                         .setTitle(i18n.get("input_msg_id"))
                         .setView(layout)
                         .setPositiveButton(i18n.get("done")) { dialog ->
