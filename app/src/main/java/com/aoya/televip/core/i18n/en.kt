@@ -4,8 +4,7 @@ object I18NenUS : Translation {
     private val map =
         mapOf(
             "app_name" to "TeleVip",
-            "go_to_first_msg" to "Go to First Message",
-            "go_to_msg" to "Go to Message",
+            "ChatScrollToTop" to "Scroll to top",
             "input_msg_id" to "Input Message Id",
             "done" to "Done",
             "cancel" to "Cancel",

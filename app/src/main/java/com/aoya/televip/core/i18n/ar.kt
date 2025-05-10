@@ -4,8 +4,6 @@ object I18NarSA : Translation {
     private val map =
         mapOf(
             "app_name" to "TeleVip",
-            "go_to_first_msg" to "اذهب إلى أول رسالة",
-            "go_to_msg" to "إلى الرسالة",
             "input_msg_id" to "ادخل معرف الرسالة",
             "done" to "حسناً",
             "cancel" to "الغاء",

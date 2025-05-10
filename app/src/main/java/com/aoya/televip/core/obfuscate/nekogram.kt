@@ -26,7 +26,8 @@ object Nekogram : Resolver {
             "org.telegram.messenger.MessagesController" to
                 mapOf("completeReadTask" to "H8", "getChat" to "H9", "getUser" to "kb", "isChatNoForwards" to "Eb"),
             "org.telegram.messenger.UserConfig" to mapOf("getCurrentUser" to "o", "isPremium" to "B", "setCurrentUser" to "N"),
-            "org.telegram.ui.ActionBar.ActionBarMenuItem" to mapOf("addSubItem" to "f0", "lazilyAddSubItem" to "h1"),
+            "org.telegram.ui.ActionBar.ActionBarMenuItem" to
+                mapOf("addSubItem" to "f0", "lazilyAddColoredGap" to "f1", "lazilyAddSubItem" to "h1"),
             "org.telegram.ui.ActionBar.AlertDialog" to
                 mapOf("setNegativeButton" to "v", "setPositiveButton" to "B", "setTitle" to "D", "setView" to "K", "show" to "N"),
             "org.telegram.ui.ActionBar.BaseFragment" to mapOf("getMessagesController" to "T0"),
@@ -41,6 +42,7 @@ object Nekogram : Resolver {
                     "scrollToMessageId" to "k",
                     "sendSecretMediaDelete" to "ND",
                     "sendSecretMessageRead" to "OD",
+                    "updatePagedownButtonVisibility" to "OF",
                 ),
             "org.telegram.ui.ChatActivity\$13" to mapOf("onItemClick" to "b"),
             "org.telegram.ui.ChatActivity\$ChatActivityEnterViewDelegate" to mapOf("needSendTyping" to "G"),
