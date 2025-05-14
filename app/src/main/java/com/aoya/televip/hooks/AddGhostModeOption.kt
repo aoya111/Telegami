@@ -40,7 +40,7 @@ class AddGhostModeOption :
                 User(
                     getLongField(tgUser, resolver.getField("org.telegram.tgnet.TLRPC.User", "id")),
                     getObjectField(tgUser, resolver.getField("org.telegram.tgnet.TLRPC.User", "username")) as String,
-                    getObjectField(tgUser, resolver.getField("org.telegram.tgnet.TLRPC.User", "phone")) as String,
+                    getObjectField(tgUser, resolver.getField("org.telegram.tgnet.TLRPC.User", "phone")) as? String ?: "",
                 )
 
             Config.initialize(TeleVip.packageName, user)
