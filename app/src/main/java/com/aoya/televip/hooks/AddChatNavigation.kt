@@ -20,7 +20,7 @@ class AddChatNavigation :
             "org.telegram.ui.ChatActivity",
         ).hook(resolver.getMethod("org.telegram.ui.ChatActivity", "createView"), HookStage.AFTER) { param ->
             val o = param.thisObject()
-            val headerItem = getObjectField(o, "headerItem")
+            val headerItem = getObjectField(o, "headerItem") ?: return@hook
             if (TeleVip.packageName != "xyz.nextalone.nagram") {
                 val pkgNames =
                     listOf(
