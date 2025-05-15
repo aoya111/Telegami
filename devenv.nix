@@ -2,7 +2,7 @@
 
 {
   # https://devenv.sh/packages/
-  packages = [ pkgs.git pkgs.gradle ];
+  packages = with pkgs; [ apktool git gradle jadx ];
 
   # https://devenv.sh/languages/
   android = {

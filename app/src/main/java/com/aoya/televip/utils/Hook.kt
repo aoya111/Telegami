@@ -2,6 +2,7 @@ package com.aoya.televip.utils
 
 import com.aoya.televip.TeleVip
 import com.aoya.televip.core.Config
+import com.aoya.televip.data.AppDatabase
 import de.robv.android.xposed.XposedHelpers.callMethod
 import de.robv.android.xposed.XposedHelpers.callStaticMethod
 import com.aoya.televip.core.obfuscate.ResolverManager as resolver
@@ -43,6 +44,11 @@ abstract class Hook(
                 return false
             }
             return false
+        }
+
+    protected val db: AppDatabase
+        get() {
+            return TeleVip.db
         }
 
     protected fun getResource(

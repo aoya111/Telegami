@@ -59,6 +59,11 @@ dependencies {
     implementation("com.google.code.gson:gson:2.10.1")
     compileOnly("de.robv.android.xposed:api:82")
 
+    val roomVersion = "2.7.1"
+
+    ksp("androidx.room:room-compiler:$roomVersion")
+    implementation("androidx.room:room-ktx:$roomVersion")
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

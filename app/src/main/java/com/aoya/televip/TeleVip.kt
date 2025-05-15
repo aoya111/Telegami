@@ -9,6 +9,7 @@ import android.os.Handler
 import android.widget.Toast
 import com.aoya.televip.core.i18n.TranslationManager
 import com.aoya.televip.core.obfuscate.ResolverManager
+import com.aoya.televip.data.AppDatabase
 import com.aoya.televip.utils.HookManager
 import dalvik.system.DexClassLoader
 import java.io.File
@@ -23,6 +24,8 @@ object TeleVip {
         private set
 
     lateinit var hookManager: HookManager
+
+    lateinit var db: AppDatabase
 
     var currentActivity: Activity? = null
         private set
@@ -44,6 +47,7 @@ object TeleVip {
             DexClassLoader(newModule.absolutePath, null, null, context.classLoader)
         this.hookManager = HookManager()
         this.packageName = context.packageName
+        this.db = AppDatabase.getDatabase(context)
 
         app.registerActivityLifecycleCallbacks(
             object : ActivityLifecycleCallbacks {
