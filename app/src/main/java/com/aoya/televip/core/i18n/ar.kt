@@ -28,7 +28,7 @@ object I18NarSA : Translation {
             "prevent_secret_media_deletion" to "تعطيل حذف الوسائط السرية",
             "hide_phone_number" to "اخفاء رقم هاتف",
             "show_deleted_messages" to "اضهار الرسائل المحذوفة",
-            "deleted" to "محذوفه",
+            "DeletedMessage" to "محذوفه",
             "copied_to_clipboard" to "تم نسخ '{item}' إلى الحافظة",
             "offline_status" to "لست متصلاً بالإنترنت",
         )

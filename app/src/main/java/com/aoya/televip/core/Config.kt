@@ -23,7 +23,6 @@ data class UserConfig(
 
 data class Contact(
     val name: String = "",
-    val deletedMessages: MutableList<Int> = mutableListOf(),
     var newName: String = "",
 )
 
@@ -94,21 +93,6 @@ object Config {
     }
 
     fun getHooksSettings(): Map<String, Boolean> = localConfig.hooks
-
-    fun updateDeletedMessages(
-        id: Long,
-        msgs: List<Int>,
-    ) {
-        val existingMsgs = getDeletedMessages(id)
-        val newMsgs = msgs - existingMsgs
-        existingMsgs.addAll(newMsgs)
-        writeConfig()
-    }
-
-    fun getDeletedMessages(id: Long): MutableList<Int> {
-        val contact = localConfig.contacts.getOrPut(id) { Contact() }
-        return contact.deletedMessages
-    }
 
     fun getContactNewName(id: Long): String {
         val contact = localConfig.contacts.getOrPut(id) { Contact() }

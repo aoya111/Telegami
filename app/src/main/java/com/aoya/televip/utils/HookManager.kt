@@ -14,7 +14,6 @@ import com.aoya.televip.hooks.HidePhoneNumber
 import com.aoya.televip.hooks.HideSeenStatus
 import com.aoya.televip.hooks.HideStoryViewStatus
 import com.aoya.televip.hooks.HideTyping
-// import com.aoya.televip.hooks.MarkDeletedMessages
 import com.aoya.televip.hooks.PreventSecretMediaDeletion
 import com.aoya.televip.hooks.ProfileDetails
 import com.aoya.televip.hooks.ShowDeletedMessages
@@ -35,7 +34,6 @@ class HookManager {
                     ApplyColor(),
                     BoostDownload(),
                     ProfileDetails(),
-                    // MarkDeletedMessages(),
                     AddChatNavigation(),
                 )
 
