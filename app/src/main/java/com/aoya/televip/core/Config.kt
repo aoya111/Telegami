@@ -5,6 +5,7 @@ import com.aoya.televip.TeleVip
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import de.robv.android.xposed.XSharedPreferences
+import de.robv.android.xposed.XposedBridge
 import kotlin.properties.Delegates
 
 typealias UserId = Long
@@ -29,10 +30,14 @@ data class Contact(
 object Config {
     private var localConfig: UserConfig = UserConfig()
     private var packageName = ""
+    private var xPrefs: XSharedPreferences? = null
+
     var onUserSet: ((User) -> Unit)? = null
 
     private var user: User by Delegates.observable(User()) { _, old, new ->
         if (old.id == 0L && new.id != 0L) {
+            XposedBridge.log("User set: ${new.id}, reloading config")
+            localConfig = readConfig()
             onUserSet?.invoke(new)
         }
     }
@@ -41,53 +46,81 @@ object Config {
         packageName: String? = null,
         user: User? = null,
     ) {
-        packageName?.let { this.packageName = it }
+        packageName?.let {
+            this.packageName = it
+            xPrefs =
+                XSharedPreferences(it, "televip").apply {
+                    makeWorldReadable()
+                }
+        }
         user?. let { this.user = it }
-        localConfig = readConfig()
     }
 
     fun hasConfig(): Boolean {
         if (user.id == 0L) return false
 
-        val pref = TeleVip.context.getSharedPreferences("televip", Context.MODE_PRIVATE)
-        val configStr = pref.getString(user.id.toString(), null)
+        xPrefs?.reload()
+
+        val configStr = xPrefs?.getString(user.id.toString(), null)
         return !configStr.isNullOrEmpty() && configStr != "{}"
     }
 
     fun readConfig(): UserConfig {
         if (user.id == 0L) return UserConfig()
-        val pref = XSharedPreferences(packageName, "televip")
 
-        val type = object : TypeToken<UserConfig>() {}.type
-        val conf = Gson().fromJson(pref.getString(user.id.toString(), "{}") ?: "{}", type) ?: UserConfig()
-        conf.user = user
-        return conf
+        try {
+            xPrefs?.reload()
+            val configStr = xPrefs?.getString(user.id.toString(), "{}") ?: "{}"
+
+            val type = object : TypeToken<UserConfig>() {}.type
+            val conf = Gson().fromJson(configStr, type) ?: UserConfig()
+            conf.user = user
+            return conf
+        } catch (e: Exception) {
+            XposedBridge.log("Error reading config: ${e.message}")
+            return UserConfig().apply { this.user = user }
+        }
     }
 
     fun writeConfig() {
         if (user.id == 0L) return
-        val pref = TeleVip.context.getSharedPreferences("televip", Context.MODE_PRIVATE)
-        pref.edit().putString(user.id.toString(), Gson().toJson(localConfig)).apply()
+
+        try {
+            val pref = TeleVip.context.getSharedPreferences("televip", Context.MODE_PRIVATE)
+            val configJson = Gson().toJson(localConfig)
+
+            pref.edit().putString(user.id.toString(), configJson).apply()
+
+            xPrefs?.reload()
+        } catch (e: Exception) {
+            XposedBridge.log("Error writing config: ${e.message}")
+        }
     }
 
     fun setHookEnabled(
         hookName: String,
         enabled: Boolean,
     ) {
-        localConfig.hooks.put(hookName, enabled)
+        if (user.id == 0L) return
+
+        localConfig.hooks[hookName] = enabled
         writeConfig()
     }
 
-    fun isHookEnabled(hookName: String): Boolean = localConfig.hooks.get(hookName) ?: false
+    fun isHookEnabled(hookName: String): Boolean {
+        val enabled = localConfig.hooks[hookName] ?: false
+        return enabled
+    }
 
     fun initHookSettings(
         name: String,
         state: Boolean,
     ) {
-        val hooks = localConfig.hooks
+        if (user.id == 0L) return
 
-        if (!hooks.contains(name)) {
-            hooks.put(name, state)
+        val hooks = localConfig.hooks
+        if (!hooks.containsKey(name)) {
+            hooks[name] = state
             writeConfig()
         }
     }
@@ -107,4 +140,8 @@ object Config {
         contact.newName = name
         writeConfig()
     }
+
+    fun getCurrentUser(): User = user
+
+    fun isUserSet(): Boolean = user.id != 0L
 }

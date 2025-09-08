@@ -26,7 +26,7 @@ object I18NzhCN : Translation {
             "developer_channel" to "开发者频道",
             "hide_online_status" to "隐藏 '在线' 状态",
             "prevent_secret_media_deletion" to "防止删除秘密媒体",
-            "hide_phone_number" to "隐藏 '电话' 号码",
+            "hide_phone" to "隐藏 '电话' 号码",
             "show_deleted_messages" to "显示已删除的消息",
             "DeletedMessage" to "已删除",
             "copied_to_clipboard" to "已复制 '{item}' 到剪贴板",

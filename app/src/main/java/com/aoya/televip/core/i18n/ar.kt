@@ -26,7 +26,7 @@ object I18NarSA : Translation {
             "developer_channel" to "قناة المطور",
             "hide_online_status" to "إخفاء حالة الاتصال بالإنترنت",
             "prevent_secret_media_deletion" to "تعطيل حذف الوسائط السرية",
-            "hide_phone_number" to "اخفاء رقم هاتف",
+            "hide_phone" to "اخفاء رقم هاتف",
             "show_deleted_messages" to "اضهار الرسائل المحذوفة",
             "DeletedMessage" to "محذوفه",
             "copied_to_clipboard" to "تم نسخ '{item}' إلى الحافظة",

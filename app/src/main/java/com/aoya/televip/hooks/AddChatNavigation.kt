@@ -1,6 +1,5 @@
 package com.aoya.televip.hooks
 
-import com.aoya.televip.TeleVip
 import com.aoya.televip.utils.Hook
 import com.aoya.televip.utils.HookStage
 import com.aoya.televip.utils.hook
@@ -21,42 +20,20 @@ class AddChatNavigation :
         ).hook(resolver.getMethod("org.telegram.ui.ChatActivity", "createView"), HookStage.AFTER) { param ->
             val o = param.thisObject()
             val headerItem = getObjectField(o, "headerItem") ?: return@hook
-            if (TeleVip.packageName != "xyz.nextalone.nagram") {
-                val pkgNames =
-                    listOf(
-                        "com.skyGram.bestt",
-                        "uz.unnarsx.cherrygram",
-                        "com.iMe.android",
-                        "app.nicegram",
-                        "org.telegram.plus",
-                        "com.xplus.messenger",
-                        "org.forkgram.messenger",
-                        "org.forkclient.messenger.beta",
-                    )
-                callMethod(
-                    headerItem,
-                    resolver.getMethod("org.telegram.ui.ActionBar.ActionBarMenuItem", "lazilyAddColoredGap"),
-                )
-                if (TeleVip.packageName !in pkgNames) {
-                    callMethod(
-                        headerItem,
-                        resolver.getMethod("org.telegram.ui.ActionBar.ActionBarMenuItem", "lazilyAddSubItem"),
-                        70,
-                        getResource("msg_go_up", "drawable"),
-                        i18n.get("ChatScrollToTop"),
-                    )
-                }
-            }
+            callMethod(
+                headerItem,
+                resolver.getMethod("org.telegram.ui.ActionBar.ActionBarMenuItem", "lazilyAddColoredGap"),
+            )
+            callMethod(
+                headerItem,
+                resolver.getMethod("org.telegram.ui.ActionBar.ActionBarMenuItem", "lazilyAddSubItem"),
+                70,
+                getResource("msg_go_up", "drawable"),
+                i18n.get("ChatScrollToTop"),
+            )
         }
 
-        val suffixMap =
-            mapOf(
-                "org.telegram.plus" to "14",
-                "org.forkclient.messenger.beta" to "15",
-                "org.forkgram.messenger" to "15",
-            )
-
-        val suffix = suffixMap[TeleVip.packageName] ?: "13"
+        val suffix = "13"
         findClass(
             "org.telegram.ui.ChatActivity\$$suffix",
         ).hook(resolver.getMethod("org.telegram.ui.ChatActivity\$$suffix", "onItemClick"), HookStage.AFTER) { param ->

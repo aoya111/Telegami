@@ -27,7 +27,7 @@ object I18NenUS : Translation {
             "developer_channel" to "Developer Channel",
             "hide_online_status" to "Hide 'Online' status",
             "prevent_secret_media_deletion" to "Prevent Deletion of Secret Media.",
-            "hide_phone_number" to "Hide 'Phone' number",
+            "hide_phone" to "Hide 'Phone' number",
             "show_deleted_messages" to "Show 'Deleted Messages'",
             "DeletedMessage" to "deleted",
             "copied_to_clipboard" to "Copied '{item}' to the clipboard",

@@ -20,7 +20,7 @@ import com.aoya.televip.core.obfuscate.ResolverManager as resolver
 
 class ProfileDetails :
     Hook(
-        "Profile details",
+        "profile_details",
         "Add extra fields and details to profiles",
     ) {
     override fun init() {

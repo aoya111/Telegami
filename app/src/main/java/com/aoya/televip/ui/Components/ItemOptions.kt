@@ -5,6 +5,7 @@ import android.view.ViewGroup
 import com.aoya.televip.TeleVip
 import de.robv.android.xposed.XposedHelpers.callMethod
 import de.robv.android.xposed.XposedHelpers.newInstance
+import com.aoya.televip.core.obfuscate.ResolverManager as resolver
 
 class ItemOptions(
     container: ViewGroup,
@@ -17,7 +18,7 @@ class ItemOptions(
     init {
         itemOpts =
             newInstance(
-                TeleVip.loadClass("org.telegram.ui.Components.ItemOptions"),
+                TeleVip.loadClass(resolver.get("org.telegram.ui.Components.ItemOptions")),
                 container,
                 resourcesProvider,
                 scrimView,

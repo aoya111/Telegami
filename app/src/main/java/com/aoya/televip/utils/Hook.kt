@@ -19,11 +19,15 @@ abstract class Hook(
     /**
      * Hook specific cleanup.
      */
-    open fun cleanup() {}
-
-    protected fun isHookEnabled(): Boolean = Config.isHookEnabled(hookName)
+    open fun cleanup() {
+    }
 
     protected fun findClass(name: String): Class<*> = TeleVip.loadClass(resolver.get(name))
+
+    protected val isEnabled: Boolean
+        get() {
+            return Config.isHookEnabled(hookName)
+        }
 
     protected val isDark: Boolean
         get() {

@@ -8,7 +8,7 @@ import com.aoya.televip.utils.hook
 
 class AllowScreenshots :
     Hook(
-        "Allow screenshots",
+        "allow_screenshots",
         "Allow screenshots everywhere in the app",
     ) {
     override fun init() {

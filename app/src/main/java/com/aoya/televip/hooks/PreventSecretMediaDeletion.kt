@@ -27,20 +27,20 @@ class PreventSecretMediaDeletion :
             HookStage.BEFORE,
         ) { param -> param.setResult(null) }
 
-        findClass(
-            "org.telegram.ui.SecretMediaViewer",
-        ).hook("openMedia", HookStage.BEFORE) { param ->
-            param.setArg(1, null)
-            param.setArg(2, null)
-            val forwardingMessage = param.argNullable<Any>(0) ?: return@hook
-            val msgOwner = getObjectField(forwardingMessage, "messageOwner") ?: return@hook
-            setObjectField(msgOwner, "ttl", 0x7FFFFFFF)
-        }
-
-        findClass(
-            "org.telegram.ui.SecretMediaViewer",
-        ).hook("closePhoto", HookStage.BEFORE) { param ->
-            setObjectField(param.thisObject(), "onClose", null)
-        }
+        // findClass(
+        //     "org.telegram.ui.SecretMediaViewer",
+        // ).hook(resolver.getMethod("org.telegram.ui.SecretMediaViewer", "openMedia"), HookStage.BEFORE) { param ->
+        //     param.setArg(1, null)
+        //     param.setArg(2, null)
+        //     val forwardingMessage = param.argNullable<Any>(0) ?: return@hook
+        //     val msgOwner = getObjectField(forwardingMessage, "messageOwner") ?: return@hook
+        //     setObjectField(msgOwner, resolver.getField("org.telegram.tgnet.TLRPC.Message", "ttl"), 0x7FFFFFFF)
+        // }
+        //
+        // findClass(
+        //     "org.telegram.ui.SecretMediaViewer",
+        // ).hook(resolver.getMethod("org.telegram.ui.SecretMediaViewer", "closePhoto"), HookStage.BEFORE) { param ->
+        //     setObjectField(param.thisObject(), "onClose", null)
+        // }
     }
 }

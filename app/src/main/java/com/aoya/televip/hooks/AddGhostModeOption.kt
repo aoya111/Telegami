@@ -111,6 +111,11 @@ class AddGhostModeOption :
                                 val text = chkBx.text.toString()
                                 val key = opts.entries.find { it.value == text }?.key ?: return@forEach
                                 Config.setHookEnabled(key, chkBx.isChecked)
+                                if (chkBx.isChecked) {
+                                    TeleVip.hookManager.loadHook(key)
+                                } else {
+                                    TeleVip.hookManager.unloadHook(key)
+                                }
                             }
                             dialog.dismiss()
                         } catch (t: Throwable) {
