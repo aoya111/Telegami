@@ -1,8 +1,21 @@
+import java.io.FileInputStream
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsKotlinAndroid)
     alias(libs.plugins.googleKsp)
 }
+
+val versionProps =
+    Properties().apply {
+        rootProject.file("version.properties").inputStream().use { load(it) }
+    }
+
+val keystoreProps =
+    Properties().apply {
+        rootProject.file("keystore.properties").inputStream().use { load(it) }
+    }
 
 android {
     namespace = "com.aoya.televip"
@@ -12,18 +25,18 @@ android {
         applicationId = "com.aoya.televip"
         minSdk = 24
         targetSdk = 34
-        versionCode = 20000
-        versionName = "2.0.0-alpha03"
+        versionCode = versionProps.getProperty("versionCode").toInt()
+        versionName = versionProps.getProperty("versionName")
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
     signingConfigs {
         create("release") {
-            storeFile = file(project.findProperty("KEYSTORE_FILE") as String)
-            storePassword = project.findProperty("KEYSTORE_PASSWORD") as String
-            keyAlias = project.findProperty("KEY_ALIAS") as String
-            keyPassword = project.findProperty("KEY_PASSWORD") as String
+            storeFile = file(keystoreProps.getProperty("storeFile") as String)
+            storePassword = keystoreProps.getProperty("storePassword") as String
+            keyAlias = keystoreProps.getProperty("keyAlias") as String
+            keyPassword = keystoreProps.getProperty("keyPassword") as String
         }
     }
 
@@ -67,4 +80,41 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+}
+
+tasks.register("bumpVersion") {
+    val bumpType = project.findProperty("type") ?: "patch"
+
+    doLast {
+        val major = versionProps.getProperty("major")!!.toInt()
+        val minor = versionProps.getProperty("minor")!!.toInt()
+        val patch = versionProps.getProperty("patch")!!.toInt()
+
+        val (newMajor, newMinor, newPatch) =
+            when (bumpType) {
+                "major" -> Triple(major + 1, 0, 0)
+                "minor" -> Triple(major, minor + 1, 0)
+                else -> Triple(major, minor, patch + 1)
+            }
+
+        val newVersion = "$newMajor.$newMinor.$newPatch"
+
+        val newCode =
+            if (bumpType == "major") {
+                newMajor * 10000
+            } else {
+                versionProps.getProperty("versionCode")!!.toInt() + 1
+            }
+
+        versionProps["major"] = newMajor.toString()
+        versionProps["minor"] = newMinor.toString()
+        versionProps["patch"] = newPatch.toString()
+        versionProps["versionName"] = newVersion
+        versionProps["versionCode"] = newCode.toString()
+
+        rootProject.file("version.properties").outputStream().use {
+            versionProps.store(it, "Bumped $bumpType → $newVersion")
+        }
+        println("✅ $bumpType → $newVersion (code: $newCode)")
+    }
 }

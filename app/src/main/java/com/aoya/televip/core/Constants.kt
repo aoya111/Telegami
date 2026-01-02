@@ -8,8 +8,8 @@ object Constants {
         )
     val SUPPORTED_TG_VARIANTS =
         mapOf(
-            "Nekogram" to Triple("tw.nekomimi.nekogram", "12.0.1", 61670),
-            "Telegram" to Triple("org.telegram.messenger", "12.0.1", 61662),
+            "Nekogram" to Triple("tw.nekomimi.nekogram", "12.2.10S", 63470),
+            "Telegram" to Triple("org.telegram.messenger", "12.2.11", 63422),
         )
     val FEATURES =
         arrayOf(

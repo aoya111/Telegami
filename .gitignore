@@ -167,7 +167,10 @@ fabric.properties
 # End of https://www.toptal.com/developers/gitignore/api/android,androidstudio
 
 .android/cache
+.android/avd
 .android/*.lock
+
+keystore.properties
 
 # Devenv
 .devenv*

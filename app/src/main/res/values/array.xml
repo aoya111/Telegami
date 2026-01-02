@@ -2,9 +2,6 @@
 <resources>
     <string-array name="xposed_scope">
         <item>org.telegram.messenger</item>
-        <item>org.telegram.messenger.web</item>
-        <item>org.telegram.messenger.beta</item>
         <item>tw.nekomimi.nekogram</item>
-        <item>com.iMe.android</item>
     </string-array>
 </resources>

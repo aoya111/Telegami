@@ -1,5 +1,6 @@
 package com.aoya.televip.utils
 
+import android.graphics.drawable.Drawable
 import com.aoya.televip.TeleVip
 import com.aoya.televip.core.Config
 import com.aoya.televip.data.AppDatabase
@@ -68,4 +69,9 @@ abstract class Hook(
     protected fun getAttribute(name: String): Int = getResource(name, "attr")
 
     protected fun getStringResource(name: String): String = TeleVip.context.getString(getResource(name, "string"))
+
+    protected fun getDrawableResource(name: String): Drawable? =
+        getResource(name, "drawable").takeIf { it != 0 }?.let {
+            TeleVip.context.getDrawable(it)
+        }
 }

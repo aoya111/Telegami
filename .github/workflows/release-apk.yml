@@ -1,0 +1,62 @@
+name: Build & Release
+
+on:
+  push:
+    tags: ["v*"]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Extract version.properties
+        id: version
+        run: |
+          VERSION_NAME=$(grep '^versionName=' version.properties | cut -d= -f2-)
+          VERSION_CODE=$(grep '^versionCode=' version.properties | cut -d= -f2-)
+
+          echo "version_name=$VERSION_NAME" >> $GITHUB_OUTPUT
+          echo "version_code=$VERSION_CODE" >> $GITHUB_OUTPUT
+
+          echo "Props: $VERSION_NAME (code: $VERSION_CODE)"
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: "17"
+          distribution: "temurin"
+          cache: "gradle"
+
+      - name: Create keystore.properties
+        run: |
+          cat > keystore.properties << EOF
+          storeFile=../keystore.p12
+          storePassword=${{ secrets.KEYSTORE_PASSWORD }}
+          keyAlias=${{ secrets.KEY_ALIAS }}
+          keyPassword=${{ secrets.KEY_PASSWORD }}
+          storeType=PKCS12
+          EOF
+
+      - name: Decode keystore
+        run: |
+          echo "${{ secrets.KEYSTORE_P12_BASE64 }}" | base64 -d > keystore.p12
+
+      - name: Build signed release APK
+        run: ./gradlew assembleRelease
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v2
+        with:
+          name: "Release v${{ steps.version.outputs.version_name }} (${{ steps.version.outputs.version_code }})"
+          tag_name: v${{ steps.version.outputs.version_name }}
+          files: app/build/outputs/apk/release/app-release.apk
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

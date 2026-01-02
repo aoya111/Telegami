@@ -59,13 +59,18 @@ class ProfileDetails :
             val contentView = getObjectField(o, "contentView") as? ViewGroup
             val resourcesProvider = getObjectField(o, "resourcesProvider")
             if (contentView == null) return@hook
-            val itemOptions = ItemOptions(contentView, resourcesProvider, view, false)
+            val itemOptions = ItemOptions.makeOptions(contentView, resourcesProvider, view, false)
             itemOptions.setGravity(Gravity.LEFT)
 
             val msgCtrl = callMethod(o, resolver.getMethod("org.telegram.ui.ActionBar.BaseFragment", "getMessagesController"))
             if (userId != 0L) {
                 val user = callMethod(msgCtrl, resolver.getMethod("org.telegram.messenger.MessagesController", "getUser"), userId)
-                val username1 = callStaticMethod(findClass("org.telegram.messenger.UserObject"), "getPublicUsername", user)
+                val username1 =
+                    callStaticMethod(
+                        findClass(resolver.get("org.telegram.messenger.UserObject")),
+                        resolver.getMethod("org.telegram.messenger.UserObject", "getPublicUsername"),
+                        user,
+                    )
                 if (user == null || username1 == null) return@hook
                 username = username1 as String
                 itemOptions
@@ -73,13 +78,21 @@ class ProfileDetails :
                         getResource("msg_copy", "drawable"),
                         getStringResource("ProfileCopyUsername"),
                         Runnable {
-                            callStaticMethod(findClass("org.telegram.messenger.AndroidUtilities"), "addToClipboard", username)
+                            callStaticMethod(
+                                findClass(resolver.get("org.telegram.messenger.AndroidUtilities")),
+                                resolver.getMethod("org.telegram.messenger.AndroidUtilities", "addToClipboard"),
+                                username,
+                            )
                         },
                     ).add(
                         getResource("msg_copy", "drawable"),
                         i18n.get("ProfileCopyUserId"),
                         Runnable {
-                            callStaticMethod(findClass("org.telegram.messenger.AndroidUtilities"), "addToClipboard", userId.toString())
+                            callStaticMethod(
+                                findClass(resolver.get("org.telegram.messenger.AndroidUtilities")),
+                                resolver.getMethod("org.telegram.messenger.AndroidUtilities", "addToClipboard"),
+                                userId.toString(),
+                            )
                         },
                     )
             } else if (chatId != 0L) {
@@ -93,13 +106,21 @@ class ProfileDetails :
                         getResource("msg_copy", "drawable"),
                         getStringResource("ProfileCopyUsername"),
                         Runnable {
-                            callStaticMethod(findClass("org.telegram.messenger.AndroidUtilities"), "addToClipboard", username)
+                            callStaticMethod(
+                                findClass(resolver.get("org.telegram.messenger.AndroidUtilities")),
+                                resolver.getMethod("org.telegram.messenger.AndroidUtilities", "addToClipboard"),
+                                username,
+                            )
                         },
                     ).add(
                         getResource("msg_copy", "drawable"),
                         i18n.get("ProfileCopyChatId"),
                         Runnable {
-                            callStaticMethod(findClass("org.telegram.messenger.AndroidUtilities"), "addToClipboard", chatId.toString())
+                            callStaticMethod(
+                                findClass(resolver.get("org.telegram.messenger.AndroidUtilities")),
+                                resolver.getMethod("org.telegram.messenger.AndroidUtilities", "addToClipboard"),
+                                chatId.toString(),
+                            )
                         },
                     )
             } else {

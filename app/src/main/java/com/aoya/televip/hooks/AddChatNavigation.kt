@@ -3,6 +3,7 @@ package com.aoya.televip.hooks
 import com.aoya.televip.utils.Hook
 import com.aoya.televip.utils.HookStage
 import com.aoya.televip.utils.hook
+import de.robv.android.xposed.XposedBridge
 import de.robv.android.xposed.XposedHelpers.callMethod
 import de.robv.android.xposed.XposedHelpers.getObjectField
 import de.robv.android.xposed.XposedHelpers.setBooleanField
@@ -15,21 +16,25 @@ class AddChatNavigation :
         "Add chat navigation",
     ) {
     override fun init() {
+        val scrollToMessageId = 500
+
         findClass(
             "org.telegram.ui.ChatActivity",
         ).hook(resolver.getMethod("org.telegram.ui.ChatActivity", "createView"), HookStage.AFTER) { param ->
             val o = param.thisObject()
             val headerItem = getObjectField(o, "headerItem") ?: return@hook
+
             callMethod(
                 headerItem,
                 resolver.getMethod("org.telegram.ui.ActionBar.ActionBarMenuItem", "lazilyAddColoredGap"),
             )
+
             callMethod(
                 headerItem,
                 resolver.getMethod("org.telegram.ui.ActionBar.ActionBarMenuItem", "lazilyAddSubItem"),
-                70,
-                getResource("msg_go_up", "drawable"),
-                i18n.get("ChatScrollToTop"),
+                scrollToMessageId,
+                getDrawableResource("msg_go_up"),
+                i18n.get("chat_scroll_to_top"),
             )
         }
 
@@ -39,7 +44,7 @@ class AddChatNavigation :
         ).hook(resolver.getMethod("org.telegram.ui.ChatActivity\$$suffix", "onItemClick"), HookStage.AFTER) { param ->
             val id = param.arg<Int>(0)
             val chatActivity = getObjectField(param.thisObject(), "this$0")
-            if (id == 70) {
+            if (id == scrollToMessageId) {
                 callMethod(
                     chatActivity,
                     resolver.getMethod("org.telegram.ui.ChatActivity", "scrollToMessageId"),
