@@ -1,4 +1,4 @@
-package com.aoya.televip.ui.actionbar
+package com.aoya.televip.virt.ui.actionbar
 
 import android.content.Context
 import android.content.DialogInterface

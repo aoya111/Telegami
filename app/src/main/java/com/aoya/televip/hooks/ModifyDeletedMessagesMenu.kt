@@ -5,6 +5,7 @@ import android.widget.LinearLayout
 import com.aoya.televip.utils.Hook
 import com.aoya.televip.utils.HookStage
 import com.aoya.televip.utils.hook
+import com.aoya.televip.virt.ui.cells.ChatMessageCell
 import de.robv.android.xposed.XposedHelpers.callMethod
 import de.robv.android.xposed.XposedHelpers.getIntField
 import de.robv.android.xposed.XposedHelpers.getObjectField
@@ -86,18 +87,18 @@ class ModifyDeletedMessagesMenu :
         findClass(
             "org.telegram.ui.ChatActivity",
         ).hook(resolver.getMethod("org.telegram.ui.ChatActivity", "createMenu"), HookStage.BEFORE) { param ->
-            val view = param.arg<View>(0)
+            val p1 = param.arg<Any>(0)
             val chatMessageCellClass = findClass("org.telegram.ui.Cells.ChatMessageCell")
+            if (!chatMessageCellClass.isInstance(p1)) return@hook
+            val chatMsgCellObj = ChatMessageCell(p1)
 
-            if (!chatMessageCellClass.isInstance(view)) return@hook
-
-            val msg = callMethod(view, resolver.getMethod("org.telegram.ui.Cells.ChatMessageCell", "getMessageObject"))
+            val msgObj = chatMsgCellObj.getMessageObject()
 
             // val type = callMethod(o, "getMessageType", msg) as Int
             // if (type != 3) return@hook
 
-            val mid = callMethod(msg, resolver.getMethod("org.telegram.messenger.MessageObject", "getId")) as Int
-            val did = callMethod(msg, resolver.getMethod("org.telegram.messenger.MessageObject", "getDialogId")) as Long
+            val mid = msgObj.getId()
+            val did = msgObj.getDialogId()
 
             msgIsDeleted = false
             runBlocking {
