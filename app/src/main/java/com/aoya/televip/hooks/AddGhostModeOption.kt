@@ -9,16 +9,14 @@ import com.aoya.televip.TeleVip
 import com.aoya.televip.core.Config
 import com.aoya.televip.core.Constants
 import com.aoya.televip.core.User
-import com.aoya.televip.ui.actionbar.AlertDialog
 import com.aoya.televip.utils.Hook
 import com.aoya.televip.utils.HookStage
 import com.aoya.televip.utils.hook
-import de.robv.android.xposed.XposedHelpers.callMethod
+import com.aoya.televip.virt.tgnet.TLRPC
+import com.aoya.televip.virt.ui.LaunchActivity
+import com.aoya.televip.virt.ui.actionbar.AlertDialog
+import com.aoya.televip.virt.ui.adapters.DrawerLayoutAdapter
 import de.robv.android.xposed.XposedHelpers.callStaticMethod
-import de.robv.android.xposed.XposedHelpers.getIntField
-import de.robv.android.xposed.XposedHelpers.getLongField
-import de.robv.android.xposed.XposedHelpers.getObjectField
-import de.robv.android.xposed.XposedHelpers.newInstance
 import java.util.ArrayList
 import com.aoya.televip.core.i18n.TranslationManager as i18n
 import com.aoya.televip.core.obfuscate.ResolverManager as resolver
@@ -34,63 +32,43 @@ class AddGhostModeOption :
         findClass(
             "org.telegram.messenger.UserConfig",
         ).hook(resolver.getMethod("org.telegram.messenger.UserConfig", "setCurrentUser"), HookStage.AFTER) { param ->
-            val tgUser = param.arg<Any>(0)
-
-            val user =
-                User(
-                    getLongField(tgUser, resolver.getField("org.telegram.tgnet.TLRPC.User", "id")),
-                    getObjectField(tgUser, resolver.getField("org.telegram.tgnet.TLRPC.User", "username")) as String,
-                    getObjectField(tgUser, resolver.getField("org.telegram.tgnet.TLRPC.User", "phone")) as? String ?: "",
-                )
-
+            val tgUser = TLRPC.User(param.arg<Any>(0))
+            val user = User(tgUser.id, tgUser.username, tgUser.phone)
             Config.initialize(TeleVip.packageName, user)
         }
 
         val drawerLayoutAdapter = "org.telegram.ui.Adapters.DrawerLayoutAdapter"
         findClass(drawerLayoutAdapter).hook(resolver.getMethod(drawerLayoutAdapter, "resetItems"), HookStage.AFTER) { param ->
-            val o = param.thisObject()
+            val dlAdapter = DrawerLayoutAdapter(param.thisObject())
 
-            @Suppress("UNCHECKED_CAST")
-            val items = getObjectField(o, resolver.getField(drawerLayoutAdapter, "items")) as ArrayList<Any>
+            val items = dlAdapter.items
 
             val settingsIcon =
                 items
                     .filterNotNull()
                     .find {
-                        getIntField(it, resolver.getField("$drawerLayoutAdapter\$Item", "id")) == 8
+                        it.id == 8
                     }?.let {
-                        getIntField(it, resolver.getField("$drawerLayoutAdapter\$Item", "icon"))
-                    }
+                        it.icon
+                    } ?: return@hook
 
-            val newItem =
-                newInstance(
-                    findClass("$drawerLayoutAdapter\$Item"),
-                    itemID,
-                    i18n.get("ghost_mode"),
-                    settingsIcon,
-                ) as Any
-
-            items.add(newItem)
+            val newItem = DrawerLayoutAdapter.Item(itemID, i18n.get("ghost_mode"), settingsIcon)
+            dlAdapter.addItem(newItem)
         }
 
         findClass(
             "org.telegram.ui.LaunchActivity",
         ).hook(resolver.getMethod("org.telegram.ui.LaunchActivity", "lambda\$onCreate\$6"), HookStage.AFTER) { param ->
-            val o = param.thisObject() as Activity
+            val o = LaunchActivity(param.thisObject())
 
-            val result =
-                callMethod(
-                    getObjectField(o, "drawerLayoutAdapter") ?: return@hook,
-                    resolver.getMethod(drawerLayoutAdapter, "getId"),
-                    param.arg<Int>(1),
-                ) as Int
+            val result = o.drawerLayoutAdapter?.getId(param.arg<Int>(1))
             if (result == itemID) {
-                val layout = LinearLayout(o)
+                val layout = LinearLayout(o.context)
                 layout.setOrientation(LinearLayout.VERTICAL)
                 val checkBoxes = mutableListOf<CheckBox>()
                 val opts = Constants.FEATURES.associateWith { i18n.get(it) }
                 for ((k, v) in opts) {
-                    val checkBox = CheckBox(o)
+                    val checkBox = CheckBox(o.context)
 
                     checkBox.text = v
                     checkBox.isChecked = Config.isHookEnabled(k)
@@ -102,7 +80,7 @@ class AddGhostModeOption :
                     layout.addView(checkBox)
                 }
                 AlertDialog
-                    .Builder(o)
+                    .Builder(o.context)
                     .setTitle(i18n.get("ghost_mode_title"))
                     .setView(layout)
                     .setPositiveButton(i18n.get("save")) { dialog ->
@@ -123,12 +101,11 @@ class AddGhostModeOption :
                         }
                     }.setNegativeButton(i18n.get("developer_channel")) { dialog ->
                         try {
-                            val drawerLayoutContainer = getObjectField(o, "drawerLayoutContainer")
-                            if (drawerLayoutContainer != null) {
+                            if (o.drawerLayoutContainer != null) {
                                 callStaticMethod(
                                     findClass("org.telegram.messenger.browser.Browser"),
                                     "openUrl",
-                                    o,
+                                    o.context,
                                     "https://t.me/t_l0_e",
                                 )
                                 dialog.dismiss()

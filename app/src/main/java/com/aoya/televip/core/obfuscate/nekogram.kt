@@ -5,6 +5,7 @@ object Nekogram : Resolver {
         mapOf(
             "org.telegram.messenger.AccountInstance" to "j3", // return\ ConnectionsManager\.getInstance\(this.\w*\)\;
             "org.telegram.messenger.AndroidUtilities" to "org.telegram.messenger.a", // Https\|ton
+            "org.telegram.messenger.ChatObject" to "org.telegram.messenger.j", // "remove from speaking"
             "org.telegram.messenger.LocaleController" to "org.telegram.messenger.g0", // unofficial_base_
             "org.telegram.messenger.MessageObject" to "org.telegram.messenger.k0", // W\|lang
             "org.telegram.messenger.MessagesController" to "org.telegram.messenger.m0", // SELECT data FROM app_config
@@ -15,10 +16,10 @@ object Nekogram : Resolver {
             "org.telegram.messenger.UserConfig" to "org.telegram.messenger.c1", // "2pinnedDialogsLoaded"
             "org.telegram.messenger.UserObject" to "org.telegram.messenger.d1", // return \w* == 333000
             "org.telegram.tgnet.tl.TL_account\$updateStatus" to "org.telegram.tgnet.TLRPC\$u7", // -1388733202
-            "org.telegram.tgnet.TLRPC.Message" to "org.telegram.tgnet.TLRPC.h2", // -2082087340:
-            "org.telegram.tgnet.TLRPC.User" to "org.telegram.tgnet.TLRPC.wd1", // -2093920310
+            "org.telegram.tgnet.TLRPC\$Message" to "org.telegram.tgnet.TLRPC\$h2", // -2082087340:
+            "org.telegram.tgnet.TLRPC\$User" to "org.telegram.tgnet.TLRPC\$wd1", // -2093920310
             "org.telegram.ui.ActionBar.ActionBarMenuItem" to "org.telegram.ui.ActionBar.c", // headerItem type in ChatActivity
-            "org.telegram.ui.ActionBar.ActionBarMenuItem.Item" to "org.telegram.ui.ActionBar.c.r",
+            "org.telegram.ui.ActionBar.ActionBarMenuItem\$Item" to "org.telegram.ui.ActionBar.c\$r",
             "org.telegram.ui.ActionBar.ActionBarMenuSubItem" to "org.telegram.ui.ActionBar.e",
             "org.telegram.ui.ActionBar.ActionBarPopupWindow\$GapView" to "org.telegram.ui.ActionBar.ActionBarPopupWindow\$d", // static class \w* extends FrameLayout {
             "org.telegram.ui.ActionBar.AlertDialog\$OnButtonClickListener" to "org.telegram.ui.ActionBar.AlertDialog\$k",
@@ -38,6 +39,11 @@ object Nekogram : Resolver {
 
     private val methodMap =
         mapOf(
+            "org.telegram.messenger.ChatObject" to
+                mapOf(
+                    "getPublicUsername" to "X",
+                    "isPublic" to "M0", // return !TextUtils.isEmpty(
+                ),
             "org.telegram.messenger.AndroidUtilities" to
                 mapOf(
                     "addToClipboard" to "E", // public static boolean \w*(CharSequence
@@ -158,11 +164,11 @@ object Nekogram : Resolver {
         mapOf(
             "org.telegram.messenger.MessagesStorage" to mapOf("database" to "b"), // UPDATE chat_settings_v2
             "org.telegram.messenger.NotificationCenter" to mapOf("messagesDeleted" to "x"),
-            "org.telegram.tgnet.TLRPC.Message" to
+            "org.telegram.tgnet.TLRPC\$Message" to
                 mapOf(
                     "ttl" to "h0", // if (\w*.messageOwner.\w* == Integer.MAX_VALUE)
                 ),
-            "org.telegram.tgnet.TLRPC.User" to mapOf("phone" to "f", "id" to "a", "username" to "d"),
+            "org.telegram.tgnet.TLRPC\$User" to mapOf("phone" to "f", "id" to "a", "username" to "d"),
             "org.telegram.ui.ActionBar.Theme" to mapOf("chat_timePaint" to "L2"),
             "org.telegram.ui.Adapters.DrawerLayoutAdapter" to mapOf("items" to "h"),
             "org.telegram.ui.Adapters.DrawerLayoutAdapter\$Item" to mapOf("icon" to "a", "id" to "c"),

@@ -6,14 +6,12 @@ import com.aoya.televip.data.DeletedMessage
 import com.aoya.televip.utils.Hook
 import com.aoya.televip.utils.HookStage
 import com.aoya.televip.utils.hook
+import com.aoya.televip.virt.messenger.MessagesStorage
 import de.robv.android.xposed.XposedBridge
-import de.robv.android.xposed.XposedHelpers.callMethod
-import de.robv.android.xposed.XposedHelpers.getObjectField
 import de.robv.android.xposed.XposedHelpers.getStaticIntField
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import java.util.Locale
 import com.aoya.televip.core.obfuscate.ResolverManager as resolver
 
 class ShowDeletedMessages :
@@ -35,7 +33,7 @@ class ShowDeletedMessages :
                 resolver.getMethod("org.telegram.messenger.MessagesStorage", "markMessagesAsDeletedInternal"),
                 HookStage.BEFORE,
             ) { param ->
-                val o = param.thisObject()
+                val msgsStore = MessagesStorage(param.thisObject())
                 val dialogId = param.arg<Long>(0)
 
                 if (param.args().size != 5) return@hook
@@ -53,38 +51,24 @@ class ShowDeletedMessages :
                 }
 
                 val msgs = mutableListOf<DeletedMessage>()
-                val tgDB = getObjectField(o, resolver.getField("org.telegram.messenger.MessagesStorage", "database"))
                 val ids = TextUtils.join(",", msgIds)
                 val cursor =
                     if (dialogId != 0L) {
-                        callMethod(
-                            tgDB,
-                            resolver.getMethod("org.telegram.SQLite.SQLiteDatabase", "queryFinalized"),
-                            String.format(
-                                Locale.US,
-                                "SELECT uid, data, read_state, out, mention, mid FROM messages_v2 WHERE mid IN(%s) AND uid = %d",
-                                ids,
-                                dialogId,
-                            ),
+                        msgsStore.database.queryFinalized(
+                            "SELECT uid, data, read_state, out, mention, mid FROM messages_v2 WHERE mid IN ($ids) AND uid = $dialogId",
                             arrayOf<Any>(),
                         )
                     } else {
-                        callMethod(
-                            tgDB,
-                            resolver.getMethod("org.telegram.SQLite.SQLiteDatabase", "queryFinalized"),
-                            String.format(
-                                Locale.US,
-                                "SELECT uid, data, read_state, out, mention, mid FROM messages_v2 WHERE mid IN(%s) AND is_channel = 0",
-                                ids,
-                            ),
+                        msgsStore.database.queryFinalized(
+                            "SELECT uid, data, read_state, out, mention, mid FROM messages_v2 WHERE mid IN ($ids) AND is_channel = 0",
                             arrayOf<Any>(),
                         )
                     }
 
                 try {
-                    while (callMethod(cursor, resolver.getMethod("org.telegram.SQLite.SQLiteCursor", "next")) as Boolean) {
-                        val did = callMethod(cursor, resolver.getMethod("org.telegram.SQLite.SQLiteCursor", "longValue"), 0) as Long
-                        val mid = callMethod(cursor, resolver.getMethod("org.telegram.SQLite.SQLiteCursor", "intValue"), 5) as Int
+                    while (cursor.next()) {
+                        val did = cursor.longValue(0)
+                        val mid = cursor.intValue(5)
                         msgs.add(DeletedMessage(id = mid, dialogId = did))
                     }
                 } catch (e: Exception) {
