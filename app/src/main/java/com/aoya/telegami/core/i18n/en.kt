@@ -18,7 +18,6 @@ object I18NenUS : Translation {
             "hide_seen_status" to "Hide 'Seen' status for messages",
             "hide_story_view_status" to "Hide 'Story View' status",
             "hide_typing" to "Hide Typing...",
-            "fake_premium" to "Enable Telegram Premium",
             "unlock_channel_features" to "Unlock all restricted and encrypted features for channels",
             "show_delete_msg_button" to "Show 'Delete Messages' button",
             "allow_save_videos" to "Allow saving videos to the gallery",

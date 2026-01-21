@@ -17,7 +17,6 @@ object I18NarSA : Translation {
             "hide_seen_status" to "اخفاء علامة الاستلام",
             "hide_story_view_status" to "اخفاء مشاهدة قصة",
             "hide_typing" to "اخفاء مؤشر الكتاب",
-            "enable_premium" to "فتح تيليجرام المميز",
             "unlock_channel_features" to "فتح جميع الخصائص المشفره والمغلقه",
             "show_delete_msg_button" to "عرض زر حذف الرسائل",
             "allow_save_videos" to "سماح حفظ الفيديو في معرض",

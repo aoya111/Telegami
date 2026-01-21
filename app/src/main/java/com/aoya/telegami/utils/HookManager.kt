@@ -31,6 +31,7 @@ class HookManager {
         mapOf<String, () -> Hook>(
             // Always-on hooks
             "add_ghost_mode_option" to { AddGhostModeOption() },
+            "fake_premium" to { FakePremium() },
             "allow_screenshots" to { AllowScreenshots() },
             "apply_color" to { ApplyColor() },
             "boost_download" to { BoostDownload() },
@@ -46,12 +47,12 @@ class HookManager {
             "prevent_secret_media_deletion" to { PreventSecretMediaDeletion() },
             "unlock_channel_features" to { UnlockChannelFeatures() },
             "allow_save_videos" to { AllowSaveVideos() },
-            "fake_premium" to { FakePremium() },
         )
 
     private val alwaysOnHookNames =
         setOf(
             "add_ghost_mode_option",
+            "fake_premium",
             "allow_screenshots",
             "apply_color",
             "boost_download",

@@ -17,7 +17,6 @@ object I18NzhCN : Translation {
             "hide_seen_status" to "隐藏消息的 '已读' 状态",
             "hide_story_view_status" to "隐藏 '故事观看' 状态",
             "hide_typing" to "隐藏正在输入...",
-            "enable_premium" to "启用 Telegram 本地会员",
             "unlock_channel_features" to "解锁频道的所有受限和加密功能",
             "show_delete_msg_button" to "显示 '删除消息' 按钮",
             "allow_save_videos" to "允许将视频保存到图库",
