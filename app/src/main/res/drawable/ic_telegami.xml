@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="512"
+    android:viewportHeight="512">
+
+    <!-- Add padding by scaling down to 70% and centering -->
+    <group
+        android:pivotX="256"
+        android:pivotY="256"
+        android:scaleX="0.7"
+        android:scaleY="0.7">
+
+        <!-- Outer triangle -->
+        <path
+            android:strokeColor="#1E88E5"
+            android:strokeWidth="12"
+            android:strokeLineCap="round"
+            android:strokeLineJoin="round"
+            android:pathData="M 256,80 L 140,400 L 372,400 Z"/>
+
+        <!-- Base line (emphasized) -->
+        <path
+            android:strokeColor="#1E88E5"
+            android:strokeWidth="14"
+            android:strokeLineCap="round"
+            android:pathData="M 140,400 L 372,400"/>
+
+        <!-- Left side lines from apex -->
+        <path
+            android:strokeColor="#1E88E5"
+            android:strokeWidth="12"
+            android:strokeLineCap="round"
+            android:pathData="M 256,80 L 140,400"/>
+        <path
+            android:strokeColor="#1E88E5"
+            android:strokeWidth="12"
+            android:strokeLineCap="round"
+            android:pathData="M 256,80 L 180,280"/>
+
+        <!-- Right side lines from apex -->
+        <path
+            android:strokeColor="#1E88E5"
+            android:strokeWidth="12"
+            android:strokeLineCap="round"
+            android:pathData="M 256,80 L 372,400"/>
+        <path
+            android:strokeColor="#1E88E5"
+            android:strokeWidth="12"
+            android:strokeLineCap="round"
+            android:pathData="M 256,80 L 332,280"/>
+
+        <!-- Center vertical line -->
+        <path
+            android:strokeColor="#1E88E5"
+            android:strokeWidth="12"
+            android:strokeLineCap="round"
+            android:pathData="M 256,80 L 256,400"/>
+
+        <!-- Inner pyramid base -->
+        <path
+            android:strokeColor="#1E88E5"
+            android:strokeWidth="12"
+            android:strokeLineCap="round"
+            android:strokeLineJoin="round"
+            android:pathData="M 180,280 L 256,320 L 332,280"/>
+
+        <!-- Connection lines from inner pyramid to outer base -->
+        <path
+            android:strokeColor="#1E88E5"
+            android:strokeWidth="12"
+            android:strokeLineCap="round"
+            android:pathData="M 180,280 L 140,400"/>
+        <path
+            android:strokeColor="#1E88E5"
+            android:strokeWidth="12"
+            android:strokeLineCap="round"
+            android:pathData="M 332,280 L 372,400"/>
+
+        <!-- Vertical lines from inner pyramid to base -->
+        <path
+            android:strokeColor="#1E88E5"
+            android:strokeWidth="12"
+            android:strokeLineCap="round"
+            android:pathData="M 180,280 L 180,400"/>
+        <path
+            android:strokeColor="#1E88E5"
+            android:strokeWidth="12"
+            android:strokeLineCap="round"
+            android:pathData="M 332,280 L 332,400"/>
+
+    </group>
+</vector>

@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
-   <application
+    <application
+        android:icon="@mipmap/ic_launcher"
         android:label="@string/AppName">
         <meta-data
             android:name="xposedmodule"
             android:value="true" />
-       <meta-data
+        <meta-data
             android:name="xposedsharedprefs"
             android:value="true" />
         <meta-data
