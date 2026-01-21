@@ -1,5 +1,11 @@
 # Telegami
 
+[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
+[![GitHub release](https://img.shields.io/github/v/release/aoya111/Telegami)](https://github.com/aoya111/Telegami/releases)
+[![Downloads](https://img.shields.io/github/downloads/aoya111/Telegami/total?logo=github)](https://github.com/aoya111/Telegami/releases)
+[![Kotlin](https://img.shields.io/badge/Kotlin-100%25-purple?logo=kotlin)](https://kotlinlang.org)
+[![Donate](https://img.shields.io/badge/Donate-Liberapay-f6c915?logo=liberapay)](https://liberapay.com/aoya111)
+
 Fold Telegram to your will.
 
 > [!WARNING]
