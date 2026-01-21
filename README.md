@@ -1,4 +1,6 @@
-# TeleVip
+# Telegami
+
+Fold Telegram to your will.
 
 This is a fork of [TeleVip by @mustafa1dev](https://github.com/mustafa1dev/TeleVip-Lsposed) (GPLv3).
 

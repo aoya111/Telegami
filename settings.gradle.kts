@@ -20,5 +20,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "Televip-LSposed"
+rootProject.name = "Telegami"
 include(":app")
