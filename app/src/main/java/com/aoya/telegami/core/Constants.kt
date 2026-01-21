@@ -22,6 +22,5 @@ object Constants {
             "prevent_secret_media_deletion",
             "unlock_channel_features",
             "allow_save_videos",
-            "fake_premium",
         )
 }
