@@ -3,7 +3,6 @@ package com.aoya.telegami.core.i18n
 object I18NarSA : Translation {
     private val map =
         mapOf(
-            "app_name" to "Telegami",
             "input_msg_id" to "ادخل معرف الرسالة",
             "done" to "حسناً",
             "cancel" to "الغاء",
@@ -13,15 +12,12 @@ object I18NarSA : Translation {
             "change" to "تغير",
             "change_to" to "Change to",
             "name_deleted" to "تم حذف الاسم",
-            "ghost_mode" to "وضع الشبح 👻",
             "hide_seen_status" to "اخفاء علامة الاستلام",
             "hide_story_view_status" to "اخفاء مشاهدة قصة",
             "hide_typing" to "اخفاء مؤشر الكتاب",
             "unlock_channel_features" to "فتح جميع الخصائص المشفره والمغلقه",
             "show_delete_msg_button" to "عرض زر حذف الرسائل",
             "allow_save_videos" to "سماح حفظ الفيديو في معرض",
-            "ghost_mode_title" to "مميزات وضع شبح",
-            "save" to "حفظ",
             "developer_channel" to "قناة المطور",
             "hide_online_status" to "إخفاء حالة الاتصال بالإنترنت",
             "prevent_secret_media_deletion" to "تعطيل حذف الوسائط السرية",

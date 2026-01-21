@@ -21,10 +21,10 @@ import java.util.ArrayList
 import com.aoya.telegami.core.i18n.TranslationManager as i18n
 import com.aoya.telegami.core.obfuscate.ResolverManager as resolver
 
-class AddGhostModeOption :
+class Settings :
     Hook(
-        "add_ghost_mode_option",
-        "Add ghost mode int the navigation drawer",
+        "settings",
+        "Add extra settings in the navigation drawer",
     ) {
     val itemID = 13048
 
@@ -37,12 +37,11 @@ class AddGhostModeOption :
             Config.initialize(Telegami.packageName, user)
         }
 
-        val drawerLayoutAdapter = "org.telegram.ui.Adapters.DrawerLayoutAdapter"
-        findClass(drawerLayoutAdapter).hook(resolver.getMethod(drawerLayoutAdapter, "resetItems"), HookStage.AFTER) { param ->
-            val dlAdapter = DrawerLayoutAdapter(param.thisObject())
-
-            val items = dlAdapter.items
-
+        findClass(
+            "org.telegram.ui.Adapters.DrawerLayoutAdapter",
+        ).hook(resolver.getMethod("org.telegram.ui.Adapters.DrawerLayoutAdapter", "resetItems"), HookStage.AFTER) { param ->
+            val o = DrawerLayoutAdapter(param.thisObject())
+            val items = o.items
             val settingsIcon =
                 items
                     .filterNotNull()
@@ -51,9 +50,8 @@ class AddGhostModeOption :
                     }?.let {
                         it.icon
                     } ?: return@hook
-
-            val newItem = DrawerLayoutAdapter.Item(itemID, i18n.get("ghost_mode"), settingsIcon)
-            dlAdapter.addItem(newItem)
+            val newItem = DrawerLayoutAdapter.Item(itemID, "${i18n.get("AppName")} ${getStringResource("Settings")}", settingsIcon)
+            o.addItem(newItem)
         }
 
         findClass(
@@ -81,9 +79,9 @@ class AddGhostModeOption :
                 }
                 AlertDialog
                     .Builder(o.context)
-                    .setTitle(i18n.get("ghost_mode_title"))
+                    .setTitle(getStringResource("Settings"))
                     .setView(layout)
-                    .setPositiveButton(i18n.get("save")) { dialog ->
+                    .setPositiveButton(getStringResource("Save")) { dialog ->
                         try {
                             checkBoxes.forEach { chkBx ->
                                 val text = chkBx.text.toString()
@@ -99,7 +97,7 @@ class AddGhostModeOption :
                         } catch (t: Throwable) {
                             t.printStackTrace()
                         }
-                    }.setNegativeButton(i18n.get("developer_channel")) { dialog ->
+                    }.setNegativeButton(getStringResource("Support", "Support")) { dialog ->
                         try {
                             if (o.drawerLayoutContainer != null) {
                                 Browser.openUrl(o.context, "${Constants.GITHUB_REPO}/discussions")
