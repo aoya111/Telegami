@@ -14,14 +14,11 @@ object TranslationManager {
                 @Suppress("DEPRECATION")
                 context.resources.configuration.locale
             }
-        val localeCode = "${locale.language}_${locale.country}"
 
         translation =
-            when (localeCode) {
-                "ar" -> I18NarSA
-                "ar_SA" -> I18NarSA
-                "zh" -> I18NzhCN
-                "zh_CN" -> I18NzhCN
+            when {
+                locale.language == "ar" -> I18NarSA
+                locale.language == "zh" -> I18NzhCN
                 else -> I18NenUS
             }
     }

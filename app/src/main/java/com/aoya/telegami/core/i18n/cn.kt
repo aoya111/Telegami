@@ -28,5 +28,5 @@ object I18NzhCN : Translation {
             "offline_status" to "您当前处于离线状态",
         )
 
-    override fun get(key: String): String = map[key] ?: key
+    override fun get(key: String): String = map[key] ?: I18NenUS.get(key)
 }

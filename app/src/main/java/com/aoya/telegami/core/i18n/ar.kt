@@ -28,5 +28,5 @@ object I18NarSA : Translation {
             "offline_status" to "لست متصلاً بالإنترنت",
         )
 
-    override fun get(key: String): String = map[key] ?: key
+    override fun get(key: String): String = map[key] ?: I18NenUS.get(key)
 }
