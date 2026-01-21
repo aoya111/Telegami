@@ -5,6 +5,7 @@ object Nekogram : Resolver {
         mapOf(
             "org.telegram.messenger.AccountInstance" to "j3", // return\ ConnectionsManager\.getInstance\(this.\w*\)\;
             "org.telegram.messenger.AndroidUtilities" to "org.telegram.messenger.a", // Https\|ton
+            "org.telegram.messenger.browser.Browser" to "g11", // "graph\.org"
             "org.telegram.messenger.ChatObject" to "org.telegram.messenger.j", // "remove from speaking"
             "org.telegram.messenger.FileLoader" to "org.telegram.messenger.u", // "fileUploadQueue"
             "org.telegram.messenger.LocaleController" to "org.telegram.messenger.g0", // unofficial_base_
@@ -48,6 +49,10 @@ object Nekogram : Resolver {
             "org.telegram.messenger.AndroidUtilities" to
                 mapOf(
                     "addToClipboard" to "E", // public static boolean \w*(CharSequence
+                ),
+            "org.telegram.messenger.browser.Browser" to
+                mapOf(
+                    "openUrl" to "G", // t\.me\/BotFather
                 ),
             "org.telegram.messenger.ChatObject" to
                 mapOf(

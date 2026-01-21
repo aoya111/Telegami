@@ -12,11 +12,11 @@ import com.aoya.telegami.core.User
 import com.aoya.telegami.utils.Hook
 import com.aoya.telegami.utils.HookStage
 import com.aoya.telegami.utils.hook
+import com.aoya.telegami.virt.messenger.browser.Browser
 import com.aoya.telegami.virt.tgnet.TLRPC
 import com.aoya.telegami.virt.ui.LaunchActivity
 import com.aoya.telegami.virt.ui.actionbar.AlertDialog
 import com.aoya.telegami.virt.ui.adapters.DrawerLayoutAdapter
-import de.robv.android.xposed.XposedHelpers.callStaticMethod
 import java.util.ArrayList
 import com.aoya.telegami.core.i18n.TranslationManager as i18n
 import com.aoya.telegami.core.obfuscate.ResolverManager as resolver
@@ -102,12 +102,7 @@ class AddGhostModeOption :
                     }.setNegativeButton(i18n.get("developer_channel")) { dialog ->
                         try {
                             if (o.drawerLayoutContainer != null) {
-                                callStaticMethod(
-                                    findClass("org.telegram.messenger.browser.Browser"),
-                                    "openUrl",
-                                    o.context,
-                                    "https://t.me/t_l0_e",
-                                )
+                                Browser.openUrl(o.context, "${Constants.GITHUB_REPO}/discussions")
                                 dialog.dismiss()
                             }
                         } catch (t: Throwable) {
