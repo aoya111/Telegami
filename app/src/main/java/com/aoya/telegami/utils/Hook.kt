@@ -1,5 +1,6 @@
 package com.aoya.telegami.utils
 
+import android.content.res.Resources
 import android.graphics.drawable.Drawable
 import com.aoya.telegami.Telegami
 import com.aoya.telegami.core.Config
@@ -68,7 +69,19 @@ abstract class Hook(
 
     protected fun getAttribute(name: String): Int = getResource(name, "attr")
 
-    protected fun getStringResource(name: String): String = Telegami.context.getString(getResource(name, "string"))
+    protected fun getStringResource(
+        name: String,
+        default: String = "",
+    ): String {
+        val resId = getResource(name, "string")
+        if (resId == 0) return default
+
+        return try {
+            Telegami.context.getString(resId)
+        } catch (e: Resources.NotFoundException) {
+            default
+        }
+    }
 
     protected fun getDrawableResource(name: String): Drawable? =
         getResource(name, "drawable").takeIf { it != 0 }?.let {
