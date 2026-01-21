@@ -6,11 +6,9 @@ import com.aoya.telegami.data.DeletedMessage
 import com.aoya.telegami.utils.Hook
 import com.aoya.telegami.utils.HookStage
 import com.aoya.telegami.utils.hook
-import com.aoya.telegami.virt.messenger.MessagesStorage
+import com.aoya.telegami.virt.messenger.NotificationCenter
 import de.robv.android.xposed.XposedBridge
 import de.robv.android.xposed.XposedHelpers.getStaticIntField
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import com.aoya.telegami.core.obfuscate.ResolverManager as resolver
 
@@ -19,13 +17,10 @@ class ShowDeletedMessages :
         "show_deleted_messages",
         "Show 'Deleted' messages",
     ) {
-    var allowMsgDelete = false
-    private val coroutineScope = CoroutineScope(Dispatchers.IO)
-
     override fun init() {
         findClass("org.telegram.messenger.MessagesController")
             .hook(resolver.getMethod("org.telegram.messenger.MessagesController", "deleteMessages"), HookStage.BEFORE) {
-                allowMsgDelete = true
+                Globals.allowMsgDelete.set(true)
             }
 
         findClass("org.telegram.messenger.MessagesStorage")
@@ -33,87 +28,54 @@ class ShowDeletedMessages :
                 resolver.getMethod("org.telegram.messenger.MessagesStorage", "markMessagesAsDeletedInternal"),
                 HookStage.BEFORE,
             ) { param ->
-                val msgsStore = MessagesStorage(param.thisObject())
                 val dialogId = param.arg<Long>(0)
 
                 if (param.args().size != 5) return@hook
 
-                val msgIds = param.arg<ArrayList<Int>>(1)
-                if (msgIds.isEmpty()) return@hook
+                val mIds = param.arg<ArrayList<Int>>(1)
+                if (mIds.isEmpty()) return@hook
 
-                if (allowMsgDelete) {
-                    coroutineScope.launch {
-                        for (mid in msgIds) {
-                            db.deletedMessageDao().delete(mid, dialogId)
-                        }
+                if (Globals.allowMsgDelete.compareAndSet(true, false)) {
+                    Globals.coroutineScope.launch {
+                        db.deletedMessageDao().deleteAllByIds(mIds, dialogId)
                     }
                     return@hook
                 }
 
-                val msgs = mutableListOf<DeletedMessage>()
-                val ids = TextUtils.join(",", msgIds)
-                val cursor =
-                    if (dialogId != 0L) {
-                        msgsStore.database.queryFinalized(
-                            "SELECT uid, data, read_state, out, mention, mid FROM messages_v2 WHERE mid IN ($ids) AND uid = $dialogId",
-                            arrayOf<Any>(),
-                        )
-                    } else {
-                        msgsStore.database.queryFinalized(
-                            "SELECT uid, data, read_state, out, mention, mid FROM messages_v2 WHERE mid IN ($ids) AND is_channel = 0",
-                            arrayOf<Any>(),
-                        )
-                    }
-
-                try {
-                    while (cursor.next()) {
-                        val did = cursor.longValue(0)
-                        val mid = cursor.intValue(5)
-                        msgs.add(DeletedMessage(id = mid, dialogId = did))
-                    }
-                } catch (e: Exception) {
-                    XposedBridge.log("(${Telegami.packageName})[ShowDeletedMessages::markMessagesAsDeletedInternal] error: ${e.message}")
-                }
-
-                coroutineScope.launch {
-                    db.deletedMessageDao().insertAll(msgs)
+                Globals.coroutineScope.launch {
+                    db.deletedMessageDao().insertAll(
+                        mIds.map { mid ->
+                            DeletedMessage(id = mid, dialogId = dialogId)
+                        },
+                    )
                 }
 
                 param.setResult(null)
             }
 
-        findClass("org.telegram.messenger.MessagesStorage")
-            .hook(
-                resolver.getMethod("org.telegram.messenger.MessagesStorage", "updateDialogsWithDeletedMessagesInternal"),
-                HookStage.BEFORE,
-            ) { param ->
-                if (allowMsgDelete) {
-                    allowMsgDelete = false
-                    return@hook
-                }
-                param.setResult(null)
-            }
+        // findClass("org.telegram.messenger.MessagesStorage")
+        //     .hook(
+        //         resolver.getMethod("org.telegram.messenger.MessagesStorage", "updateDialogsWithDeletedMessagesInternal"),
+        //         HookStage.BEFORE,
+        //     ) { param ->
+        //         XposedBridge.log("(${Telegami.packageName})[ShowDeletedMessages::updateDialogsWithDeletedMessagesInternal]")
+        //         if (Globals.allowMsgDelete.compareAndSet(true, false)) return@hook
+        //         param.setResult(null)
+        //     }
 
         findClass("org.telegram.messenger.MessagesController")
             .hook(
                 resolver.getMethod("org.telegram.messenger.MessagesController", "markDialogMessageAsDeleted"),
                 HookStage.BEFORE,
             ) { param ->
-                if (!allowMsgDelete) {
-                    param.setResult(null)
-                }
+                if (!Globals.allowMsgDelete.get()) param.setResult(null)
             }
 
         findClass(
             "org.telegram.messenger.NotificationCenter",
         ).hook(resolver.getMethod("org.telegram.messenger.NotificationCenter", "postNotificationName"), HookStage.BEFORE) { param ->
-            if (allowMsgDelete) return@hook
-            val messagesDeleted =
-                getStaticIntField(
-                    findClass("org.telegram.messenger.NotificationCenter"),
-                    resolver.getField("org.telegram.messenger.NotificationCenter", "messagesDeleted"),
-                )
-            if (param.arg<Int>(0) == messagesDeleted) param.setResult(null)
+            if (Globals.allowMsgDelete.get()) return@hook
+            if (param.arg<Int>(0) == NotificationCenter.MESSAGES_DELETED) param.setResult(null)
         }
 
         findClass(
@@ -126,6 +88,6 @@ class ShowDeletedMessages :
         }
 
         MarkDeletedMessages().init()
-        ModifyDeletedMessagesMenu().init()
+        // ModifyDeletedMessagesMenu().init()
     }
 }

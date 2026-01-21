@@ -1,9 +1,9 @@
 package com.aoya.telegami
 
 import android.app.Application
-import com.aoya.telegami.core.Constants.SUPPORTED_TELEGRAM_PACKAGES
-import com.aoya.telegami.utils.HookStage
-import com.aoya.telegami.utils.hook
+import com.aoya.telegami.core.Constants.SUPPORTED_TELEGRAM_PACKAGES
+import com.aoya.telegami.utils.HookStage
+import com.aoya.telegami.utils.hook
 import de.robv.android.xposed.IXposedHookLoadPackage
 import de.robv.android.xposed.IXposedHookZygoteInit
 import de.robv.android.xposed.callbacks.XC_LoadPackage
