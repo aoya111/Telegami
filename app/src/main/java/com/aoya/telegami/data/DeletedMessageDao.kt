@@ -1,6 +1,7 @@
 package com.aoya.telegami.data
 
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
@@ -28,6 +29,15 @@ interface DeletedMessageDao {
     @Query("DELETE FROM DeletedMessage WHERE id = :messageId AND dialogId = :dialogId")
     suspend fun delete(
         messageId: Int,
+        dialogId: Long,
+    )
+
+    @Delete
+    suspend fun deleteAll(messages: List<DeletedMessage>)
+
+    @Query("DELETE FROM DeletedMessage WHERE id IN (:messageIds) AND dialogId = :dialogId")
+    suspend fun deleteAllByIds(
+        messageIds: List<Int>,
         dialogId: Long,
     )
 

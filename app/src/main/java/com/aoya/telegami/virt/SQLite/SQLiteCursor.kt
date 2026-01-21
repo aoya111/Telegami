@@ -5,12 +5,20 @@ import com.aoya.telegami.core.obfuscate.ResolverManager as resolver
 
 class SQLiteCursor(
     private val instance: Any,
-) {
+) : AutoCloseable {
     private val objPath = "org.telegram.SQLite.SQLiteCursor"
 
-    fun next(): Boolean = callMethod(instance, resolver.getMethod(objPath, "next")) as Boolean
+    private val nextMethod by lazy { resolver.getMethod(objPath, "next") }
+    private val intValueMethod by lazy { resolver.getMethod(objPath, "intValue") }
+    private val longValueMethod by lazy { resolver.getMethod(objPath, "longValue") }
 
-    fun intValue(colIdx: Int): Int = callMethod(instance, resolver.getMethod(objPath, "intValue"), colIdx) as Int
+    fun next(): Boolean = callMethod(instance, nextMethod) as Boolean
 
-    fun longValue(colIdx: Int): Long = callMethod(instance, resolver.getMethod(objPath, "longValue"), colIdx) as Long
+    fun intValue(colIdx: Int): Int = callMethod(instance, intValueMethod, colIdx) as Int
+
+    fun longValue(colIdx: Int): Long = callMethod(instance, longValueMethod, colIdx) as Long
+
+    override fun close() {
+        callMethod(instance, resolver.getMethod(objPath, "dispose"))
+    }
 }

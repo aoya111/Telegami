@@ -6,6 +6,7 @@ object Nekogram : Resolver {
             "org.telegram.messenger.AccountInstance" to "j3", // return\ ConnectionsManager\.getInstance\(this.\w*\)\;
             "org.telegram.messenger.AndroidUtilities" to "org.telegram.messenger.a", // Https\|ton
             "org.telegram.messenger.ChatObject" to "org.telegram.messenger.j", // "remove from speaking"
+            "org.telegram.messenger.FileLoader" to "org.telegram.messenger.u", // "fileUploadQueue"
             "org.telegram.messenger.LocaleController" to "org.telegram.messenger.g0", // unofficial_base_
             "org.telegram.messenger.MessageObject" to "org.telegram.messenger.k0", // W\|lang
             "org.telegram.messenger.MessagesController" to "org.telegram.messenger.m0", // SELECT data FROM app_config
@@ -13,11 +14,15 @@ object Nekogram : Resolver {
             "org.telegram.messenger.MessagesStorage" to "org.telegram.messenger.n0", // "messages_holes"
             "org.telegram.messenger.NotificationCenter" to "org.telegram.messenger.o0", // VoIPService.ID_INCOMING_CALL_PRENOTIFICATION;
             "org.telegram.messenger.NotificationsController" to "org.telegram.messenger.p0", // EnableInChatSound
+            "org.telegram.messenger.secretmedia.EncryptedFileInputStream" to "dj5", // extends FileInputStream
             "org.telegram.messenger.UserConfig" to "org.telegram.messenger.c1", // "2pinnedDialogsLoaded"
             "org.telegram.messenger.UserObject" to "org.telegram.messenger.d1", // return \w* == 333000
+            "org.telegram.messenger.Utilities\$Callback" to "org.telegram.messenger.Utilities\$i", 
             "org.telegram.tgnet.tl.TL_account\$updateStatus" to "org.telegram.tgnet.TLRPC\$u7", // -1388733202
             "org.telegram.tgnet.TLRPC\$Message" to "org.telegram.tgnet.TLRPC\$h2", // -2082087340:
             "org.telegram.tgnet.TLRPC\$User" to "org.telegram.tgnet.TLRPC\$wd1", // -2093920310
+            "org.telegram.ui.ActionBar.ActionBar" to "org.telegram.ui.ActionBar.a",
+            "org.telegram.ui.ActionBar.ActionBarMenu" to "org.telegram.ui.ActionBar.b",
             "org.telegram.ui.ActionBar.ActionBarMenuItem" to "org.telegram.ui.ActionBar.c", // headerItem type in ChatActivity
             "org.telegram.ui.ActionBar.ActionBarMenuItem\$Item" to "org.telegram.ui.ActionBar.c\$r",
             "org.telegram.ui.ActionBar.ActionBarMenuSubItem" to "org.telegram.ui.ActionBar.e",
@@ -30,6 +35,7 @@ object Nekogram : Resolver {
             "org.telegram.ui.ChatActivity" to "org.telegram.ui.o", // headerItem;
             "org.telegram.ui.ChatActivity\$13" to "org.telegram.ui.o\$h0", // canDeleteHistory
             "org.telegram.ui.ChatActivity\$ChatActivityEnterViewDelegate" to "org.telegram.ui.o\$r4", // isEditTextItemVisibilitySuppressed;
+            "org.telegram.ui.Components.BulletinFactory" to "org.telegram.ui.Components.w", // "Pin"
             "org.telegram.ui.Components.ItemOptions" to "org.telegram.ui.Components.z1", // > 0\.705d
             "org.telegram.ui.Components.MessagePrivateSeenView" to "org.telegram.ui.Components.j2", // loading text
             "org.telegram.ui.PeerColorActivity" to "org.telegram.ui.z0", // particles = \{-18.
@@ -39,19 +45,34 @@ object Nekogram : Resolver {
 
     private val methodMap =
         mapOf(
+            "org.telegram.messenger.AndroidUtilities" to
+                mapOf(
+                    "addToClipboard" to "E", // public static boolean \w*(CharSequence
+                ),
             "org.telegram.messenger.ChatObject" to
                 mapOf(
                     "getPublicUsername" to "X",
                     "isPublic" to "M0", // return !TextUtils.isEmpty(
                 ),
-            "org.telegram.messenger.AndroidUtilities" to
+            "org.telegram.messenger.FileLoader" to
                 mapOf(
-                    "addToClipboard" to "E", // public static boolean \w*(CharSequence
+                    "getDirectory" to "A0", // public static File \w*(
+                    "getInstance" to "K0",
+                    "getInternalCacheDir" to "L0",
+                    "getPathToMessage" to "V0", // public File \w*(TLRPC\.
+                ),
+            "org.telegram.messenger.ImageReceiver" to
+                mapOf(
+                    "getBitmap" to "r", // public Bitmap()
                 ),
             "org.telegram.messenger.LocaleController" to
                 mapOf(
                     "getFormatterDay" to "g1", // "formatterDay24H"
                     "getInstance" to "v1", // catch (Throwable
+                ),
+            "org.telegram.messenger.MediaController" to
+                mapOf(
+                    "saveFile" to "H3", // public static void \w*(String
                 ),
             "org.telegram.messenger.MessageObject" to
                 mapOf(
@@ -61,19 +82,24 @@ object Nekogram : Resolver {
             "org.telegram.messenger.MessagesController" to
                 mapOf(
                     "completeReadTask" to "b9",
-                    "deleteMessages" to "m9", // (arraylist, arrayList2,
+                    "deleteMessages" to "n9", // (arraylist, arrayList2,
                     "getChat" to "fa", // return (TLRPC\.\w*) this\.\w*\.get(\w*);
                     "getUser" to "Mb", // return (TLRPC\.\w*) this\.\w*\.get(\w*); (with if)
                     "isChatNoForwards" to "ic", // if (\w*\.\w* || \w* == null)
                     "markDialogMessageAsDeleted" to "gl", // public void \w*(long \w*, ArrayList arrayList)
                 ),
             "org.telegram.messenger.MessagesStorage" to
-                mapOf("markMessagesAsDeletedInternal" to "rb", "updateDialogsWithDeletedMessagesInternal" to "ed"),
+                mapOf(
+                    "emptyMessagesMedia" to "R4",
+                    "markMessagesAsDeletedInternal" to "rb",
+                    "markMessagesContentAsReadInternal" to "vb",
+                    "updateDialogsWithDeletedMessagesInternal" to "ed", // UPDATE dialogs SET (last_mid, last_mid_group)
+                ),
             "org.telegram.messenger.NotificationCenter" to
                 mapOf(
                     "postNotificationName" to "F", // SystemClock.elapsedRealtime();
                 ),
-            "org.telegram.messenger.NotificationsController" to mapOf("removeDeletedMessagesFromNotifications" to "R1"),
+            "org.telegram.messenger.NotificationsController" to mapOf("removeDeletedMessagesFromNotifications" to "S1"),
             "org.telegram.messenger.time.FastDateFormat" to mapOf("format" to "a"),
             "org.telegram.messenger.UserConfig" to
                 mapOf("getClientUserId" to "n", "getCurrentUser" to "o", "isPremium" to "C", "setCurrentUser" to "O"),
@@ -81,8 +107,21 @@ object Nekogram : Resolver {
                 mapOf(
                     "getPublicUsername" to "q", // String \w*(<TLRPC.User> \w*)
                 ),
-            "org.telegram.SQLite.SQLiteCursor" to mapOf("intValue" to "g", "longValue" to "i", "next" to "j"),
+            "org.telegram.messenger.Utilities\$Callback" to
+                mapOf(
+                    "run" to "a",
+                ),
+            "org.telegram.SQLite.SQLiteCursor" to mapOf("dispose" to "d", "intValue" to "g", "longValue" to "i", "next" to "j"),
             "org.telegram.SQLite.SQLiteDatabase" to mapOf("queryFinalized" to "h"),
+            "org.telegram.ui.ActionBar.ActionBar" to
+                mapOf(
+                    "createMenu" to "B",
+                ),
+            "org.telegram.ui.ActionBar.ActionBarMenu" to
+                mapOf(
+                    "addItem" to "h",
+                    "getItem" to "p",
+                ),
             "org.telegram.ui.ActionBar.ActionBarMenuItem" to
                 mapOf(
                     "lazilyAddColoredGap" to "e1",
@@ -128,6 +167,10 @@ object Nekogram : Resolver {
                 ),
             "org.telegram.ui.ChatActivity\$13" to mapOf("onItemClick" to "b"),
             "org.telegram.ui.ChatActivity\$ChatActivityEnterViewDelegate" to mapOf("needSendTyping" to "J"),
+            "org.telegram.ui.Components.BulletinFactory" to
+                mapOf(
+                    "createSaveToGalleryBulletin" to "d0",
+                ),
             "org.telegram.ui.Components.ItemOptions" to
                 mapOf(
                     "add" to "P",
@@ -163,7 +206,7 @@ object Nekogram : Resolver {
     private val fieldMap =
         mapOf(
             "org.telegram.messenger.MessagesStorage" to mapOf("database" to "b"), // UPDATE chat_settings_v2
-            "org.telegram.messenger.NotificationCenter" to mapOf("messagesDeleted" to "x"),
+            "org.telegram.messenger.NotificationCenter" to mapOf("messagesDeleted" to "z"),
             "org.telegram.tgnet.TLRPC\$Message" to
                 mapOf(
                     "ttl" to "h0", // if (\w*.messageOwner.\w* == Integer.MAX_VALUE)

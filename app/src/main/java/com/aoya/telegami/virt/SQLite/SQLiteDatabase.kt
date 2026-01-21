@@ -12,13 +12,5 @@ class SQLiteDatabase(
     fun queryFinalized(
         sql: String,
         vararg args: Any,
-    ): SQLiteCursor =
-        SQLiteCursor(
-            callMethod(
-                instance,
-                resolver.getMethod(objPath, "queryFinalized"),
-                sql,
-                *args,
-            ),
-        )
+    ): SQLiteCursor? = callMethod(instance, resolver.getMethod(objPath, "queryFinalized"), sql, args)?.let { SQLiteCursor(it) }
 }

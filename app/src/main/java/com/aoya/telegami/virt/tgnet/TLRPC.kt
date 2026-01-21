@@ -45,6 +45,36 @@ class TLRPC {
         fun getNativeInstance() = instance
     }
 
+    class Message(
+        private val instance: Any,
+    ) {
+        private val objPath = "org.telegram.tgnet.TLRPC\$Message"
+
+        var ttl: Int
+            get() = getIntField(instance, resolver.getField(objPath, "ttl"))
+            set(value) = setIntField(instance, resolver.getField(objPath, "ttl"), value)
+
+        val media: MessageMedia
+            get() = MessageMedia(getObjectField(instance, resolver.getField(objPath, "media")))
+
+        fun getNativeInstance() = instance
+    }
+
+    class MessageMedia(
+        private val instance: Any,
+    ) {
+        private val objPath = "org.telegram.tgnet.TLRPC\$MessageMedia"
+
+        var ttl: Int
+            get() = getIntField(instance, resolver.getField(objPath, "ttl"))
+            set(value) = setIntField(instance, resolver.getField(objPath, "ttl"), value)
+
+        val media
+            get() = getObjectField(instance, resolver.getField(objPath, "media"))
+
+        fun getNativeInstance() = instance
+    }
+
     class Chat(
         private val instance: Any,
     ) {
