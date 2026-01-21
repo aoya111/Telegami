@@ -6,6 +6,7 @@ import com.aoya.telegami.utils.Hook
 import com.aoya.telegami.utils.HookStage
 import com.aoya.telegami.utils.hook
 import com.aoya.telegami.virt.tgnet.TLRPC
+import com.aoya.telegami.virt.ui.cells.DrawerProfileCell
 import com.aoya.telegami.core.obfuscate.ResolverManager as resolver
 
 class HidePhone :
@@ -16,11 +17,11 @@ class HidePhone :
     override fun init() {
         if (Telegami.packageName == "tw.nekomimi.nekogram") return
         findClass(
-            "org.telegram.messenger.UserConfig",
-        ).hook(resolver.getMethod("org.telegram.messenger.UserConfig", "getCurrentUser"), HookStage.AFTER) { param ->
-            val user = TLRPC.User(param.getResult() ?: return@hook)
-            val phone = if (isEnabled) "" else Config.getCurrentUser().phone
-            user.phone = phone
+            "org.telegram.ui.Cells.DrawerProfileCell",
+        ).hook(resolver.getMethod("org.telegram.ui.Cells.DrawerProfileCell", "setUser"), HookStage.AFTER) { param ->
+            val o = DrawerProfileCell(param.thisObject())
+            val user = TLRPC.User(param.arg<Any>(0))
+            o.phoneTextView.setText("@${user.username}")
         }
     }
 }
