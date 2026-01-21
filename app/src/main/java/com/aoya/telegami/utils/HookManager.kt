@@ -3,7 +3,6 @@ package com.aoya.telegami.utils
 import com.aoya.telegami.Telegami
 import com.aoya.telegami.core.Config
 import com.aoya.telegami.hooks.AddChatNavigation
-import com.aoya.telegami.hooks.AddGhostModeOption
 import com.aoya.telegami.hooks.AllowSaveVideos
 import com.aoya.telegami.hooks.AllowScreenshots
 import com.aoya.telegami.hooks.ApplyColor
@@ -16,6 +15,7 @@ import com.aoya.telegami.hooks.HideStoryViewStatus
 import com.aoya.telegami.hooks.HideTyping
 import com.aoya.telegami.hooks.PreventSecretMediaDeletion
 import com.aoya.telegami.hooks.ProfileDetails
+import com.aoya.telegami.hooks.Settings
 import com.aoya.telegami.hooks.ShowDeletedMessages
 import com.aoya.telegami.hooks.UnlockChannelFeatures
 import de.robv.android.xposed.XposedBridge
@@ -30,7 +30,7 @@ class HookManager {
     private val hookRegistry =
         mapOf<String, () -> Hook>(
             // Always-on hooks
-            "add_ghost_mode_option" to { AddGhostModeOption() },
+            "settings" to { Settings() },
             "fake_premium" to { FakePremium() },
             "allow_screenshots" to { AllowScreenshots() },
             "apply_color" to { ApplyColor() },
@@ -51,7 +51,7 @@ class HookManager {
 
     private val alwaysOnHookNames =
         setOf(
-            "add_ghost_mode_option",
+            "settings",
             "fake_premium",
             "allow_screenshots",
             "apply_color",

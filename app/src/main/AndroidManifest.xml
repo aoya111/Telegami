@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
    <application
-        android:label="@string/app_name">
+        android:label="@string/AppName">
         <meta-data
             android:name="xposedmodule"
             android:value="true" />

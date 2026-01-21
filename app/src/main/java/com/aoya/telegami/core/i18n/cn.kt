@@ -3,7 +3,6 @@ package com.aoya.telegami.core.i18n
 object I18NzhCN : Translation {
     private val map =
         mapOf(
-            "app_name" to "Telegami",
             "input_msg_id" to "输入消息 ID",
             "done" to "完成",
             "cancel" to "取消",
@@ -13,15 +12,12 @@ object I18NzhCN : Translation {
             "change" to "更改",
             "change_to" to "Change to",
             "name_deleted" to "名称已删除",
-            "ghost_mode" to "幽灵模式 👻",
             "hide_seen_status" to "隐藏消息的 '已读' 状态",
             "hide_story_view_status" to "隐藏 '故事观看' 状态",
             "hide_typing" to "隐藏正在输入...",
             "unlock_channel_features" to "解锁频道的所有受限和加密功能",
             "show_delete_msg_button" to "显示 '删除消息' 按钮",
             "allow_save_videos" to "允许将视频保存到图库",
-            "ghost_mode_title" to "幽灵模式",
-            "save" to "保存",
             "developer_channel" to "开发者频道",
             "hide_online_status" to "隐藏 '在线' 状态",
             "prevent_secret_media_deletion" to "防止删除秘密媒体",

@@ -3,7 +3,7 @@ package com.aoya.telegami.core.i18n
 object I18NenUS : Translation {
     private val map =
         mapOf(
-            "app_name" to "Telegami",
+            "AppName" to "Telegami",
             "chat_scroll_to_top" to "Scroll to top",
             "input_msg_id" to "Input Message Id",
             "done" to "Done",
@@ -14,15 +14,12 @@ object I18NenUS : Translation {
             "change" to "Change",
             "change_to" to "Change to",
             "name_deleted" to "Name deleted",
-            "ghost_mode" to "Ghost Mode 👻",
             "hide_seen_status" to "Hide 'Seen' status for messages",
             "hide_story_view_status" to "Hide 'Story View' status",
             "hide_typing" to "Hide Typing...",
             "unlock_channel_features" to "Unlock all restricted and encrypted features for channels",
             "show_delete_msg_button" to "Show 'Delete Messages' button",
             "allow_save_videos" to "Allow saving videos to the gallery",
-            "ghost_mode_title" to "Ghost Mode",
-            "save" to "Save",
             "developer_channel" to "Developer Channel",
             "hide_online_status" to "Hide 'Online' status",
             "prevent_secret_media_deletion" to "Prevent Deletion of Secret Media.",
