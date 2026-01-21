@@ -1,6 +1,8 @@
 package com.aoya.telegami.core
 
 object Constants {
+    const val GITHUB_REPO = "https://github.com/aoya111/Telegami"
+
     val SUPPORTED_TELEGRAM_PACKAGES =
         arrayOf(
             "org.telegram.messenger",
