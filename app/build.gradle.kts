@@ -18,11 +18,11 @@ val keystoreProps =
     }
 
 android {
-    namespace = "com.aoya.televip"
+    namespace = "com.aoya.telegami"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.aoya.televip"
+        applicationId = "com.aoya.telegami"
         minSdk = 24
         targetSdk = 34
         versionCode = versionProps.getProperty("versionCode").toInt()
