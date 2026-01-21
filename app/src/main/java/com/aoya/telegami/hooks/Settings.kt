@@ -64,7 +64,7 @@ class Settings :
                 val layout = LinearLayout(o.context)
                 layout.setOrientation(LinearLayout.VERTICAL)
                 val checkBoxes = mutableListOf<CheckBox>()
-                val opts = Constants.FEATURES.associateWith { i18n.get(it) }
+                val opts = Constants.getFeaturesForPackage(Telegami.packageName).associateWith { i18n.get(it) }
                 for ((k, v) in opts) {
                     val checkBox = CheckBox(o.context)
 

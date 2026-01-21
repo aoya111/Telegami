@@ -1,5 +1,6 @@
 package com.aoya.telegami.hooks
 
+import com.aoya.telegami.Telegami
 import com.aoya.telegami.core.Config
 import com.aoya.telegami.utils.Hook
 import com.aoya.telegami.utils.HookStage
@@ -13,6 +14,7 @@ class HidePhone :
         "Hide 'Phone' number",
     ) {
     override fun init() {
+        if (Telegami.packageName == "tw.nekomimi.nekogram") return
         findClass(
             "org.telegram.messenger.UserConfig",
         ).hook(resolver.getMethod("org.telegram.messenger.UserConfig", "getCurrentUser"), HookStage.AFTER) { param ->
