@@ -1,0 +1,29 @@
+name: Sync to Xposed-Modules-Repo
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download release assets
+        uses: robinraju/release-downloader@v1
+        with:
+          repository: "aoya111/Telegami"
+          tag: ${{ github.event.release.tag_name }}
+          fileName: "*.apk*"
+
+      - name: Create release in Xposed repo
+        uses: softprops/action-gh-release@v2
+        with:
+          repository: Xposed-Modules-Repo/com.aoya.telegami
+          tag_name: ${{ github.event.release.tag_name }}
+          name: ${{ github.event.release.name }}
+          body: ${{ github.event.release.body }}
+          files: |
+            *.apk
+            *.sha256
+        env:
+          GITHUB_TOKEN: ${{ secrets.XPOSED_REPO_TOKEN }}
