@@ -1,12 +1,20 @@
 # Telegami
 
-[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
-[![GitHub release](https://img.shields.io/github/v/release/aoya111/Telegami)](https://github.com/aoya111/Telegami/releases)
-[![Downloads](https://img.shields.io/github/downloads/aoya111/Telegami/total?logo=github)](https://github.com/aoya111/Telegami/releases)
-[![Kotlin](https://img.shields.io/badge/Kotlin-100%25-purple?logo=kotlin)](https://kotlinlang.org)
-[![Donate](https://img.shields.io/badge/Donate-Liberapay-f6c915?logo=liberapay)](https://liberapay.com/aoya111)
+<div align="center">
 
-Fold Telegram to your will.
+![Telegami](https://socialify.git.ci/aoya111/Telegami/image?description=1&font=Inter&language=1&name=1&pattern=Floating+Cogs&theme=Auto)
+
+</div>
+
+<div align="center">
+
+![GitHub License](https://img.shields.io/github/license/aoya111/Telegami?style=for-the-badge)
+![GitHub release](https://img.shields.io/github/v/release/aoya111/Telegami?style=for-the-badge)
+![GitHub Downloads](https://img.shields.io/github/downloads/aoya111/Telegami/total?style=for-the-badge&logo=github&link=https%3A%2F%2Fgithub.com%2Faoya111%2FTelegami)
+[![Donate](https://img.shields.io/badge/Donate-Liberapay-f6c915?logo=liberapay&style=for-the-badge)](https://liberapay.com/aoya111)
+[![Telegram](https://img.shields.io/badge/Telegram-Channel-0088cc?logo=telegram&logoColor=white&style=for-the-badge)](https://t.me/TGamiApp)
+
+</div>
 
 > [!WARNING]
 > **Privacy & Liability Notice**

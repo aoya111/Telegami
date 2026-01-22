@@ -97,10 +97,10 @@ class Settings :
                         } catch (t: Throwable) {
                             t.printStackTrace()
                         }
-                    }.setNegativeButton(getStringResource("Support", "Support")) { dialog ->
+                    }.setNegativeButton("App Channel") { dialog ->
                         try {
                             if (o.drawerLayoutContainer != null) {
-                                Browser.openUrl(o.context, "${Constants.GITHUB_REPO}/discussions")
+                                Browser.openUrl(o.context, "https://t.me/TGamiApp")
                                 dialog.dismiss()
                             }
                         } catch (t: Throwable) {
