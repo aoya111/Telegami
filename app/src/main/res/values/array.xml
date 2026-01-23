@@ -2,6 +2,7 @@
 <resources>
     <string-array name="xposed_scope">
         <item>org.telegram.messenger</item>
+        <item>org.telegram.messenger.web</item>
         <item>tw.nekomimi.nekogram</item>
     </string-array>
 </resources>
