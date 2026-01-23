@@ -16,10 +16,18 @@ data class User(
     val phone: String = "",
 )
 
+data class ThemePrefs(
+    var profileColor: Int? = null,
+    var profileEmoji: Long? = null,
+    var nameColor: Int? = null,
+    var nameEmoji: Long? = null,
+)
+
 data class UserConfig(
     var user: User = User(),
     val hooks: MutableMap<String, Boolean> = mutableMapOf(),
     val contacts: MutableMap<UserId, Contact> = mutableMapOf(),
+    var theme: ThemePrefs = ThemePrefs(),
 )
 
 data class Contact(
@@ -56,22 +64,25 @@ object Config {
         user?. let { this.user = it }
     }
 
+    @Synchronized
+    fun reload() {
+        xPrefs?.reload()
+    }
+
+    @Synchronized
     fun hasConfig(): Boolean {
         if (user.id == 0L) return false
-
-        xPrefs?.reload()
-
+        reload()
         val configStr = xPrefs?.getString(user.id.toString(), null)
         return !configStr.isNullOrEmpty() && configStr != "{}"
     }
 
+    @Synchronized
     fun readConfig(): UserConfig {
         if (user.id == 0L) return UserConfig()
-
         try {
-            xPrefs?.reload()
+            reload()
             val configStr = xPrefs?.getString(user.id.toString(), "{}") ?: "{}"
-
             val type = object : TypeToken<UserConfig>() {}.type
             val conf = Gson().fromJson(configStr, type) ?: UserConfig()
             conf.user = user
@@ -82,16 +93,14 @@ object Config {
         }
     }
 
+    @Synchronized
     fun writeConfig() {
         if (user.id == 0L) return
 
         try {
             val pref = Telegami.context.getSharedPreferences("telegami", Context.MODE_PRIVATE)
-            val configJson = Gson().toJson(localConfig)
-
-            pref.edit().putString(user.id.toString(), configJson).apply()
-
-            xPrefs?.reload()
+            pref.edit().putString(user.id.toString(), Gson().toJson(localConfig)).apply()
+            reload()
         } catch (e: Exception) {
             XposedBridge.log("Error writing config: ${e.message}")
         }
@@ -102,22 +111,17 @@ object Config {
         enabled: Boolean,
     ) {
         if (user.id == 0L) return
-
         localConfig.hooks[hookName] = enabled
         writeConfig()
     }
 
-    fun isHookEnabled(hookName: String): Boolean {
-        val enabled = localConfig.hooks[hookName] ?: false
-        return enabled
-    }
+    fun isHookEnabled(hookName: String): Boolean = localConfig.hooks[hookName] ?: false
 
     fun initHookSettings(
         name: String,
         state: Boolean,
     ) {
         if (user.id == 0L) return
-
         val hooks = localConfig.hooks
         if (!hooks.containsKey(name)) {
             hooks[name] = state
@@ -144,4 +148,32 @@ object Config {
     fun getCurrentUser(): User = user
 
     fun isUserSet(): Boolean = user.id != 0L
+
+    fun getProfileColor(): Int? = localConfig.theme.profileColor
+
+    fun getProfileEmoji(): Long? = localConfig.theme.profileEmoji
+
+    fun getNameColor(): Int? = localConfig.theme.nameColor
+
+    fun getNameEmoji(): Long? = localConfig.theme.nameEmoji
+
+    fun setProfileColor(color: Int) {
+        localConfig.theme.profileColor = color
+        writeConfig()
+    }
+
+    fun setProfileEmoji(emoji: Long) {
+        localConfig.theme.profileEmoji = emoji
+        writeConfig()
+    }
+
+    fun setNameColor(color: Int) {
+        localConfig.theme.nameColor = color
+        writeConfig()
+    }
+
+    fun setNameEmoji(emoji: Long) {
+        localConfig.theme.nameEmoji = emoji
+        writeConfig()
+    }
 }
