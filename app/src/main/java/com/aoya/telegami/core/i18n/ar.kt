@@ -25,7 +25,7 @@ object I18NarSA : Translation {
             "show_deleted_messages" to "اضهار الرسائل المحذوفة",
             "DeletedMessage" to "محذوفه",
             "copied_to_clipboard" to "تم نسخ '{item}' إلى الحافظة",
-            "offline_status" to "لست متصلاً بالإنترنت",
+            "ProfileStatusOffline" to "غير متصل",
         )
 
     override fun get(key: String): String = map[key] ?: I18NenUS.get(key)
