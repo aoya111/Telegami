@@ -25,7 +25,7 @@ object I18NzhCN : Translation {
             "show_deleted_messages" to "显示已删除的消息",
             "DeletedMessage" to "已删除",
             "copied_to_clipboard" to "已复制 '{item}' 到剪贴板",
-            "offline_status" to "您当前处于离线状态",
+            "ProfileStatusOffline" to "离线",
         )
 
     override fun get(key: String): String = map[key] ?: I18NenUS.get(key)

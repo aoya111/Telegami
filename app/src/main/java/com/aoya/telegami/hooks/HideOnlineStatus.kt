@@ -38,7 +38,7 @@ class HideOnlineStatus :
                     val userId = o.userId
 
                     if (clientUserId != 0L && userId != 0L && userId == clientUserId) {
-                        o.onlineTextView[1].setText(i18n.get("offline_status"))
+                        o.onlineTextView[1].setText(i18n.get("ProfileStatusOffline"))
                     }
                 } catch (e: Exception) {
                     XposedBridge.log("Error while handling updateProfileData: ${e.message}")
