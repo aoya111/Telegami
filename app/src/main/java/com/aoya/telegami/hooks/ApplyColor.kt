@@ -1,16 +1,13 @@
 package com.aoya.telegami.hooks
 
-import android.app.Activity
-import android.content.Context
+import com.aoya.telegami.core.Config
 import com.aoya.telegami.utils.Hook
 import com.aoya.telegami.utils.HookStage
 import com.aoya.telegami.utils.hook
 import com.aoya.telegami.virt.tgnet.TLRPC
+import com.aoya.telegami.virt.ui.PeerColorActivity
 import de.robv.android.xposed.XposedBridge
-import de.robv.android.xposed.XposedHelpers.getIntField
-import de.robv.android.xposed.XposedHelpers.getLongField
-import de.robv.android.xposed.XposedHelpers.getObjectField
-import de.robv.android.xposed.XposedHelpers.getStaticObjectField
+import com.aoya.telegami.core.obfuscate.ResolverManager as resolver
 
 class ApplyColor :
     Hook(
@@ -19,87 +16,61 @@ class ApplyColor :
     ) {
     override fun init() {
         try {
-            findClass("org.telegram.ui.PeerColorActivity").hook("apply", HookStage.AFTER) { param ->
-                val o = param.thisObject()
-                val appCtx =
-                    getStaticObjectField(
-                        findClass("org.telegram.messenger.ApplicationLoader"),
-                        "applicationContext",
-                    ) as Context
+            findClass("org.telegram.ui.PeerColorActivity")
+                .hook(resolver.getMethod("org.telegram.ui.PeerColorActivity", "apply"), HookStage.AFTER) { param ->
+                    if (!Config.isUserSet()) return@hook
+                    Config.reload()
+                    val o = PeerColorActivity(param.thisObject())
 
-                data class Page(
-                    val name: String = "",
-                    val pref: String = "",
-                )
-                for (p in listOf(Page("profilePage", "teleProfilePage"), Page("namePage", "teleNamePage"))) {
-                    val pref = appCtx.getSharedPreferences(p.pref, Activity.MODE_PRIVATE)
-                    val page = getObjectField(o, p.name) ?: continue
-                    var selectedColor = getIntField(page, "selectedColor")
-                    var selectedEmoji = getLongField(page, "selectedEmoji")
-                    if (selectedColor != 0) {
-                        pref.edit().putString("selectedColor", selectedColor.toString()).commit()
-                    } else {
-                        pref.edit().remove("selectedColor").commit()
-                    }
-                    if (selectedEmoji != 0L) {
-                        pref.edit().putString("selectedEmoji", selectedEmoji.toString()).commit()
-                    } else {
-                        pref.edit().remove("selectedEmoji").commit()
-                    }
+                    o.profilePage.selectedColor
+                        .takeIf { it != 0 }
+                        ?.let(Config::setProfileColor)
+                    o.profilePage.selectedEmoji
+                        .takeIf { it != 0L }
+                        ?.let(Config::setProfileEmoji)
+                    o.namePage.selectedColor
+                        .takeIf { it != 0 }
+                        ?.let(Config::setNameColor)
+                    o.namePage.selectedEmoji
+                        .takeIf { it != 0L }
+                        ?.let(Config::setNameEmoji)
                 }
-            }
 
-            findClass("org.telegram.messenger.UserConfig").hook("getCurrentUser", HookStage.AFTER) { param ->
-                val user = TLRPC.User(param.getResult() ?: return@hook)
+            findClass("org.telegram.messenger.UserConfig")
+                .hook(resolver.getMethod("org.telegram.messenger.UserConfig", "getCurrentUser"), HookStage.AFTER) { param ->
+                    if (!Config.isUserSet()) return@hook
+                    Config.reload()
+                    val user = TLRPC.User(param.getResult() ?: return@hook)
 
-                var profileColor = user.profileColor
-                if (profileColor == null) {
-                    profileColor = TLRPC.TLPeerColor()
-                    user.profileColor = profileColor
-                }
-                var color = user.color
-                if (color == null) {
-                    color = TLRPC.TLPeerColor()
-                    user.color = color
+                    val profileColor = user.profileColor ?: TLRPC.TLPeerColor()
+                    Config.getProfileColor()?.let {
+                        profileColor.color = it
+                        profileColor.flags = profileColor.flags or 1
+                        user.flags2 = user.flags2 or 512
+                    }
+                    Config.getProfileEmoji()?.let {
+                        profileColor.backgroundEmojiId = it
+                        profileColor.flags = profileColor.flags or 2
+                        user.flags2 = user.flags2 or 512
+                    }
+
+                    val color = user.color ?: TLRPC.TLPeerColor()
                     val color2 = user.id % 7
                     color.color = color2.toInt()
-                }
-
-                val appCtx =
-                    getStaticObjectField(
-                        findClass("org.telegram.messenger.ApplicationLoader"),
-                        "applicationContext",
-                    ) as Context
-
-                data class Page(
-                    val pref: String = "",
-                    val peerColor: TLRPC.PeerColor,
-                    val colFlag: Int = 0,
-                    val emojiFlag: Int = 0,
-                    val flags2: Int = 0,
-                )
-                for (p in listOf(Page("teleProfilePage", profileColor, 1, 2, 512), Page("teleNamePage", color, 1, 2, 256))) {
-                    val pref = appCtx.getSharedPreferences(p.pref, Activity.MODE_PRIVATE)
-                    if (pref.contains("selectedColor")) {
-                        val selectedColor = pref.getString("selectedColor", "0")?.toInt() ?: 0
-                        p.peerColor.color = selectedColor
-                        val flags = p.peerColor.flags or p.colFlag
-                        p.peerColor.flags = flags
-
-                        val flags2 = user.flags2 or p.flags2
-                        user.flags2 = flags2
+                    Config.getNameColor()?.let {
+                        color.color = it
+                        color.flags = color.flags or 1
+                        user.flags2 = user.flags2 or 256
                     }
-                    if (pref.contains("selectedEmoji")) {
-                        val selectedEmoji = pref.getString("selectedEmoji", "0")?.toLong() ?: 0L
-                        p.peerColor.backgroundEmojiId = selectedEmoji
-                        val flags = p.peerColor.flags or p.emojiFlag
-                        p.peerColor.flags = flags
-
-                        val flags2 = user.flags2 or p.flags2
-                        user.flags2 = flags2
+                    Config.getNameEmoji()?.let {
+                        color.backgroundEmojiId = it
+                        color.flags = color.flags or 2
+                        user.flags2 = user.flags2 or 256
                     }
+
+                    user.profileColor = profileColor
+                    user.color = color
                 }
-            }
         } catch (e: ClassNotFoundException) {
             XposedBridge.log("Class not found: ${e.message}")
             e.printStackTrace()

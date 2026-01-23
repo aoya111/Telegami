@@ -21,6 +21,8 @@ object Nekogram : Resolver {
             "org.telegram.messenger.Utilities\$Callback" to "org.telegram.messenger.Utilities\$i", 
             "org.telegram.tgnet.tl.TL_account\$updateStatus" to "org.telegram.tgnet.TLRPC\$u7", // -1388733202
             "org.telegram.tgnet.TLRPC\$Message" to "org.telegram.tgnet.TLRPC\$h2", // -2082087340:
+            "org.telegram.tgnet.TLRPC\$PeerColor" to "org.telegram.tgnet.TLRPC\$e3",
+            "org.telegram.tgnet.TLRPC\$TL_peerColor" to "org.telegram.tgnet.TLRPC\$sr0",
             "org.telegram.tgnet.TLRPC\$User" to "org.telegram.tgnet.TLRPC\$wd1", // -2093920310
             "org.telegram.ui.ActionBar.ActionBar" to "org.telegram.ui.ActionBar.a",
             "org.telegram.ui.ActionBar.ActionBarMenu" to "org.telegram.ui.ActionBar.b",
@@ -40,6 +42,7 @@ object Nekogram : Resolver {
             "org.telegram.ui.Components.ItemOptions" to "org.telegram.ui.Components.z1", // > 0\.705d
             "org.telegram.ui.Components.MessagePrivateSeenView" to "org.telegram.ui.Components.j2", // loading text
             "org.telegram.ui.PeerColorActivity" to "org.telegram.ui.z0", // particles = \{-18.
+            "org.telegram.ui.PeerColorActivity\$Page" to "org.telegram.ui.z0\$n",
             "org.telegram.ui.Stories.PeerStoriesView\$StoryItemHolder" to "org.telegram.ui.Stories.e\$s0", // https://t.me/%1
             "org.telegram.ui.Stories.StoriesController" to "org.telegram.ui.Stories.i", // DELETE FROM profile_stories WHERE
         )
@@ -189,7 +192,7 @@ object Nekogram : Resolver {
                 ),
             "org.telegram.ui.PeerColorActivity" to
                 mapOf(
-                    "apply" to "e4", // public static int \w*(int \w*)
+                    "apply" to "x4", // private void \w*()
                 ),
             "org.telegram.ui.ProfileActivity" to
                 mapOf(
@@ -216,7 +219,16 @@ object Nekogram : Resolver {
                 mapOf(
                     "ttl" to "h0", // if (\w*.messageOwner.\w* == Integer.MAX_VALUE)
                 ),
-            "org.telegram.tgnet.TLRPC\$User" to mapOf("phone" to "f", "id" to "a", "username" to "d"),
+            "org.telegram.tgnet.TLRPC\$PeerColor" to mapOf("background_emoji_id" to "c", "color" to "b", "flags" to "a"),
+            "org.telegram.tgnet.TLRPC\$User" to
+                mapOf(
+                    "color" to "T",
+                    "flags2" to "j", // FLAG_8
+                    "id" to "a",
+                    "phone" to "f",
+                    "profile_color" to "U",
+                    "username" to "d",
+                ),
             "org.telegram.ui.ActionBar.Theme" to mapOf("chat_timePaint" to "L2"),
             "org.telegram.ui.Adapters.DrawerLayoutAdapter" to mapOf("items" to "h"),
             "org.telegram.ui.Adapters.DrawerLayoutAdapter\$Item" to mapOf("icon" to "a", "id" to "c"),
