@@ -7,7 +7,6 @@ import com.aoya.telegami.utils.Hook
 import com.aoya.telegami.utils.HookStage
 import com.aoya.telegami.utils.hook
 import com.aoya.telegami.virt.messenger.NotificationCenter
-import de.robv.android.xposed.XposedBridge
 import de.robv.android.xposed.XposedHelpers.getStaticIntField
 import kotlinx.coroutines.launch
 import com.aoya.telegami.core.obfuscate.ResolverManager as resolver
@@ -52,16 +51,6 @@ class ShowDeletedMessages :
 
                 param.setResult(null)
             }
-
-        // findClass("org.telegram.messenger.MessagesStorage")
-        //     .hook(
-        //         resolver.getMethod("org.telegram.messenger.MessagesStorage", "updateDialogsWithDeletedMessagesInternal"),
-        //         HookStage.BEFORE,
-        //     ) { param ->
-        //         XposedBridge.log("(${Telegami.packageName})[ShowDeletedMessages::updateDialogsWithDeletedMessagesInternal]")
-        //         if (Globals.allowMsgDelete.compareAndSet(true, false)) return@hook
-        //         param.setResult(null)
-        //     }
 
         findClass("org.telegram.messenger.MessagesController")
             .hook(

@@ -11,7 +11,6 @@ import com.aoya.telegami.virt.messenger.ChatObject
 import com.aoya.telegami.virt.messenger.UserObject
 import com.aoya.telegami.virt.ui.ProfileActivity
 import com.aoya.telegami.virt.ui.components.ItemOptions
-import de.robv.android.xposed.XposedBridge
 import de.robv.android.xposed.XposedHelpers.callMethod
 import de.robv.android.xposed.XposedHelpers.callStaticMethod
 import de.robv.android.xposed.XposedHelpers.getBooleanField
@@ -55,7 +54,6 @@ class ProfileDetails :
 
             val chatId = prof.chatId
             val userId = prof.userId
-            // XposedBridge.log("chatId: $chatId, userId: $userId")
 
             val contentView = prof.contentView as? ViewGroup ?: return@hook
             val resourcesProvider = prof.resourcesProvider

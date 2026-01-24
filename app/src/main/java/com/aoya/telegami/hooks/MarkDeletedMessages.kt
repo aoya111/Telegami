@@ -7,7 +7,6 @@ import com.aoya.telegami.virt.messenger.LocaleController
 import com.aoya.telegami.virt.messenger.MessageObject
 import com.aoya.telegami.virt.ui.actionbar.Theme
 import com.aoya.telegami.virt.ui.cells.ChatMessageCell
-import de.robv.android.xposed.XposedBridge
 import kotlinx.coroutines.launch
 import kotlin.math.ceil
 import com.aoya.telegami.core.i18n.TranslationManager as i18n
@@ -27,24 +26,20 @@ class MarkDeletedMessages :
             val dialogId = msgObj.getDialogId()
             val mid = msgObj.getId()
             Globals.coroutineScope.launch {
-                try {
-                    val msg = db.deletedMessageDao().get(mid, dialogId) ?: return@launch
+                val msg = db.deletedMessageDao().get(mid, dialogId) ?: return@launch
 
-                    val delMsgStr = i18n.get("DeletedMessage")
+                val delMsgStr = i18n.get("DeletedMessage")
 
-                    var timeStr = delMsgStr
-                    msg.createdAt?.let {
-                        val dayFormatter = LocaleController.getInstance().getFormatterDay()
-                        timeStr += " " + dayFormatter.format(it * 1000L)
-                    }
-                    val timeTextWidth =
-                        ceil(Theme.chatTimePaint.measureText(timeStr, 0, timeStr.length)).toInt()
-                    msgCell.currentTimeString = timeStr
-                    msgCell.timeTextWidth = timeTextWidth
-                    msgCell.timeWidth = timeTextWidth
-                } catch (e: Exception) {
-                    XposedBridge.log("Error parsing messages: ${e.message}")
+                var timeStr = delMsgStr
+                msg.createdAt?.let {
+                    val dayFormatter = LocaleController.getInstance().getFormatterDay()
+                    timeStr += " " + dayFormatter.format(it * 1000L)
                 }
+                val timeTextWidth =
+                    ceil(Theme.chatTimePaint.measureText(timeStr, 0, timeStr.length)).toInt()
+                msgCell.currentTimeString = timeStr
+                msgCell.timeTextWidth = timeTextWidth
+                msgCell.timeWidth = timeTextWidth
             }
         }
     }

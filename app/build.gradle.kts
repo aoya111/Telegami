@@ -41,8 +41,23 @@ android {
     }
 
     buildTypes {
-        release {
+        debug {
+            applicationIdSuffix = ".debug"
+            versionNameSuffix = "-DEBUG"
+            isDebuggable = true
             isMinifyEnabled = false
+
+            buildConfigField("String", "MODULE_TAG", "\"TelegamiDebug\"")
+            buildConfigField("boolean", "ENABLE_LOGS", "true")
+        }
+
+        release {
+            isDebuggable = false
+            isMinifyEnabled = false
+
+            buildConfigField("String", "MODULE_TAG", "\"Telegami\"")
+            buildConfigField("boolean", "ENABLE_LOGS", "false")
+
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro",

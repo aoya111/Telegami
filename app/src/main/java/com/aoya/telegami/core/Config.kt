@@ -2,10 +2,12 @@ package com.aoya.telegami.core
 
 import android.content.Context
 import com.aoya.telegami.Telegami
+import com.aoya.telegami.utils.logd
+import com.aoya.telegami.utils.loge
+import com.aoya.telegami.utils.logw
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import de.robv.android.xposed.XSharedPreferences
-import de.robv.android.xposed.XposedBridge
 import kotlin.properties.Delegates
 
 typealias UserId = Long
@@ -44,7 +46,7 @@ object Config {
 
     private var user: User by Delegates.observable(User()) { _, old, new ->
         if (old.id == 0L && new.id != 0L) {
-            XposedBridge.log("User set: ${new.id}, reloading config")
+            logd("User set: ${new.username} (${new.id})")
             localConfig = readConfig()
             onUserSet?.invoke(new)
         }
@@ -54,12 +56,14 @@ object Config {
         packageName: String? = null,
         user: User? = null,
     ) {
+        logd("Initializing Config")
         packageName?.let {
             this.packageName = it
             xPrefs =
                 XSharedPreferences(it, "telegami").apply {
                     makeWorldReadable()
                 }
+            logd("XSharedPreferences initialized for package: $it")
         }
         user?. let { this.user = it }
     }
@@ -71,7 +75,10 @@ object Config {
 
     @Synchronized
     fun hasConfig(): Boolean {
-        if (user.id == 0L) return false
+        if (user.id == 0L) {
+            logd("No user set, config unavailable")
+            return false
+        }
         reload()
         val configStr = xPrefs?.getString(user.id.toString(), null)
         return !configStr.isNullOrEmpty() && configStr != "{}"
@@ -86,23 +93,28 @@ object Config {
             val type = object : TypeToken<UserConfig>() {}.type
             val conf = Gson().fromJson(configStr, type) ?: UserConfig()
             conf.user = user
+            logd("Config read successfully for user ${user.id}")
             return conf
         } catch (e: Exception) {
-            XposedBridge.log("Error reading config: ${e.message}")
+            loge("Error reading config for user ${user.id}", e)
             return UserConfig().apply { this.user = user }
         }
     }
 
     @Synchronized
     fun writeConfig() {
-        if (user.id == 0L) return
+        if (user.id == 0L) {
+            logw("Cannot write config: no user set")
+            return
+        }
 
         try {
             val pref = Telegami.context.getSharedPreferences("telegami", Context.MODE_PRIVATE)
             pref.edit().putString(user.id.toString(), Gson().toJson(localConfig)).apply()
             reload()
+            logd("Config written successfully for user ${user.id}")
         } catch (e: Exception) {
-            XposedBridge.log("Error writing config: ${e.message}")
+            loge("Error writing config for user ${user.id}", e)
         }
     }
 
@@ -110,7 +122,11 @@ object Config {
         hookName: String,
         enabled: Boolean,
     ) {
-        if (user.id == 0L) return
+        if (user.id == 0L) {
+            logw("Cannot set hook state: no user set")
+            return
+        }
+        logd("Hook '$hookName' set to: $enabled")
         localConfig.hooks[hookName] = enabled
         writeConfig()
     }
@@ -121,11 +137,15 @@ object Config {
         name: String,
         state: Boolean,
     ) {
-        if (user.id == 0L) return
+        if (user.id == 0L) {
+            logw("Cannot init hook settings: no user set")
+            return
+        }
         val hooks = localConfig.hooks
         if (!hooks.containsKey(name)) {
             hooks[name] = state
             writeConfig()
+            logd("Hook '$name' initialized with state: $state")
         }
     }
 
@@ -143,6 +163,7 @@ object Config {
         val contact = localConfig.contacts.getOrPut(id) { Contact() }
         contact.newName = name
         writeConfig()
+        logd("Contact name updated for ID $id: '$name'")
     }
 
     fun getCurrentUser(): User = user
