@@ -18,7 +18,6 @@ import com.aoya.telegami.hooks.ProfileDetails
 import com.aoya.telegami.hooks.Settings
 import com.aoya.telegami.hooks.ShowDeletedMessages
 import com.aoya.telegami.hooks.UnlockChannelFeatures
-import de.robv.android.xposed.XposedBridge
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 import kotlin.reflect.KClass
@@ -61,12 +60,13 @@ class HookManager {
         )
 
     private fun initAlwaysOnHooks() {
+        logd("Initializing always-on hooks...")
         alwaysOnHookNames.forEach { hookName ->
             hookRegistry[hookName]?.let { factory ->
                 val hook = factory()
                 hook.init()
                 alwaysOnHooks[hook::class] = hook
-                XposedBridge.log("Always-on hook initialized: ${hook.hookName}")
+                logd("Always-on hook initialized: ${hook.hookName}")
             }
         }
     }
@@ -76,6 +76,7 @@ class HookManager {
             val hookNames = hookRegistry.keys - alwaysOnHookNames
 
             if (initConfig) {
+                logd("Initializing config for ${hookNames.size} configurable hooks")
                 hookNames.forEach { hookName ->
                     Config.initHookSettings(hookName, true)
                 }
@@ -91,31 +92,39 @@ class HookManager {
 
     fun reloadHooks() {
         runBlocking(Dispatchers.IO) {
+            logd("Reloading all hooks...")
             alwaysOnHooks.values.forEach { it.cleanup() }
             alwaysOnHooks.clear()
             initAlwaysOnHooks()
             reloadConfigurableHooks()
+            logd("All hooks reloaded successfully")
         }
     }
 
     fun reloadConfigurableHooks() {
         runBlocking(Dispatchers.IO) {
+            logd("Reloading configurable hooks...")
             configurableHooks.values.forEach { it.cleanup() }
             configurableHooks.clear()
             registerConfigurableHooks()
+            logd("Configurable hooks reloaded")
         }
     }
 
     fun init() {
+        logd("Initializing HookManager")
         initAlwaysOnHooks()
 
         Config.onUserSet = { user ->
+            logd("User set in config, registering configurable hooks")
             registerConfigurableHooks(true)
         }
 
         if (Config.isUserSet()) {
+            logd("User already set, loading configurable hooks")
             registerConfigurableHooks()
         }
+        logd("HookManager initialization complete")
     }
 
     /**
@@ -131,10 +140,10 @@ class HookManager {
                 configurableHooks.remove(hook::class)
             }
 
-            XposedBridge.log("Unloaded hook: $hookName")
+            logd("Unloaded hook: $hookName")
             true
         } ?: run {
-            XposedBridge.log("Hook not found: $hookName")
+            logw("Hook not found: $hookName")
             false
         }
 
@@ -146,7 +155,7 @@ class HookManager {
         initialize: Boolean = false,
     ): Boolean {
         if (isHookLoaded(hookName)) {
-            XposedBridge.log("Hook already loaded: $hookName")
+            logd("Hook already loaded: $hookName")
             return false
         }
 
@@ -155,12 +164,19 @@ class HookManager {
 
             // Check if configurable hook is enabled
             if (!isAlwaysOn && !isHookEnabled(hookName)) {
-                XposedBridge.log("Hook is disabled in config: $hookName")
+                logd("Hook is disabled in config: $hookName")
                 return false
             }
 
             val hook = factory()
-            if (initialize) hook.init()
+            if (initialize) {
+                try {
+                    hook.init()
+                } catch (e: Exception) {
+                    loge("Failed to initialize hook: $hookName", e)
+                    return false
+                }
+            }
 
             // Store in appropriate map
             if (isAlwaysOn) {
@@ -169,10 +185,10 @@ class HookManager {
                 configurableHooks[hook::class] = hook
             }
 
-            XposedBridge.log("Loaded hook: $hookName")
+            logd("Loaded hook: $hookName")
             true
         } ?: run {
-            XposedBridge.log("Unknown hook name: $hookName")
+            loge("Unknown hook name: $hookName")
             false
         }
     }
@@ -205,9 +221,13 @@ class HookManager {
     /**
      * Get loaded hook names grouped by type
      */
-    fun getLoadedHookNames(): Map<String, List<String>> =
-        mapOf(
-            "alwaysOn" to alwaysOnHooks.values.map { it.hookName },
-            "configurable" to configurableHooks.values.map { it.hookName },
-        )
+    fun getLoadedHookNames(): Map<String, List<String>> {
+        val result =
+            mapOf(
+                "alwaysOn" to alwaysOnHooks.values.map { it.hookName },
+                "configurable" to configurableHooks.values.map { it.hookName },
+            )
+        logd("Loaded hooks - Always-on: ${result["alwaysOn"]?.size}, Configurable: ${result["configurable"]?.size}")
+        return result
+    }
 }

@@ -14,7 +14,6 @@ import com.aoya.telegami.virt.messenger.MessageObject
 import com.aoya.telegami.virt.messenger.secretmedia.EncryptedFileInputStream
 import com.aoya.telegami.virt.ui.SecretMediaViewer
 import com.aoya.telegami.virt.ui.components.BulletinFactory
-import de.robv.android.xposed.XposedBridge
 import kotlinx.coroutines.launch
 import java.io.File
 import java.io.FileOutputStream
@@ -62,35 +61,30 @@ class PreventSecretMediaDeletion :
             encFile: File,
             isVideo: Boolean,
         ): File? {
-            try {
-                val file = File(encFile.getAbsolutePath() + ".enc")
-                if (!file.exists()) return null
-                val keyFile = File(FileLoader.getInternalCacheDir(), file.getName() + ".key")
-                if (!keyFile.exists()) return null
+            val file = File(encFile.getAbsolutePath() + ".enc")
+            if (!file.exists()) return null
+            val keyFile = File(FileLoader.getInternalCacheDir(), file.getName() + ".key")
+            if (!keyFile.exists()) return null
 
-                val extension = if (isVideo) "mp4" else "jpg"
-                val chunkSize = if (isVideo) 1024 * 1024 else 512 * 1024
+            val extension = if (isVideo) "mp4" else "jpg"
+            val chunkSize = if (isVideo) 1024 * 1024 else 512 * 1024
 
-                val tempDir = FileLoader.getDirectory(FileLoader.MEDIA_DIR_CACHE)
-                val tempFile = File(tempDir, "temp_decrypt_${System.currentTimeMillis()}.$extension")
+            val tempDir = FileLoader.getDirectory(FileLoader.MEDIA_DIR_CACHE)
+            val tempFile = File(tempDir, "temp_decrypt_${System.currentTimeMillis()}.$extension")
 
-                val buffer = ByteArray(chunkSize)
+            val buffer = ByteArray(chunkSize)
 
-                EncryptedFileInputStream.create(file, keyFile).use { input ->
-                    FileOutputStream(tempFile).use { output ->
-                        var bytesRead: Int
+            EncryptedFileInputStream.create(file, keyFile).use { input ->
+                FileOutputStream(tempFile).use { output ->
+                    var bytesRead: Int
 
-                        while (input.read(buffer).also { bytesRead = it } != -1) {
-                            output.write(buffer, 0, bytesRead)
-                        }
+                    while (input.read(buffer).also { bytesRead = it } != -1) {
+                        output.write(buffer, 0, bytesRead)
                     }
                 }
-
-                return tempFile
-            } catch (e: Exception) {
-                XposedBridge.log(e)
-                return null
             }
+
+            return tempFile
         }
 
         findClass(
