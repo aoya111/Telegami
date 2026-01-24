@@ -30,7 +30,7 @@ object Nekogram : Resolver {
             "org.telegram.ui.ActionBar.ActionBarMenuItem\$Item" to "org.telegram.ui.ActionBar.c\$r",
             "org.telegram.ui.ActionBar.ActionBarMenuSubItem" to "org.telegram.ui.ActionBar.e",
             "org.telegram.ui.ActionBar.ActionBarPopupWindow\$GapView" to "org.telegram.ui.ActionBar.ActionBarPopupWindow\$d", // static class \w* extends FrameLayout {
-            "org.telegram.ui.ActionBar.AlertDialog\$OnButtonClickListener" to "org.telegram.ui.ActionBar.AlertDialog\$k",
+            "org.telegram.ui.ActionBar.AlertDialog\$OnButtonClickListener" to "org.telegram.ui.ActionBar.AlertDialog\$k", // public interface \w* {
             "org.telegram.ui.ActionBar.BaseFragment" to "org.telegram.ui.ActionBar.g",
             "org.telegram.ui.ActionBar.SimpleTextView" to "uwe", // this.gravity = 51;
             "org.telegram.ui.ActionBar.Theme" to "org.telegram.ui.ActionBar.q",
@@ -137,6 +137,7 @@ object Nekogram : Resolver {
                 ),
             "org.telegram.ui.ActionBar.AlertDialog" to
                 mapOf("setNegativeButton" to "v", "setPositiveButton" to "B", "setTitle" to "D", "setView" to "K", "show" to "N"),
+            "org.telegram.ui.ActionBar.AlertDialog\$OnButtonClickListener" to mapOf("onClick" to "a"),
             "org.telegram.ui.ActionBar.BaseFragment" to
                 mapOf(
                     "getMessagesController" to "X0", // returns MessagesController
