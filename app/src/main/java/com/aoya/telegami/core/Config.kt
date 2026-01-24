@@ -45,7 +45,7 @@ object Config {
     var onUserSet: ((User) -> Unit)? = null
 
     private var user: User by Delegates.observable(User()) { _, old, new ->
-        if (old.id == 0L && new.id != 0L) {
+        if (new.id != 0L && old.id != new.id) {
             logd("User set: ${new.username} (${new.id})")
             localConfig = readConfig()
             onUserSet?.invoke(new)
@@ -58,14 +58,24 @@ object Config {
     ) {
         logd("Initializing Config")
         packageName?.let {
-            this.packageName = it
-            xPrefs =
-                XSharedPreferences(it, "telegami").apply {
-                    makeWorldReadable()
-                }
-            logd("XSharedPreferences initialized for package: $it")
+            if (this.packageName != it) {
+                logd("Initializing package: $it")
+                this.packageName = it
+                xPrefs =
+                    XSharedPreferences(it, "telegami").apply {
+                        makeWorldReadable()
+                    }
+                logd("XSharedPreferences initialized for package: $it")
+            }
         }
-        user?. let { this.user = it }
+        user?.let {
+            if (this.user.id != it.id) {
+                logd("Setting user: ${it.username} (${it.id})")
+                this.user = it
+            } else {
+                logd("Same user (${it.id}), skipping")
+            }
+        }
     }
 
     @Synchronized
