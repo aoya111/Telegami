@@ -13,6 +13,7 @@ class HideSeenStatus :
     override fun init() {
         findClass("org.telegram.messenger.MessagesController")
             .hook(resolver.getMethod("org.telegram.messenger.MessagesController", "completeReadTask"), HookStage.BEFORE) { param ->
+                if (!isEnabled) return@hook
                 param.setResult(null)
             }
     }

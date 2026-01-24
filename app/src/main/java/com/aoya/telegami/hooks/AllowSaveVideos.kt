@@ -16,6 +16,9 @@ class AllowSaveVideos :
         ).hook(
             resolver.getMethod("org.telegram.ui.Stories.PeerStoriesView\$StoryItemHolder", "allowScreenshots"),
             HookStage.BEFORE,
-        ) { param -> param.setResult(true) }
+        ) { param ->
+            if (!isEnabled) return@hook
+            param.setResult(true)
+        }
     }
 }

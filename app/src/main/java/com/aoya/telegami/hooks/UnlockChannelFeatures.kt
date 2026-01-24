@@ -15,6 +15,9 @@ class UnlockChannelFeatures :
             .hook(
                 resolver.getMethod("org.telegram.messenger.MessagesController", "isChatNoForwards"),
                 HookStage.BEFORE,
-            ) { param -> param.setResult(false) }
+            ) { param ->
+                if (!isEnabled) return@hook
+                param.setResult(false)
+            }
     }
 }

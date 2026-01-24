@@ -15,6 +15,9 @@ class HideStoryViewStatus :
             .hook(
                 resolver.getMethod("org.telegram.ui.Stories.StoriesController", "markStoryAsRead"),
                 HookStage.BEFORE,
-            ) { param -> param.setResult(false) }
+            ) { param ->
+                if (!isEnabled) return@hook
+                param.setResult(false)
+            }
     }
 }

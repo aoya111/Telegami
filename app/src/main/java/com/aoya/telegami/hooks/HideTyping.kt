@@ -16,6 +16,9 @@ class HideTyping :
         ).hook(
             resolver.getMethod("org.telegram.ui.ChatActivity\$ChatActivityEnterViewDelegate", "needSendTyping"),
             HookStage.BEFORE,
-        ) { param -> param.setResult(null) }
+        ) { param ->
+            if (!isEnabled) return@hook
+            param.setResult(null)
+        }
     }
 }

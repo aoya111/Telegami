@@ -1,5 +1,6 @@
 package com.aoya.telegami.hooks
 
+import com.aoya.telegami.core.Config
 import com.aoya.telegami.utils.Hook
 import com.aoya.telegami.utils.HookStage
 import com.aoya.telegami.utils.hook
@@ -21,6 +22,7 @@ class MarkDeletedMessages :
         findClass(
             "org.telegram.ui.Cells.ChatMessageCell",
         ).hook(resolver.getMethod("org.telegram.ui.Cells.ChatMessageCell", "measureTime"), HookStage.AFTER) { param ->
+            if (!Config.isEnabled("show_deleted_messages")) return@hook
             val msgCell = ChatMessageCell(param.thisObject())
             val msgObj = MessageObject(param.arg<Any>(0))
             val dialogId = msgObj.getDialogId()

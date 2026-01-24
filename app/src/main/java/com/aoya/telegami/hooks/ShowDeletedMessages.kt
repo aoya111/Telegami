@@ -19,6 +19,7 @@ class ShowDeletedMessages :
     override fun init() {
         findClass("org.telegram.messenger.MessagesController")
             .hook(resolver.getMethod("org.telegram.messenger.MessagesController", "deleteMessages"), HookStage.BEFORE) {
+                if (!isEnabled) return@hook
                 Globals.allowMsgDelete.set(true)
             }
 
@@ -27,6 +28,7 @@ class ShowDeletedMessages :
                 resolver.getMethod("org.telegram.messenger.MessagesStorage", "markMessagesAsDeletedInternal"),
                 HookStage.BEFORE,
             ) { param ->
+                if (!isEnabled) return@hook
                 val dialogId = param.arg<Long>(0)
 
                 if (param.args().size != 5) return@hook
@@ -57,12 +59,14 @@ class ShowDeletedMessages :
                 resolver.getMethod("org.telegram.messenger.MessagesController", "markDialogMessageAsDeleted"),
                 HookStage.BEFORE,
             ) { param ->
+                if (!isEnabled) return@hook
                 if (!Globals.allowMsgDelete.get()) param.setResult(null)
             }
 
         findClass(
             "org.telegram.messenger.NotificationCenter",
         ).hook(resolver.getMethod("org.telegram.messenger.NotificationCenter", "postNotificationName"), HookStage.BEFORE) { param ->
+            if (!isEnabled) return@hook
             if (Globals.allowMsgDelete.get()) return@hook
             if (param.arg<Int>(0) == NotificationCenter.MESSAGES_DELETED) param.setResult(null)
         }
@@ -73,6 +77,7 @@ class ShowDeletedMessages :
             resolver.getMethod("org.telegram.messenger.NotificationsController", "removeDeletedMessagesFromNotifications"),
             HookStage.BEFORE,
         ) { param ->
+            if (!isEnabled) return@hook
             param.setResult(null)
         }
 

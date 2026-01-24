@@ -27,6 +27,7 @@ class PreventSecretMediaDeletion :
     override fun init() {
         findClass("org.telegram.ui.ChatActivity")
             .hook(resolver.getMethod("org.telegram.ui.ChatActivity", "sendSecretMediaDelete"), HookStage.BEFORE) { param ->
+                if (!isEnabled) return@hook
                 param.setResult(null)
             }
 
@@ -35,6 +36,7 @@ class PreventSecretMediaDeletion :
                 resolver.getMethod("org.telegram.messenger.MessagesStorage", "emptyMessagesMedia"),
                 HookStage.BEFORE,
             ) { param ->
+                if (!isEnabled) return@hook
                 val dialogId = param.arg<Long>(0)
                 val mIds = param.arg<ArrayList<Int>>(1)
                 if (mIds.isEmpty()) return@hook
@@ -90,6 +92,7 @@ class PreventSecretMediaDeletion :
         findClass(
             "org.telegram.ui.SecretMediaViewer",
         ).hook(resolver.getMethod("org.telegram.ui.SecretMediaViewer", "openMedia"), HookStage.AFTER) { param ->
+            if (!isEnabled) return@hook
             val o = SecretMediaViewer(param.thisObject())
             val msgObj = MessageObject(param.arg<Any>(0))
             val file = FileLoader.getInstance(o.currentAccount).getPathToMessage(msgObj.messageOwner)

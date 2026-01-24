@@ -17,6 +17,7 @@ class HideOnlineStatus :
         findClass(
             "org.telegram.tgnet.ConnectionsManager",
         ).hook(resolver.getMethod("org.telegram.tgnet.ConnectionsManager", "sendRequestInternal"), HookStage.BEFORE) { param ->
+            if (!isEnabled) return@hook
             val tlAccountUpdateStatusClass = findClass("org.telegram.tgnet.tl.TL_account\$updateStatus")
 
             if (tlAccountUpdateStatusClass.isInstance(param.arg<Any>(0))) {
@@ -26,6 +27,7 @@ class HideOnlineStatus :
 
         findClass("org.telegram.ui.ProfileActivity")
             .hook(resolver.getMethod("org.telegram.ui.ProfileActivity", "updateProfileData"), HookStage.AFTER) { param ->
+                if (!isEnabled) return@hook
                 val o = ProfileActivity(param.thisObject())
 
                 val clientUserId = o.getUserConfig().getClientUserId()
