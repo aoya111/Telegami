@@ -6,6 +6,7 @@ object Constants {
     val SUPPORTED_TELEGRAM_PACKAGES =
         arrayOf(
             "org.telegram.messenger",
+            "org.telegram.messenger.web",
             "tw.nekomimi.nekogram",
         )
 
