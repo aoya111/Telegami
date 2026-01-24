@@ -59,7 +59,7 @@ class AlertDialog {
                     ctx.classLoader,
                     arrayOf(onClickListenerClass),
                 ) { _, method, args ->
-                    if (method.name == "onClick") {
+                    if (method.name == resolver.getMethod("$alertDialogName\$OnButtonClickListener", "onClick")) {
                         val dialog = args?.getOrNull(0)
                         if (dialog != null) onClick(DialogBuilder(dialog))
                     }
@@ -81,7 +81,7 @@ class AlertDialog {
                     ctx.classLoader,
                     arrayOf(onClickListenerClass),
                 ) { _, method, args ->
-                    if (method.name == "onClick") {
+                    if (method.name == resolver.getMethod("$alertDialogName\$OnButtonClickListener", "onClick")) {
                         val dialog = args?.getOrNull(0)
                         if (dialog != null) onClick(DialogBuilder(dialog))
                     }
