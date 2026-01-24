@@ -1,7 +1,6 @@
 package com.aoya.telegami.hooks
 
 import com.aoya.telegami.Telegami
-import com.aoya.telegami.core.Config
 import com.aoya.telegami.utils.Hook
 import com.aoya.telegami.utils.HookStage
 import com.aoya.telegami.utils.hook
@@ -19,6 +18,7 @@ class HidePhone :
         findClass(
             "org.telegram.ui.Cells.DrawerProfileCell",
         ).hook(resolver.getMethod("org.telegram.ui.Cells.DrawerProfileCell", "setUser"), HookStage.AFTER) { param ->
+            if (!isEnabled) return@hook
             val o = DrawerProfileCell(param.thisObject())
             val user = TLRPC.User(param.arg<Any>(0))
             o.phoneTextView.setText("@${user.username}")

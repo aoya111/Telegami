@@ -69,7 +69,7 @@ class Settings :
                     val checkBox = CheckBox(o.context)
 
                     checkBox.text = v
-                    checkBox.isChecked = Config.isHookEnabled(k)
+                    checkBox.isChecked = Config.isEnabled(k)
                     checkBox.setTextColor(if (isDark) Color.WHITE else Color.BLACK)
                     checkBox.setPadding(10, 10, 10, 10)
                     checkBox.setTypeface(Typeface.DEFAULT_BOLD)
@@ -86,11 +86,10 @@ class Settings :
                             checkBoxes.forEach { chkBx ->
                                 val text = chkBx.text.toString()
                                 val key = opts.entries.find { it.value == text }?.key ?: return@forEach
-                                Config.setHookEnabled(key, chkBx.isChecked)
-                                if (chkBx.isChecked) {
-                                    Telegami.hookManager.loadHook(key)
-                                } else {
-                                    Telegami.hookManager.unloadHook(key)
+                                val oldState = Config.isEnabled(key)
+                                val isChecked = chkBx.isChecked
+                                if (isChecked != oldState) {
+                                    Config.setHookEnabled(key, isChecked)
                                 }
                             }
                             dialog.dismiss()

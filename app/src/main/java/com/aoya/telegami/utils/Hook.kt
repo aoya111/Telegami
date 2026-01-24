@@ -28,7 +28,7 @@ abstract class Hook(
 
     protected val isEnabled: Boolean
         get() {
-            return Config.isHookEnabled(hookName)
+            return Config.isEnabled(hookName)
         }
 
     protected val isDark: Boolean
