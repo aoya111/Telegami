@@ -5,11 +5,8 @@ import com.aoya.telegami.Telegami
 import com.aoya.telegami.data.DeletedMessage
 import com.aoya.telegami.utils.Hook
 import com.aoya.telegami.utils.HookStage
-import com.aoya.telegami.utils.hook
 import com.aoya.telegami.virt.messenger.NotificationCenter
-import de.robv.android.xposed.XposedHelpers.getStaticIntField
 import kotlinx.coroutines.launch
-import com.aoya.telegami.core.obfuscate.ResolverManager as resolver
 
 class ShowDeletedMessages :
     Hook(
@@ -17,67 +14,58 @@ class ShowDeletedMessages :
         "Show 'Deleted' messages",
     ) {
     override fun init() {
-        findClass("org.telegram.messenger.MessagesController")
-            .hook(resolver.getMethod("org.telegram.messenger.MessagesController", "deleteMessages"), HookStage.BEFORE) {
-                if (!isEnabled) return@hook
-                Globals.allowMsgDelete.set(true)
-            }
+        findAndHook("org.telegram.messenger.MessagesController", "deleteMessages", HookStage.BEFORE) {
+            Globals.allowMsgDelete.set(true)
+        }
 
-        findClass("org.telegram.messenger.MessagesStorage")
-            .hook(
-                resolver.getMethod("org.telegram.messenger.MessagesStorage", "markMessagesAsDeletedInternal"),
-                HookStage.BEFORE,
-            ) { param ->
-                if (!isEnabled) return@hook
-                val dialogId = param.arg<Long>(0)
+        findAndHook(
+            "org.telegram.messenger.MessagesStorage",
+            "markMessagesAsDeletedInternal",
+            HookStage.BEFORE,
+        ) { param ->
+            val dialogId = param.arg<Long>(0)
 
-                if (param.args().size != 5) return@hook
+            if (param.args().size != 5) return@findAndHook
 
-                val mIds = param.arg<ArrayList<Int>>(1)
-                if (mIds.isEmpty()) return@hook
+            val mIds = param.arg<ArrayList<Int>>(1)
+            if (mIds.isEmpty()) return@findAndHook
 
-                if (Globals.allowMsgDelete.compareAndSet(true, false)) {
-                    Globals.coroutineScope.launch {
-                        db.deletedMessageDao().deleteAllByIds(mIds, dialogId)
-                    }
-                    return@hook
-                }
-
+            if (Globals.allowMsgDelete.compareAndSet(true, false)) {
                 Globals.coroutineScope.launch {
-                    db.deletedMessageDao().insertAll(
-                        mIds.map { mid ->
-                            DeletedMessage(id = mid, dialogId = dialogId)
-                        },
-                    )
+                    db.deletedMessageDao().deleteAllByIds(mIds, dialogId)
                 }
-
-                param.setResult(null)
+                return@findAndHook
             }
 
-        findClass("org.telegram.messenger.MessagesController")
-            .hook(
-                resolver.getMethod("org.telegram.messenger.MessagesController", "markDialogMessageAsDeleted"),
-                HookStage.BEFORE,
-            ) { param ->
-                if (!isEnabled) return@hook
-                if (!Globals.allowMsgDelete.get()) param.setResult(null)
+            Globals.coroutineScope.launch {
+                db.deletedMessageDao().insertAll(
+                    mIds.map { mid ->
+                        DeletedMessage(id = mid, dialogId = dialogId)
+                    },
+                )
             }
 
-        findClass(
-            "org.telegram.messenger.NotificationCenter",
-        ).hook(resolver.getMethod("org.telegram.messenger.NotificationCenter", "postNotificationName"), HookStage.BEFORE) { param ->
-            if (!isEnabled) return@hook
-            if (Globals.allowMsgDelete.get()) return@hook
+            param.setResult(null)
+        }
+
+        findAndHook(
+            "org.telegram.messenger.MessagesController",
+            "markDialogMessageAsDeleted",
+            HookStage.BEFORE,
+        ) { param ->
+            if (!Globals.allowMsgDelete.get()) param.setResult(null)
+        }
+
+        findAndHook("org.telegram.messenger.NotificationCenter", "postNotificationName", HookStage.BEFORE) { param ->
+            if (Globals.allowMsgDelete.get()) return@findAndHook
             if (param.arg<Int>(0) == NotificationCenter.MESSAGES_DELETED) param.setResult(null)
         }
 
-        findClass(
+        findAndHook(
             "org.telegram.messenger.NotificationsController",
-        ).hook(
-            resolver.getMethod("org.telegram.messenger.NotificationsController", "removeDeletedMessagesFromNotifications"),
+            "removeDeletedMessagesFromNotifications",
             HookStage.BEFORE,
         ) { param ->
-            if (!isEnabled) return@hook
             param.setResult(null)
         }
 
