@@ -109,11 +109,11 @@ class PreventSecretMediaDeletion :
                             null,
                         ) { uri ->
                             f?.delete()
-                            if (Telegami.packageName == "tw.nekomimi.nekogram") {
-                                Telegami.showToast(Toast.LENGTH_SHORT, getStringResource("PhotoSavedHint"))
-                            } else {
-                                BulletinFactory.createSaveToGalleryBulletin(o.containerView, o.isVideo, null).show()
-                            }
+                            // if (Telegami.packageName == "tw.nekomimi.nekogram") {
+                            //     Telegami.showToast(Toast.LENGTH_SHORT, getStringResource("PhotoSavedHint"))
+                            // } else {
+                            BulletinFactory.createSaveToGalleryBulletin(o.containerView, o.isVideo, null).show()
+                            // }
                         }
                     },
                 )
