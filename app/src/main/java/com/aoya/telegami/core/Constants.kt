@@ -12,7 +12,7 @@ object Constants {
 
     val SUPPORTED_TG_VARIANTS =
         mapOf(
-            "Nekogram" to Triple("tw.nekomimi.nekogram", "12.2.10S", 63470),
+            "Nekogram" to Triple("tw.nekomimi.nekogram", "12.3.1", 6385),
             "Telegram" to Triple("org.telegram.messenger", "12.3.1", 63859),
             "TelegramWeb" to Triple("org.telegram.messenger.web", "12.3.1", 63859),
         )
