@@ -2,7 +2,6 @@ package com.aoya.telegami.utils
 
 import com.aoya.telegami.Telegami
 import com.aoya.telegami.core.Config
-import com.aoya.telegami.hooks.AddChatNavigation
 import com.aoya.telegami.hooks.AllowSaveVideos
 import com.aoya.telegami.hooks.AllowScreenshots
 import com.aoya.telegami.hooks.ApplyColor
@@ -31,7 +30,6 @@ class HookManager {
             ApplyColor(),
             BoostDownload(),
             ProfileDetails(),
-            AddChatNavigation(),
         )
 
     private val configurableHooks =
