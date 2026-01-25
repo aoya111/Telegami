@@ -378,10 +378,15 @@
       "obfuscated": "org.telegram.tgnet.TLRPC$wd1"
     },
     "org.telegram.tgnet.tl.TL_account$updateStatus": {
-      "fields": {},
-      "hint": "-1388733202",
+      "fields": {
+        "offline": {
+          "hint": null,
+          "obfuscated": "a"
+        }
+      },
+      "hint": ">= 55000",
       "methods": {},
-      "obfuscated": "org.telegram.tgnet.TLRPC$u7"
+      "obfuscated": "gwg"
     },
     "org.telegram.ui.ActionBar.ActionBar": {
       "fields": {},
