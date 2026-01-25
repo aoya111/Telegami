@@ -24,7 +24,7 @@ object I18NarSA : Translation {
             "hide_phone" to "اخفاء رقم هاتف",
             "show_deleted_messages" to "اضهار الرسائل المحذوفة",
             "DeletedMessage" to "محذوفه",
-            "copied_to_clipboard" to "تم نسخ '{item}' إلى الحافظة",
+            "CopiedToClipboardHint" to "تم نسخ '{item}' إلى الحافظة",
             "ProfileStatusOffline" to "غير متصل",
         )
 

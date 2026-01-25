@@ -24,7 +24,7 @@ object I18NzhCN : Translation {
             "hide_phone" to "隐藏 '电话' 号码",
             "show_deleted_messages" to "显示已删除的消息",
             "DeletedMessage" to "已删除",
-            "copied_to_clipboard" to "已复制 '{item}' 到剪贴板",
+            "CopiedToClipboardHint" to "已复制 '{item}' 到剪贴板",
             "ProfileStatusOffline" to "离线",
         )
 

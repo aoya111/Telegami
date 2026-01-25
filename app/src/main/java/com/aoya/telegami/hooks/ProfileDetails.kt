@@ -3,6 +3,8 @@ package com.aoya.telegami.hooks
 import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import com.aoya.telegami.Telegami
 import com.aoya.telegami.utils.Hook
 import com.aoya.telegami.utils.HookStage
 import com.aoya.telegami.virt.messenger.AndroidUtilities
@@ -70,11 +72,19 @@ class ProfileDetails :
                 .add(
                     getResource("msg_copy", "drawable"),
                     getStringResource("ProfileCopyUsername"),
-                    Runnable { AndroidUtilities.addToClipboard(username) },
+                    Runnable {
+                        AndroidUtilities.addToClipboard(username)
+                        val msg = i18n.get("CopiedToClipboardHint").replace("{item}", "username")
+                        Telegami.showToast(Toast.LENGTH_SHORT, msg)
+                    },
                 ).add(
                     getResource("msg_copy", "drawable"),
                     idLabel,
-                    Runnable { AndroidUtilities.addToClipboard(id.toString()) },
+                    Runnable {
+                        AndroidUtilities.addToClipboard(id.toString())
+                        val msg = i18n.get("CopiedToClipboardHint").replace("{item}", "ID")
+                        Telegami.showToast(Toast.LENGTH_SHORT, msg)
+                    },
                 )
 
             if (userId != 0L && prof.myProfile) {
