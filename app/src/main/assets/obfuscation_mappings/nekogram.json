@@ -596,10 +596,6 @@
           "hint": "\"open menu",
           "obfuscated": "ht"
         },
-        "createView": {
-          "hint": "\"ChatActivity.createView\"",
-          "obfuscated": "w0"
-        },
         "getContext": {
           "hint": "\\ \\w*().getResources().getDrawable",
           "obfuscated": "I0"
@@ -630,17 +626,6 @@
         }
       },
       "obfuscated": "org.telegram.ui.o"
-    },
-    "org.telegram.ui.ChatActivity$13": {
-      "fields": {},
-      "hint": "canDeleteHistory",
-      "methods": {
-        "onItemClick": {
-          "hint": null,
-          "obfuscated": "b"
-        }
-      },
-      "obfuscated": "org.telegram.ui.o$h0"
     },
     "org.telegram.ui.ChatActivity$ChatActivityEnterViewDelegate": {
       "fields": {},
