@@ -653,6 +653,17 @@
       },
       "obfuscated": "org.telegram.ui.o$r4"
     },
+    "org.telegram.ui.Components.Bulletin": {
+      "fields": {},
+      "hint": null,
+      "methods": {
+        "show": {
+          "hint": null,
+          "obfuscated": "e0"
+        }
+      },
+      "obfuscated": "org.telegram.ui.Components.v"
+    },
     "org.telegram.ui.Components.BulletinFactory": {
       "fields": {},
       "hint": "\"Pin\"",

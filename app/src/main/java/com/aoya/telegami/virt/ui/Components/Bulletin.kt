@@ -8,7 +8,7 @@ class Bulletin(
 ) {
     private val objPath = OBJ_PATH
 
-    fun show(): Any? = callMethod(instance, "show")
+    fun show(): Any? = callMethod(instance, resolver.getMethod(objPath, "show"))
 
     companion object {
         private const val OBJ_PATH = "org.telegram.ui.Components.Bulletin"
