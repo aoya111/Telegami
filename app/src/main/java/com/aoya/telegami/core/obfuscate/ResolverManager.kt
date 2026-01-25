@@ -1,25 +1,44 @@
 package com.aoya.telegami.core.obfuscate
 
-object ResolverManager {
-    private lateinit var translation: Resolver
+import com.aoya.telegami.utils.loge
+import com.aoya.telegami.utils.logw
 
-    fun init(packageName: String) {
-        translation =
-            when (packageName) {
-                "tw.nekomimi.nekogram" -> Nekogram
-                else -> Default
+object ResolverManager {
+    private lateinit var resolver: Resolver
+
+    private val packageToVariant =
+        mapOf(
+            "tw.nekomimi.nekogram" to "nekogram",
+        )
+
+    fun init(
+        packageName: String,
+        modulePath: String,
+    ) {
+        resolver =
+            try {
+                val variantName = packageToVariant[packageName]
+                if (variantName != null) {
+                    JsonResolver.fromModuleAssets(modulePath, variantName)
+                } else {
+                    logw("Unknown package $packageName")
+                    Default
+                }
+            } catch (e: Exception) {
+                loge("Telegami: Failed to load mappings", e)
+                Default
             }
     }
 
-    fun get(className: String): String = translation.get(className)
+    fun get(className: String): String = resolver.get(className)
 
     fun getMethod(
         className: String,
         methodName: String,
-    ): String = translation.getMethod(className, methodName)
+    ): String = resolver.getMethod(className, methodName)
 
     fun getField(
         className: String,
         fieldName: String,
-    ): String = translation.getField(className, fieldName)
+    ): String = resolver.getField(className, fieldName)
 }
