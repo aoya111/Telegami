@@ -5,22 +5,13 @@ import android.view.View
 import android.view.ViewGroup
 import com.aoya.telegami.utils.Hook
 import com.aoya.telegami.utils.HookStage
-import com.aoya.telegami.utils.hook
 import com.aoya.telegami.virt.messenger.AndroidUtilities
 import com.aoya.telegami.virt.messenger.ChatObject
 import com.aoya.telegami.virt.messenger.UserObject
 import com.aoya.telegami.virt.ui.ProfileActivity
 import com.aoya.telegami.virt.ui.components.ItemOptions
-import de.robv.android.xposed.XposedHelpers.callMethod
-import de.robv.android.xposed.XposedHelpers.callStaticMethod
-import de.robv.android.xposed.XposedHelpers.getBooleanField
-import de.robv.android.xposed.XposedHelpers.getIntField
-import de.robv.android.xposed.XposedHelpers.getLongField
-import de.robv.android.xposed.XposedHelpers.getObjectField
-import de.robv.android.xposed.XposedHelpers.getStaticBooleanField
 import de.robv.android.xposed.XposedHelpers.newInstance
 import com.aoya.telegami.core.i18n.TranslationManager as i18n
-import com.aoya.telegami.core.obfuscate.ResolverManager as resolver
 
 class ProfileDetails :
     Hook(
@@ -28,34 +19,27 @@ class ProfileDetails :
         "Add extra fields and details to profiles",
     ) {
     override fun init() {
-        findClass(
-            "org.telegram.ui.ProfileActivity",
-        ).hook(resolver.getMethod("org.telegram.ui.ProfileActivity", "editRow"), HookStage.BEFORE) { param ->
+        findAndHook("org.telegram.ui.ProfileActivity", "editRow", HookStage.BEFORE, filter = { true }) { param ->
             val o = ProfileActivity(param.thisObject())
-
-            val view = param.arg<Any>(0) as? View ?: return@hook
-
-            if (!o.myProfile) return@hook
-
-            if (param.arg<Int>(1) != o.usernameRow) return@hook
+            val view = param.arg<Any>(0) as? View ?: return@findAndHook
+            if (!o.myProfile) return@findAndHook
+            if (param.arg<Int>(1) != o.usernameRow) return@findAndHook
 
             param.setResult(true)
         }
 
-        findClass(
-            "org.telegram.ui.ProfileActivity",
-        ).hook(resolver.getMethod("org.telegram.ui.ProfileActivity", "processOnClickOrPress"), HookStage.BEFORE) { param ->
+        findAndHook("org.telegram.ui.ProfileActivity", "processOnClickOrPress", HookStage.BEFORE, filter = { true }) { param ->
             val prof = ProfileActivity(param.thisObject())
 
             val usernameRow = prof.usernameRow
 
-            if (param.arg<Int>(0) != usernameRow) return@hook
-            val view = param.arg<Any>(1) as? View ?: return@hook
+            if (param.arg<Int>(0) != usernameRow) return@findAndHook
+            val view = param.arg<Any>(1) as? View ?: return@findAndHook
 
             val chatId = prof.chatId
             val userId = prof.userId
 
-            val contentView = prof.contentView as? ViewGroup ?: return@hook
+            val contentView = prof.contentView as? ViewGroup ?: return@findAndHook
             val resourcesProvider = prof.resourcesProvider
 
             val itemOptions = ItemOptions.makeOptions(contentView, resourcesProvider, view, false)
@@ -65,21 +49,21 @@ class ProfileDetails :
             val (username, id, idLabel) =
                 when {
                     userId != 0L -> {
-                        val user = msgCtrl.getUser(userId) ?: return@hook
-                        val username = UserObject.getPublicUsername(user) ?: return@hook
+                        val user = msgCtrl.getUser(userId) ?: return@findAndHook
+                        val username = UserObject.getPublicUsername(user) ?: return@findAndHook
                         Triple(username, userId, i18n.get("ProfileCopyUserId"))
                     }
 
                     chatId != 0L -> {
-                        val chat = msgCtrl.getChat(chatId) ?: return@hook
+                        val chat = msgCtrl.getChat(chatId) ?: return@findAndHook
                         val topicId = prof.topicId
-                        if (topicId == 0L && !ChatObject.isPublic(chat)) return@hook
-                        val username = ChatObject.getPublicUsername(chat) ?: return@hook
+                        if (topicId == 0L && !ChatObject.isPublic(chat)) return@findAndHook
+                        val username = ChatObject.getPublicUsername(chat) ?: return@findAndHook
                         Triple(username, chatId, i18n.get("ProfileCopyChatId"))
                     }
 
                     else -> {
-                        return@hook
+                        return@findAndHook
                     }
                 }
             itemOptions

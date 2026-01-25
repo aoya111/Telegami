@@ -11,7 +11,6 @@ import com.aoya.telegami.core.Constants
 import com.aoya.telegami.core.User
 import com.aoya.telegami.utils.Hook
 import com.aoya.telegami.utils.HookStage
-import com.aoya.telegami.utils.hook
 import com.aoya.telegami.virt.messenger.browser.Browser
 import com.aoya.telegami.virt.tgnet.TLRPC
 import com.aoya.telegami.virt.ui.LaunchActivity
@@ -19,7 +18,6 @@ import com.aoya.telegami.virt.ui.actionbar.AlertDialog
 import com.aoya.telegami.virt.ui.adapters.DrawerLayoutAdapter
 import java.util.ArrayList
 import com.aoya.telegami.core.i18n.TranslationManager as i18n
-import com.aoya.telegami.core.obfuscate.ResolverManager as resolver
 
 class Settings :
     Hook(
@@ -29,17 +27,13 @@ class Settings :
     val itemID = 13048
 
     override fun init() {
-        findClass(
-            "org.telegram.messenger.UserConfig",
-        ).hook(resolver.getMethod("org.telegram.messenger.UserConfig", "setCurrentUser"), HookStage.AFTER) { param ->
+        findAndHook("org.telegram.messenger.UserConfig", "setCurrentUser", HookStage.AFTER, filter = { true }) { param ->
             val tgUser = TLRPC.User(param.arg<Any>(0))
             val user = User(tgUser.id, tgUser.username, tgUser.phone)
             Config.initialize(Telegami.packageName, user)
         }
 
-        findClass(
-            "org.telegram.ui.Adapters.DrawerLayoutAdapter",
-        ).hook(resolver.getMethod("org.telegram.ui.Adapters.DrawerLayoutAdapter", "resetItems"), HookStage.AFTER) { param ->
+        findAndHook("org.telegram.ui.Adapters.DrawerLayoutAdapter", "resetItems", HookStage.AFTER, filter = { true }) { param ->
             val o = DrawerLayoutAdapter(param.thisObject())
             val items = o.items
             val settingsIcon =
@@ -49,14 +43,12 @@ class Settings :
                         it.id == 8
                     }?.let {
                         it.icon
-                    } ?: return@hook
+                    } ?: return@findAndHook
             val newItem = DrawerLayoutAdapter.Item(itemID, "${i18n.get("AppName")} ${getStringResource("Settings")}", settingsIcon)
             o.addItem(newItem)
         }
 
-        findClass(
-            "org.telegram.ui.LaunchActivity",
-        ).hook(resolver.getMethod("org.telegram.ui.LaunchActivity", "lambda\$onCreate\$6"), HookStage.AFTER) { param ->
+        findAndHook("org.telegram.ui.LaunchActivity", "lambda\$onCreate\$6", HookStage.AFTER, filter = { true }) { param ->
             val o = LaunchActivity(param.thisObject())
 
             val result = o.drawerLayoutAdapter?.getId(param.arg<Int>(1))

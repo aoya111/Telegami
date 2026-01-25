@@ -5,6 +5,7 @@ import android.graphics.drawable.Drawable
 import com.aoya.telegami.Telegami
 import com.aoya.telegami.core.Config
 import com.aoya.telegami.data.AppDatabase
+import de.robv.android.xposed.XC_MethodHook
 import de.robv.android.xposed.XposedHelpers.callMethod
 import de.robv.android.xposed.XposedHelpers.callStaticMethod
 import com.aoya.telegami.core.obfuscate.ResolverManager as resolver
@@ -24,7 +25,19 @@ abstract class Hook(
     open fun cleanup() {
     }
 
-    protected fun findClass(name: String): Class<*> = Telegami.loadClass(resolver.get(name))
+    protected fun findClass(name: String): Class<Any> = Telegami.loadClass(resolver.get(name)) as Class<Any>
+
+    protected fun findAndHook(
+        className: String,
+        methodName: String,
+        stage: HookStage,
+        filter: (HookAdapter<Any>) -> Boolean = { isEnabled },
+        consumer: (HookAdapter<Any>) -> Unit,
+    ): Set<XC_MethodHook.Unhook> {
+        val clazz = findClass(className)
+        val obfuscatedMethod = resolver.getMethod(className, methodName)
+        return clazz.hook(obfuscatedMethod, stage, filter, consumer)
+    }
 
     protected val isEnabled: Boolean
         get() {

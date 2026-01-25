@@ -2,16 +2,15 @@ package com.aoya.telegami.hooks
 
 import android.view.View
 import android.widget.LinearLayout
+import com.aoya.telegami.core.Config
 import com.aoya.telegami.utils.Hook
 import com.aoya.telegami.utils.HookStage
-import com.aoya.telegami.utils.hook
 import com.aoya.telegami.virt.ui.cells.ChatMessageCell
 import de.robv.android.xposed.XposedHelpers.callMethod
 import de.robv.android.xposed.XposedHelpers.getIntField
 import de.robv.android.xposed.XposedHelpers.getObjectField
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
-import com.aoya.telegami.core.obfuscate.ResolverManager as resolver
 
 class ModifyDeletedMessagesMenu :
     Hook(
@@ -25,10 +24,15 @@ class ModifyDeletedMessagesMenu :
     }
 
     override fun init() {
-        findClass(
+        findAndHook(
             "org.telegram.ui.ChatActivity",
-        ).hook(resolver.getMethod("org.telegram.ui.ChatActivity", "lambda\$createMenu$290"), HookStage.BEFORE) { param ->
-            if (!msgIsDeleted) return@hook
+            "lambda\$createMenu$290",
+            HookStage.BEFORE,
+            filter = {
+                Config.isEnabled("show_deleted_messages")
+            },
+        ) { param ->
+            if (!msgIsDeleted) return@findAndHook
             val o = param.thisObject()
 
             val scrimPopupWindow = getObjectField(o, "scrimPopupWindow")
@@ -84,12 +88,17 @@ class ModifyDeletedMessagesMenu :
             }
         }
 
-        findClass(
+        findAndHook(
             "org.telegram.ui.ChatActivity",
-        ).hook(resolver.getMethod("org.telegram.ui.ChatActivity", "createMenu"), HookStage.BEFORE) { param ->
+            "createMenu",
+            HookStage.BEFORE,
+            filter = {
+                Config.isEnabled("show_deleted_messages")
+            },
+        ) { param ->
             val p1 = param.arg<Any>(0)
             val chatMessageCellClass = findClass("org.telegram.ui.Cells.ChatMessageCell")
-            if (!chatMessageCellClass.isInstance(p1)) return@hook
+            if (!chatMessageCellClass.isInstance(p1)) return@findAndHook
             val chatMsgCellObj = ChatMessageCell(p1)
 
             val msgObj = chatMsgCellObj.getMessageObject()
@@ -110,11 +119,16 @@ class ModifyDeletedMessagesMenu :
             }
         }
 
-        findClass(
+        findAndHook(
             "org.telegram.ui.Components.MessagePrivateSeenView",
-        ).hook(resolver.getMethod("org.telegram.ui.Components.MessagePrivateSeenView", "request"), HookStage.BEFORE) { param ->
+            "request",
+            HookStage.BEFORE,
+            filter = {
+                Config.isEnabled("show_deleted_messages")
+            },
+        ) { param ->
             val o = param.thisObject()
-            if (!msgIsDeleted || (getIntField(o, "type") != SEEN_TYPE_SEEN)) return@hook
+            if (!msgIsDeleted || (getIntField(o, "type") != SEEN_TYPE_SEEN)) return@findAndHook
             param.setResult(null)
         }
     }

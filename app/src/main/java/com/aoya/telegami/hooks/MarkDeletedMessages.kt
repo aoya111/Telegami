@@ -3,7 +3,6 @@ package com.aoya.telegami.hooks
 import com.aoya.telegami.core.Config
 import com.aoya.telegami.utils.Hook
 import com.aoya.telegami.utils.HookStage
-import com.aoya.telegami.utils.hook
 import com.aoya.telegami.virt.messenger.LocaleController
 import com.aoya.telegami.virt.messenger.MessageObject
 import com.aoya.telegami.virt.ui.actionbar.Theme
@@ -11,7 +10,6 @@ import com.aoya.telegami.virt.ui.cells.ChatMessageCell
 import kotlinx.coroutines.launch
 import kotlin.math.ceil
 import com.aoya.telegami.core.i18n.TranslationManager as i18n
-import com.aoya.telegami.core.obfuscate.ResolverManager as resolver
 
 class MarkDeletedMessages :
     Hook(
@@ -19,10 +17,9 @@ class MarkDeletedMessages :
         "Mark 'Deleted' messages",
     ) {
     override fun init() {
-        findClass(
-            "org.telegram.ui.Cells.ChatMessageCell",
-        ).hook(resolver.getMethod("org.telegram.ui.Cells.ChatMessageCell", "measureTime"), HookStage.AFTER) { param ->
-            if (!Config.isEnabled("show_deleted_messages")) return@hook
+        findAndHook("org.telegram.ui.Cells.ChatMessageCell", "measureTime", HookStage.AFTER, filter = {
+            Config.isEnabled("show_deleted_messages")
+        }) { param ->
             val msgCell = ChatMessageCell(param.thisObject())
             val msgObj = MessageObject(param.arg<Any>(0))
             val dialogId = msgObj.getDialogId()
