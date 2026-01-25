@@ -10,7 +10,6 @@ import com.aoya.telegami.utils.HookStage
 import com.aoya.telegami.virt.messenger.AndroidUtilities
 import com.aoya.telegami.virt.messenger.ChatObject
 import com.aoya.telegami.virt.messenger.UserObject
-import com.aoya.telegami.virt.ui.ChangeUsernameActivity
 import com.aoya.telegami.virt.ui.ProfileActivity
 import com.aoya.telegami.virt.ui.components.ItemOptions
 import com.aoya.telegami.core.i18n.TranslationManager as i18n
@@ -86,18 +85,6 @@ class ProfileDetails :
                         Telegami.showToast(Toast.LENGTH_SHORT, msg)
                     },
                 )
-
-            if (userId != 0L && prof.myProfile) {
-                itemOptions
-                    .add(
-                        getResource("msg_edit", "drawable"),
-                        getStringResource("ProfileUsernameEdit"),
-                        Runnable {
-                            prof.presentFragment(ChangeUsernameActivity.newInstance().getNativeInstance())
-                        },
-                    )
-            }
-
             itemOptions.show()
         }
     }
