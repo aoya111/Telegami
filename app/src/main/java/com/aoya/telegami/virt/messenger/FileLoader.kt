@@ -25,17 +25,21 @@ class FileLoader(
 
         val MEDIA_DIR_CACHE: Int
             get() =
-                if (Telegami.packageName == "tw.nekomimi.nekogram") {
+                if (Telegami.packageName in listOf("tw.nekomimi.nekogram", "xyz.nextalone.nagram")) {
                     4
                 } else {
                     getStaticIntField(Telegami.loadClass(resolver.get(OBJ_PATH)), resolver.getField(OBJ_PATH, "MEDIA_DIR_CACHE"))
                 }
 
         fun getInternalCacheDir(): File =
-            callStaticMethod(
-                Telegami.loadClass(resolver.get(OBJ_PATH)),
-                resolver.getMethod(OBJ_PATH, "getInternalCacheDir"),
-            ) as File
+            if (Telegami.packageName == "xyz.nextalone.nagram") {
+                Telegami.context.getCacheDir()
+            } else {
+                callStaticMethod(
+                    Telegami.loadClass(resolver.get(OBJ_PATH)),
+                    resolver.getMethod(OBJ_PATH, "getInternalCacheDir"),
+                ) as File
+            }
 
         fun getDirectory(type: Int): File =
             callStaticMethod(

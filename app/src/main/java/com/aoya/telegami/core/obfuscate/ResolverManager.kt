@@ -9,6 +9,7 @@ object ResolverManager {
     private val packageToVariant =
         mapOf(
             "tw.nekomimi.nekogram" to "nekogram",
+            "xyz.nextalone.nagram" to "nagram",
         )
 
     fun init(

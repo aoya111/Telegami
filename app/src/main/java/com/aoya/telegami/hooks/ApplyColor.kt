@@ -1,5 +1,6 @@
 package com.aoya.telegami.hooks
 
+import com.aoya.telegami.Telegami
 import com.aoya.telegami.core.Config
 import com.aoya.telegami.utils.Hook
 import com.aoya.telegami.utils.HookStage
@@ -12,6 +13,8 @@ class ApplyColor :
         "Apply selected color and emoji on profile and name",
     ) {
     override fun init() {
+        if (Telegami.packageName == "xyz.nextalone.nagram") return
+
         findAndHook("org.telegram.ui.PeerColorActivity", "apply", HookStage.AFTER, filter = { true }) { param ->
             Config.reload()
             val o = PeerColorActivity(param.thisObject())

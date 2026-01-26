@@ -38,12 +38,6 @@
       },
       "obfuscated": "org.telegram.SQLite.SQLiteDatabase"
     },
-    "org.telegram.messenger.AccountInstance": {
-      "fields": {},
-      "hint": "return\\ ConnectionsManager\\.getInstance\\(this.\\w*\\)\\;",
-      "methods": {},
-      "obfuscated": "c3"
-    },
     "org.telegram.messenger.AndroidUtilities": {
       "fields": {},
       "hint": "Https\\|ton",
