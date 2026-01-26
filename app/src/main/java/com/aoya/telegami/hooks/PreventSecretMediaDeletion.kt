@@ -4,7 +4,6 @@ import android.view.View
 import android.widget.FrameLayout
 import android.widget.Toast
 import com.aoya.telegami.Telegami
-import com.aoya.telegami.data.DeletedMessage
 import com.aoya.telegami.utils.Hook
 import com.aoya.telegami.utils.HookStage
 import com.aoya.telegami.utils.SecretMedia
@@ -13,7 +12,6 @@ import com.aoya.telegami.virt.messenger.MediaController
 import com.aoya.telegami.virt.messenger.MessageObject
 import com.aoya.telegami.virt.ui.SecretMediaViewer
 import com.aoya.telegami.virt.ui.components.BulletinFactory
-import kotlinx.coroutines.launch
 import java.io.File
 
 class PreventSecretMediaDeletion :
@@ -33,22 +31,8 @@ class PreventSecretMediaDeletion :
         ) { param ->
             val dialogId = param.arg<Long>(0)
             val mIds = param.arg<ArrayList<Int>>(1)
-            if (mIds.isEmpty()) return@findAndHook
 
-            if (Globals.allowMsgDelete.compareAndSet(true, false)) {
-                Globals.coroutineScope.launch {
-                    db.deletedMessageDao().deleteAllByIds(mIds, dialogId)
-                }
-                return@findAndHook
-            }
-
-            Globals.coroutineScope.launch {
-                db.deletedMessageDao().insertAll(
-                    mIds.map { mid ->
-                        DeletedMessage(id = mid, dialogId = dialogId)
-                    },
-                )
-            }
+            Globals.storeDeletedMessages(dialogId, mIds)
 
             param.setResult(null)
         }
