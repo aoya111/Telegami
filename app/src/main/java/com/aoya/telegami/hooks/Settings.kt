@@ -35,17 +35,24 @@ class Settings :
 
         findAndHook("org.telegram.ui.Adapters.DrawerLayoutAdapter", "resetItems", HookStage.AFTER, filter = { true }) { param ->
             val o = DrawerLayoutAdapter(param.thisObject())
-            val items = o.items
-            val settingsIcon =
-                items
-                    .filterNotNull()
-                    .find {
-                        it.id == 8
-                    }?.let {
-                        it.icon
-                    } ?: return@findAndHook
+            val nth = if (Telegami.packageName == "org.telegram.plus") 3 else 2
+            var nullCount = 0
+            val insertIdx =
+                o.items.indexOfFirst { item ->
+                    if (item == null) {
+                        nullCount++
+                        nullCount == nth
+                    } else {
+                        false
+                    }
+                }
+            val settingsIcon = getResource("msg_settings_old", "drawable")
             val newItem = DrawerLayoutAdapter.Item(itemID, "${i18n.get("AppName")} ${getStringResource("Settings")}", settingsIcon)
-            o.addItem(newItem)
+            if (insertIdx != -1) {
+                o.addItem(insertIdx, newItem)
+            } else {
+                o.addItem(newItem)
+            }
         }
 
         findAndHook("org.telegram.ui.LaunchActivity", "lambda\$onCreate\$6", HookStage.AFTER, filter = { true }) { param ->
