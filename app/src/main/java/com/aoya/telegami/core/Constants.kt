@@ -7,14 +7,8 @@ object Constants {
         arrayOf(
             "org.telegram.messenger",
             "org.telegram.messenger.web",
+            "org.telegram.plus",
             "tw.nekomimi.nekogram",
-        )
-
-    val SUPPORTED_TG_VARIANTS =
-        mapOf(
-            "Nekogram" to Triple("tw.nekomimi.nekogram", "12.3.1", 6385),
-            "Telegram" to Triple("org.telegram.messenger", "12.3.1", 63859),
-            "TelegramWeb" to Triple("org.telegram.messenger.web", "12.3.1", 63859),
         )
 
     val FEATURES =
@@ -32,13 +26,14 @@ object Constants {
 
     private val EXCLUDED_FEATURES =
         mapOf(
+            "org.telegram.messenger" to emptySet(),
+            "org.telegram.messenger.web" to emptySet(),
+            "org.telegram.plus" to emptySet(),
             "tw.nekomimi.nekogram" to
                 setOf(
                     "hide_phone",
                     "unlock_channel_features",
                 ),
-            "org.telegram.messenger" to emptySet(),
-            "org.telegram.messenger.web" to emptySet(),
         )
 
     fun getFeaturesForPackage(packageName: String): Array<String> {

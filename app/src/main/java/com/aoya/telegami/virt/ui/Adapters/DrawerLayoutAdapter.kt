@@ -47,5 +47,13 @@ class DrawerLayoutAdapter(
         its.add(item.getNativeInstance())
     }
 
+    fun addItem(
+        idx: Int,
+        item: Item,
+    ) {
+        val its = getObjectField(instance, resolver.getField(objPath, "items")) as ArrayList<Any?>
+        its.add(idx, item.getNativeInstance())
+    }
+
     fun getId(position: Int) = callMethod(instance, resolver.getMethod(objPath, "getId"), position) as Int
 }
