@@ -7,15 +7,14 @@ import com.aoya.telegami.Telegami
 import com.aoya.telegami.data.DeletedMessage
 import com.aoya.telegami.utils.Hook
 import com.aoya.telegami.utils.HookStage
+import com.aoya.telegami.utils.SecretMedia
 import com.aoya.telegami.virt.messenger.FileLoader
 import com.aoya.telegami.virt.messenger.MediaController
 import com.aoya.telegami.virt.messenger.MessageObject
-import com.aoya.telegami.virt.messenger.secretmedia.EncryptedFileInputStream
 import com.aoya.telegami.virt.ui.SecretMediaViewer
 import com.aoya.telegami.virt.ui.components.BulletinFactory
 import kotlinx.coroutines.launch
 import java.io.File
-import java.io.FileOutputStream
 
 class PreventSecretMediaDeletion :
     Hook(
@@ -54,36 +53,6 @@ class PreventSecretMediaDeletion :
             param.setResult(null)
         }
 
-        fun decryptSecretMediaStreaming(
-            encFile: File,
-            isVideo: Boolean,
-        ): File? {
-            val file = File(encFile.getAbsolutePath() + ".enc")
-            if (!file.exists()) return null
-            val keyFile = File(FileLoader.getInternalCacheDir(), file.getName() + ".key")
-            if (!keyFile.exists()) return null
-
-            val extension = if (isVideo) "mp4" else "jpg"
-            val chunkSize = if (isVideo) 1024 * 1024 else 512 * 1024
-
-            val tempDir = FileLoader.getDirectory(FileLoader.MEDIA_DIR_CACHE)
-            val tempFile = File(tempDir, "temp_decrypt_${System.currentTimeMillis()}.$extension")
-
-            val buffer = ByteArray(chunkSize)
-
-            EncryptedFileInputStream.create(file, keyFile).use { input ->
-                FileOutputStream(tempFile).use { output ->
-                    var bytesRead: Int
-
-                    while (input.read(buffer).also { bytesRead = it } != -1) {
-                        output.write(buffer, 0, bytesRead)
-                    }
-                }
-            }
-
-            return tempFile
-        }
-
         findAndHook("org.telegram.ui.SecretMediaViewer", "openMedia", HookStage.AFTER) { param ->
             val o = SecretMediaViewer(param.thisObject())
             val msgObj = MessageObject(param.arg<Any>(0))
@@ -100,7 +69,7 @@ class PreventSecretMediaDeletion :
             downloadItem
                 .setOnClickListener(
                     View.OnClickListener { view ->
-                        val f = decryptSecretMediaStreaming(file, o.isVideo)
+                        val f = SecretMedia.decrypt(file, o.isVideo)
                         MediaController.saveFile(
                             f.toString(),
                             o.parentActivity,
