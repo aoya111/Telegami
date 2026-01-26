@@ -514,14 +514,14 @@
     "org.telegram.ui.ActionBar.Theme": {
       "fields": {
         "chat_timePaint": {
-          "hint": null,
-          "obfuscated": "L2"
+          "hint": "public static boolean \\w*()",
+          "obfuscated": "T2"
         }
       },
-      "hint": null,
+      "hint": "-16777216, 27",
       "methods": {
         "getActiveTheme": {
-          "hint": null,
+          "hint": "public static <Theme$ThemeInfo> \\w*()",
           "obfuscated": "D1"
         }
       },
@@ -533,10 +533,10 @@
       "methods": {
         "isDark": {
           "hint": "!\"Dark Blue\"\\.equals(",
-          "obfuscated": "J"
+          "obfuscated": "K"
         }
       },
-      "obfuscated": "org.telegram.ui.ActionBar.Theme$ThemeInfo"
+      "obfuscated": "org.telegram.ui.ActionBar.q$w"
     },
     "org.telegram.ui.Adapters.DrawerLayoutAdapter": {
       "fields": {
