@@ -17,7 +17,6 @@ class MediaController {
             type: Int,
             name: String?,
             mime: String?,
-            showProgress: Boolean = true,
             onSaved: ((Uri?) -> Unit)? = null,
         ): Any? {
             val callbackClass = Telegami.loadClass(resolver.get("org.telegram.messenger.Utilities\$Callback"))
@@ -34,17 +33,30 @@ class MediaController {
                     }
                 }
 
-            return callStaticMethod(
-                Telegami.loadClass(resolver.get(OBJ_PATH)),
-                resolver.getMethod(OBJ_PATH, "saveFile"),
-                fullPath,
-                context,
-                type,
-                name,
-                mime,
-                callback,
-                showProgress,
-            )
+            return if (Telegami.packageName == "tw.nekomimi.nekogram") {
+                callStaticMethod(
+                    Telegami.loadClass(resolver.get(OBJ_PATH)),
+                    resolver.getMethod(OBJ_PATH, "saveFile"),
+                    fullPath,
+                    context,
+                    type,
+                    name,
+                    mime,
+                    callback,
+                    true,
+                )
+            } else {
+                callStaticMethod(
+                    Telegami.loadClass(resolver.get(OBJ_PATH)),
+                    resolver.getMethod(OBJ_PATH, "saveFile"),
+                    fullPath,
+                    context,
+                    type,
+                    name,
+                    mime,
+                    callback,
+                )
+            }
         }
     }
 }

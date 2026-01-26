@@ -1,0 +1,19 @@
+{
+  "variant": "nagram",
+  "package_name": "xyz.nextalone.nagram",
+  "version": "12.3.1",
+  "updated": "2026-01-26",
+  "mappings": {
+    "org.telegram.ui.LaunchActivity": {
+      "fields": {},
+      "hint": null,
+      "methods": {
+        "lambda$onCreate$6": {
+          "hint": "void \\w*(View \\w*, int \\w*, float \\w*, float \\w*)",
+          "obfuscated": "lambda$onCreate$8"
+        }
+      },
+      "obfuscated": "org.telegram.ui.LaunchActivity"
+    }
+  }
+}

@@ -23,8 +23,12 @@ class ShowDeletedMessages :
         ) { param ->
             if (param.args().size != 5) return@findAndHook
 
-            val dialogId = param.arg<Long>(0)
-            val mIds = param.arg<ArrayList<Int>>(1)
+            val (dialogId, mIds) =
+                if (Telegami.packageName == "xyz.nextalone.nagram") {
+                    Pair(param.arg<Long>(4), param.arg<ArrayList<Int>>(0))
+                } else {
+                    Pair(param.arg<Long>(0), param.arg<ArrayList<Int>>(1))
+                }
 
             Globals.storeDeletedMessages(dialogId, mIds)
 

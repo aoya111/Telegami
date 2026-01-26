@@ -9,6 +9,7 @@ object Constants {
             "org.telegram.messenger.web",
             "org.telegram.plus",
             "tw.nekomimi.nekogram",
+            "xyz.nextalone.nagram",
         )
 
     val FEATURES =
@@ -30,6 +31,11 @@ object Constants {
             "org.telegram.messenger.web" to emptySet(),
             "org.telegram.plus" to emptySet(),
             "tw.nekomimi.nekogram" to
+                setOf(
+                    "hide_phone",
+                    "unlock_channel_features",
+                ),
+            "xyz.nextalone.nagram" to
                 setOf(
                     "hide_phone",
                     "unlock_channel_features",
