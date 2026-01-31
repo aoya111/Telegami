@@ -33,8 +33,8 @@ object Globals {
     fun storeDeletedMessages(
         dialogId: Long,
         msgIds: List<Int>,
-    ) {
-        if (msgIds.isEmpty()) return
+    ): Boolean {
+        if (msgIds.isEmpty()) return false
 
         if (allowMsgDelete.compareAndSet(true, false)) {
             logd("Allowing deletion of ${msgIds.size} messages in dialog $dialogId")
@@ -45,7 +45,7 @@ object Globals {
                     logw("Failed to remove allowed deletions: ${e.message}")
                 }
             }
-            return
+            return true
         }
 
         logd("Storing ${msgIds.size} deleted messages in dialog $dialogId")
@@ -60,5 +60,7 @@ object Globals {
                 logw("Failed to store deleted messages: ${e.message}")
             }
         }
+
+        return false
     }
 }

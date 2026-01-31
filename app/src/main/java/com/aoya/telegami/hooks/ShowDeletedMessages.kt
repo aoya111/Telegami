@@ -30,7 +30,7 @@ class ShowDeletedMessages :
                     Pair(param.arg<Long>(0), param.arg<ArrayList<Int>>(1))
                 }
 
-            Globals.storeDeletedMessages(dialogId, mIds)
+            if (Globals.storeDeletedMessages(dialogId, mIds)) return@findAndHook
 
             param.setResult(null)
         }
