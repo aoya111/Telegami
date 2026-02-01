@@ -7,6 +7,7 @@ object Constants {
         arrayOf(
             "it.octogram.android",
             "org.telegram.messenger",
+            "org.telegram.messenger.beta",
             "org.telegram.messenger.web",
             "org.telegram.plus",
             "tw.nekomimi.nekogram",
@@ -34,6 +35,7 @@ object Constants {
                 ),
             "org.telegram.messenger" to emptySet(),
             "org.telegram.messenger.web" to emptySet(),
+            "org.telegram.messenger.beta" to emptySet(),
             "org.telegram.plus" to emptySet(),
             "tw.nekomimi.nekogram" to
                 setOf(
