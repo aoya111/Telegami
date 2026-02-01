@@ -11,7 +11,7 @@ class BoostDownload :
         "Boost download speed",
     ) {
     override fun init() {
-        if (Telegami.packageName == "tw.nekomimi.nekogram") return
+        if (Telegami.packageName in listOf("it.octogram.android", "tw.nekomimi.nekogram")) return
         findAndHook("org.telegram.messenger.FileLoadOperation", "updateParams", HookStage.AFTER, filter = { true }) { param ->
             val o = FileLoadOperation(param.thisObject())
 

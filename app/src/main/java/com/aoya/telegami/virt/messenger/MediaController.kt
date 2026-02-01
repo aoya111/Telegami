@@ -33,7 +33,7 @@ class MediaController {
                     }
                 }
 
-            return if (Telegami.packageName == "tw.nekomimi.nekogram") {
+            return if (Telegami.packageName in listOf("it.octogram.android", "tw.nekomimi.nekogram")) {
                 callStaticMethod(
                     Telegami.loadClass(resolver.get(OBJ_PATH)),
                     resolver.getMethod(OBJ_PATH, "saveFile"),

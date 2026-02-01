@@ -8,6 +8,7 @@ object ResolverManager {
 
     private val packageToVariant =
         mapOf(
+            "it.octogram.android" to "octogram",
             "tw.nekomimi.nekogram" to "nekogram",
             "xyz.nextalone.nagram" to "nagram",
         )

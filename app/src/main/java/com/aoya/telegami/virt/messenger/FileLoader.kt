@@ -25,7 +25,7 @@ class FileLoader(
 
         val MEDIA_DIR_CACHE: Int
             get() =
-                if (Telegami.packageName in listOf("tw.nekomimi.nekogram", "xyz.nextalone.nagram")) {
+                if (Telegami.packageName in listOf("it.octogram.android", "tw.nekomimi.nekogram", "xyz.nextalone.nagram")) {
                     4
                 } else {
                     getStaticIntField(Telegami.loadClass(resolver.get(OBJ_PATH)), resolver.getField(OBJ_PATH, "MEDIA_DIR_CACHE"))
