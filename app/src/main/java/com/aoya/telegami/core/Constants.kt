@@ -5,6 +5,7 @@ object Constants {
 
     val SUPPORTED_TELEGRAM_PACKAGES =
         arrayOf(
+            "it.octogram.android",
             "org.telegram.messenger",
             "org.telegram.messenger.web",
             "org.telegram.plus",
@@ -27,6 +28,10 @@ object Constants {
 
     private val EXCLUDED_FEATURES =
         mapOf(
+            "it.octogram.android" to
+                setOf(
+                    "hide_phone",
+                ),
             "org.telegram.messenger" to emptySet(),
             "org.telegram.messenger.web" to emptySet(),
             "org.telegram.plus" to emptySet(),

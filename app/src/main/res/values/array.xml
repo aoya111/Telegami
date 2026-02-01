@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="xposed_scope">
+        <item>it.octogram.android</item>
         <item>org.telegram.messenger</item>
         <item>org.telegram.messenger.web</item>
         <item>org.telegram.plus</item>
