@@ -25,7 +25,6 @@ object I18NenUS : Translation {
             "prevent_secret_media_deletion" to "Prevent Deletion of Secret Media.",
             "hide_phone" to "Hide 'Phone' number",
             "show_deleted_messages" to "Show 'Deleted Messages'",
-            "DeletedMessage" to "deleted",
             "CopiedToClipboardHint" to "'{item}' copied",
             "ProfileStatusOffline" to "offline",
             "ProfileCopyUserId" to "Copy ID",

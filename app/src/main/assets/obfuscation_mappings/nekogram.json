@@ -2,7 +2,7 @@
   "variant": "nekogram",
   "package_name": "tw.nekomimi.nekogram",
   "version": "12.3.1",
-  "updated": "2026-01-26",
+  "updated": "2026-02-03",
   "mappings": {
     "org.telegram.SQLite.SQLiteCursor": {
       "fields": {},
@@ -45,6 +45,10 @@
         "addToClipboard": {
           "hint": "public static boolean \\w*(CharSequence",
           "obfuscated": "E"
+        },
+        "dp": {
+          "hint": "public static int \\w*(float; return Math.ceil",
+          "obfuscated": "v0"
         }
       },
       "obfuscated": "org.telegram.messenger.a"
@@ -130,7 +134,7 @@
       "methods": {
         "getDialogId": {
           "hint": "return \\w*(this.messageOwner); (long)",
-          "obfuscated": "M0"
+          "obfuscated": "T0"
         },
         "getId": {
           "hint": "return this.messageOwner.\\w*; (int)",
@@ -642,6 +646,17 @@
         }
       },
       "obfuscated": "org.telegram.ui.Components.v"
+    },
+    "org.telegram.ui.Components.ColoredImageSpan": {
+      "fields": {},
+      "hint": "isRelativeSize",
+      "methods": {
+        "setSize": {
+          "hint": null,
+          "obfuscated": "h"
+        }
+      },
+      "obfuscated": "mj3"
     },
     "org.telegram.ui.Components.ItemOptions": {
       "fields": {},

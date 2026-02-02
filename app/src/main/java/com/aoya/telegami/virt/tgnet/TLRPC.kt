@@ -50,6 +50,9 @@ class TLRPC {
     ) {
         private val objPath = "org.telegram.tgnet.TLRPC\$Message"
 
+        val date: Int
+            get() = getIntField(instance, resolver.getField(objPath, "date"))
+
         var ttl: Int
             get() = getIntField(instance, resolver.getField(objPath, "ttl"))
             set(value) = setIntField(instance, resolver.getField(objPath, "ttl"), value)
