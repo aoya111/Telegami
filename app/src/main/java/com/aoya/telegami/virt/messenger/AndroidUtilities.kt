@@ -15,5 +15,12 @@ class AndroidUtilities {
                 resolver.getMethod(OBJ_PATH, "addToClipboard"),
                 text,
             ) as? Unit
+
+        fun dp(value: Float): Int =
+            callStaticMethod(
+                Telegami.loadClass(resolver.get(OBJ_PATH)),
+                resolver.getMethod(OBJ_PATH, "dp"),
+                value,
+            ) as Int
     }
 }

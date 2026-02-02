@@ -2,7 +2,7 @@
   "variant": "octogram",
   "package_name": "it.octogram.android",
   "version": "3.5.1",
-  "updated": "2026-01-31",
+  "updated": "2026-02-03",
   "mappings": {
     "org.telegram.SQLite.SQLiteCursor": {
       "fields": {},
@@ -45,6 +45,10 @@
         "addToClipboard": {
           "hint": "public static boolean \\w*(CharSequence",
           "obfuscated": "I"
+        },
+        "dp": {
+          "hint": "public static int \\w*(float; return Math.ceil",
+          "obfuscated": "B0"
         }
       },
       "obfuscated": "org.telegram.messenger.a"
@@ -130,7 +134,7 @@
       "methods": {
         "getDialogId": {
           "hint": "return \\w*(this.messageOwner); (long)",
-          "obfuscated": "N0"
+          "obfuscated": "U0"
         },
         "getId": {
           "hint": "return this.messageOwner.\\w*; (int)",
@@ -636,6 +640,17 @@
         }
       },
       "obfuscated": "org.telegram.ui.Components.w"
+    },
+    "org.telegram.ui.Components.ColoredImageSpan": {
+      "fields": {},
+      "hint": "isRelativeSize",
+      "methods": {
+        "setSize": {
+          "hint": null,
+          "obfuscated": "h"
+        }
+      },
+      "obfuscated": "sx3"
     },
     "org.telegram.ui.Components.ItemOptions": {
       "fields": {},

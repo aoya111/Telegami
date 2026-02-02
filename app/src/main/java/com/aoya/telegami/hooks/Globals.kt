@@ -30,7 +30,7 @@ object Globals {
     /**
      * Store deleted messages to database, or remove from deleted list if allowed
      */
-    fun storeDeletedMessages(
+    fun handleDeletedMessages(
         dialogId: Long,
         msgIds: List<Int>,
     ): Boolean {

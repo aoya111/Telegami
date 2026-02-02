@@ -34,7 +34,7 @@ class PreventSecretMediaDeletion :
             ) { param ->
                 val dialogId = getLongField(param.thisObject(), "f\$2")
                 val mIds = getObjectField(param.thisObject(), "f\$1") as ArrayList<Int>
-                if (Globals.storeDeletedMessages(dialogId, mIds)) return@findAndHook
+                if (Globals.handleDeletedMessages(dialogId, mIds)) return@findAndHook
                 param.setResult(null)
             }
         } else {
@@ -45,7 +45,7 @@ class PreventSecretMediaDeletion :
             ) { param ->
                 val dialogId = param.arg<Long>(0)
                 val mIds = param.arg<ArrayList<Int>>(1)
-                if (Globals.storeDeletedMessages(dialogId, mIds)) return@findAndHook
+                if (Globals.handleDeletedMessages(dialogId, mIds)) return@findAndHook
                 param.setResult(null)
             }
         }

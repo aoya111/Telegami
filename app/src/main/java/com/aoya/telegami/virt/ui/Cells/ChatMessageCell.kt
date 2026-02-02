@@ -1,6 +1,5 @@
 package com.aoya.telegami.virt.ui.cells
 
-import android.text.SpannableStringBuilder
 import com.aoya.telegami.Telegami
 import com.aoya.telegami.virt.messenger.MessageObject
 import de.robv.android.xposed.XposedHelpers.callMethod
@@ -25,15 +24,7 @@ class ChatMessageCell(
 
     var currentTimeString: CharSequence
         get() = getObjectField(instance, resolver.getField(objPath, "currentTimeString")) as CharSequence
-        set(value) {
-            val v =
-                if (Telegami.packageName == "tw.nekomimi.nekogram") {
-                    SpannableStringBuilder(value)
-                } else {
-                    value
-                }
-            setObjectField(instance, resolver.getField(objPath, "currentTimeString"), v)
-        }
+        set(value) = setObjectField(instance, resolver.getField(objPath, "currentTimeString"), value)
 
     fun getMessageObject(): MessageObject = MessageObject(callMethod(instance, resolver.getMethod(objPath, "getMessageObject")))
 }
