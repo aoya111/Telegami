@@ -1,6 +1,7 @@
 package com.aoya.telegami.hooks
 
 import android.app.Activity
+import android.content.Context
 import android.graphics.Color
 import android.graphics.Typeface
 import android.widget.CheckBox
@@ -14,8 +15,10 @@ import com.aoya.telegami.utils.HookStage
 import com.aoya.telegami.virt.messenger.browser.Browser
 import com.aoya.telegami.virt.tgnet.TLRPC
 import com.aoya.telegami.virt.ui.LaunchActivity
+import com.aoya.telegami.virt.ui.SettingsActivity
 import com.aoya.telegami.virt.ui.actionbar.AlertDialog
 import com.aoya.telegami.virt.ui.adapters.DrawerLayoutAdapter
+import com.aoya.telegami.virt.ui.components.UItem
 import java.util.ArrayList
 import com.aoya.telegami.core.i18n.TranslationManager as i18n
 
@@ -33,78 +36,106 @@ class Settings :
             Config.initialize(Telegami.packageName, user)
         }
 
-        findAndHook("org.telegram.ui.Adapters.DrawerLayoutAdapter", "resetItems", HookStage.AFTER, filter = { true }) { param ->
-            val o = DrawerLayoutAdapter(param.thisObject())
-            val nth = if (Telegami.packageName == "org.telegram.plus") 3 else 2
-            var nullCount = 0
-            val insertIdx =
-                o.items.indexOfFirst { item ->
-                    if (item == null) {
-                        nullCount++
-                        nullCount == nth
-                    } else {
-                        false
-                    }
-                }
-            val settingsIcon = getResource("msg_settings_old", "drawable")
-            val newItem = DrawerLayoutAdapter.Item(itemID, "${i18n.get("AppName")} ${getStringResource("Settings")}", settingsIcon)
-            if (insertIdx != -1) {
-                o.addItem(insertIdx, newItem)
-            } else {
-                o.addItem(newItem)
+        val settingsLabel = "${i18n.get("AppName")} ${getStringResource("Settings")}"
+        val settingsIcon = getResource("msg_settings_old", "drawable")
+
+        fun showAlert(ctx: Context) {
+            val layout = LinearLayout(ctx)
+            layout.setOrientation(LinearLayout.VERTICAL)
+            val checkBoxes = mutableListOf<CheckBox>()
+            val opts = Constants.getFeaturesForPackage(Telegami.packageName).associateWith { i18n.get(it) }
+            for ((k, v) in opts) {
+                val checkBox = CheckBox(ctx)
+
+                checkBox.text = v
+                checkBox.isChecked = Config.isEnabled(k)
+                checkBox.setTextColor(if (isDark) Color.WHITE else Color.BLACK)
+                checkBox.setPadding(10, 10, 10, 10)
+                checkBox.setTypeface(Typeface.DEFAULT_BOLD)
+
+                checkBoxes.add(checkBox)
+                layout.addView(checkBox)
             }
+            AlertDialog
+                .Builder(ctx)
+                .setTitle(getStringResource("Settings"))
+                .setView(layout)
+                .setPositiveButton(getStringResource("Save")) { dialog ->
+                    try {
+                        checkBoxes.forEach { chkBx ->
+                            val text = chkBx.text.toString()
+                            val key = opts.entries.find { it.value == text }?.key ?: return@forEach
+                            val oldState = Config.isEnabled(key)
+                            val isChecked = chkBx.isChecked
+                            if (isChecked != oldState) {
+                                Config.setHookEnabled(key, isChecked)
+                            }
+                        }
+                        dialog.dismiss()
+                    } catch (t: Throwable) {
+                        t.printStackTrace()
+                    }
+                }.setNegativeButton("App Channel") { dialog ->
+                    try {
+                        Browser.openUrl(ctx, "https://t.me/TGamiApp")
+                        dialog.dismiss()
+                    } catch (t: Throwable) {
+                        t.printStackTrace()
+                    }
+                }.show()
         }
 
-        findAndHook("org.telegram.ui.LaunchActivity", "lambda\$onCreate\$6", HookStage.AFTER, filter = { true }) { param ->
-            val o = LaunchActivity(param.thisObject())
+        if (Telegami.packageName == "org.telegram.messenger.beta") {
+            findAndHook("org.telegram.ui.SettingsActivity", "fillItems", HookStage.AFTER, filter = { true }) { param ->
+                val arrayList = param.arg<Any>(0) as ArrayList<Any?>
+                val item =
+                    SettingsActivity.SettingCell.Factory.of(
+                        itemID,
+                        -13451058,
+                        -14836538,
+                        settingsIcon,
+                        settingsLabel,
+                        "",
+                    )
+                arrayList.add(10, item)
+            }
+            findAndHook("org.telegram.ui.SettingsActivity", "onClick", HookStage.AFTER, filter = { true }) { param ->
+                val o = SettingsActivity(param.thisObject())
+                val ctx = o.getContext()
+                val uItem = UItem(param.arg<Any>(0))
 
-            val result = o.drawerLayoutAdapter?.getId(param.arg<Int>(1))
-            if (result == itemID) {
-                val layout = LinearLayout(o.context)
-                layout.setOrientation(LinearLayout.VERTICAL)
-                val checkBoxes = mutableListOf<CheckBox>()
-                val opts = Constants.getFeaturesForPackage(Telegami.packageName).associateWith { i18n.get(it) }
-                for ((k, v) in opts) {
-                    val checkBox = CheckBox(o.context)
-
-                    checkBox.text = v
-                    checkBox.isChecked = Config.isEnabled(k)
-                    checkBox.setTextColor(if (isDark) Color.WHITE else Color.BLACK)
-                    checkBox.setPadding(10, 10, 10, 10)
-                    checkBox.setTypeface(Typeface.DEFAULT_BOLD)
-
-                    checkBoxes.add(checkBox)
-                    layout.addView(checkBox)
+                if (uItem.id == itemID) {
+                    showAlert(ctx)
                 }
-                AlertDialog
-                    .Builder(o.context)
-                    .setTitle(getStringResource("Settings"))
-                    .setView(layout)
-                    .setPositiveButton(getStringResource("Save")) { dialog ->
-                        try {
-                            checkBoxes.forEach { chkBx ->
-                                val text = chkBx.text.toString()
-                                val key = opts.entries.find { it.value == text }?.key ?: return@forEach
-                                val oldState = Config.isEnabled(key)
-                                val isChecked = chkBx.isChecked
-                                if (isChecked != oldState) {
-                                    Config.setHookEnabled(key, isChecked)
-                                }
-                            }
-                            dialog.dismiss()
-                        } catch (t: Throwable) {
-                            t.printStackTrace()
+            }
+        } else {
+            findAndHook("org.telegram.ui.Adapters.DrawerLayoutAdapter", "resetItems", HookStage.AFTER, filter = { true }) { param ->
+                val o = DrawerLayoutAdapter(param.thisObject())
+                val nth = if (Telegami.packageName == "org.telegram.plus") 3 else 2
+                var nullCount = 0
+                val insertIdx =
+                    o.items.indexOfFirst { item ->
+                        if (item == null) {
+                            nullCount++
+                            nullCount == nth
+                        } else {
+                            false
                         }
-                    }.setNegativeButton("App Channel") { dialog ->
-                        try {
-                            if (o.drawerLayoutContainer != null) {
-                                Browser.openUrl(o.context, "https://t.me/TGamiApp")
-                                dialog.dismiss()
-                            }
-                        } catch (t: Throwable) {
-                            t.printStackTrace()
-                        }
-                    }.show()
+                    }
+                val newItem = DrawerLayoutAdapter.Item(itemID, settingsLabel, settingsIcon)
+                if (insertIdx != -1) {
+                    o.addItem(insertIdx, newItem)
+                } else {
+                    o.addItem(newItem)
+                }
+            }
+            findAndHook("org.telegram.ui.LaunchActivity", "lambda\$onCreate\$6", HookStage.AFTER, filter = { true }) { param ->
+                val o = LaunchActivity(param.thisObject())
+
+                val result = o.drawerLayoutAdapter?.getId(param.arg<Int>(1))
+                if (result == itemID) {
+                    showAlert(o.context)
+                }
             }
         }
     }

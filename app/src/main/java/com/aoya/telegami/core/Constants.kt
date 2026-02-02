@@ -29,13 +29,10 @@ object Constants {
 
     private val EXCLUDED_FEATURES =
         mapOf(
-            "it.octogram.android" to
-                setOf(
-                    "hide_phone",
-                ),
+            "it.octogram.android" to setOf("hide_phone"),
             "org.telegram.messenger" to emptySet(),
             "org.telegram.messenger.web" to emptySet(),
-            "org.telegram.messenger.beta" to emptySet(),
+            "org.telegram.messenger.beta" to setOf("hide_phone"),
             "org.telegram.plus" to emptySet(),
             "tw.nekomimi.nekogram" to
                 setOf(

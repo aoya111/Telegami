@@ -12,7 +12,11 @@ class HidePhone :
         "Hide 'Phone' number",
     ) {
     override fun init() {
-        if (Telegami.packageName in listOf("it.octogram.android", "tw.nekomimi.nekogram", "xyz.nextalone.nagram")) return
+        if (Telegami.packageName in
+            listOf("it.octogram.android", "tw.nekomimi.nekogram", "org.telegram.messenger.beta", "xyz.nextalone.nagram")
+        ) {
+            return
+        }
         findAndHook("org.telegram.ui.Cells.DrawerProfileCell", "setUser", HookStage.AFTER) { param ->
             val o = DrawerProfileCell(param.thisObject())
             val user = TLRPC.User(param.arg<Any>(0))
