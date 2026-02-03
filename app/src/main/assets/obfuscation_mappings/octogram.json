@@ -577,6 +577,10 @@
           "hint": "\"open menu",
           "obfuscated": "Xs"
         },
+        "createView": {
+          "hint": "View \\w*(Context context)",
+          "obfuscated": "n0"
+        },
         "getContext": {
           "hint": "\\ \\w*().getResources().getDrawable",
           "obfuscated": "A0"
