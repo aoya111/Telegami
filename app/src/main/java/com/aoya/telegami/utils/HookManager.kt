@@ -12,6 +12,7 @@ import com.aoya.telegami.hooks.HidePhone
 import com.aoya.telegami.hooks.HideSeenStatus
 import com.aoya.telegami.hooks.HideStoryViewStatus
 import com.aoya.telegami.hooks.HideTyping
+import com.aoya.telegami.hooks.MarkMessages
 import com.aoya.telegami.hooks.PreventSecretMediaDeletion
 import com.aoya.telegami.hooks.ProfileDetails
 import com.aoya.telegami.hooks.Settings
@@ -26,6 +27,7 @@ class HookManager {
         listOf(
             Settings(),
             FakePremium(),
+            MarkMessages(),
             AllowScreenshots(),
             ApplyColor(),
             BoostDownload(),
@@ -93,11 +95,6 @@ class HookManager {
             }
         }
     }
-
-    /**
-     * Check if a hook is enabled in config
-     */
-    fun isEnabled(hookName: String): Boolean = Config.isEnabled(hookName)
 
     /**
      * Get all hook names grouped by type

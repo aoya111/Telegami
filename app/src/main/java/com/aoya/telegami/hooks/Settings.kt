@@ -48,7 +48,7 @@ class Settings :
                 val checkBox = CheckBox(ctx)
 
                 checkBox.text = v
-                checkBox.isChecked = Config.isEnabled(k)
+                checkBox.isChecked = Config.isHookEnabled(k)
                 checkBox.setTextColor(if (isDark) Color.WHITE else Color.BLACK)
                 checkBox.setPadding(10, 10, 10, 10)
                 checkBox.setTypeface(Typeface.DEFAULT_BOLD)
@@ -65,7 +65,7 @@ class Settings :
                         checkBoxes.forEach { chkBx ->
                             val text = chkBx.text.toString()
                             val key = opts.entries.find { it.value == text }?.key ?: return@forEach
-                            val oldState = Config.isEnabled(key)
+                            val oldState = Config.isHookEnabled(key)
                             val isChecked = chkBx.isChecked
                             if (isChecked != oldState) {
                                 Config.setHookEnabled(key, isChecked)

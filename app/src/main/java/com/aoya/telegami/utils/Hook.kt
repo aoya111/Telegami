@@ -39,7 +39,7 @@ abstract class Hook(
     }
 
     protected val isEnabled: Boolean
-        get() = Config.isEnabled(hookName)
+        get() = Config.isHookEnabled(hookName)
 
     protected val isDark: Boolean
         get() = Theme.getActiveTheme().isDark()
