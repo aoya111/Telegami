@@ -80,7 +80,6 @@ class ShowDeletedMessages :
             param.setResult(null)
         }
 
-        MarkDeletedMessages().init()
         // ModifyDeletedMessagesMenu().init()
     }
 }

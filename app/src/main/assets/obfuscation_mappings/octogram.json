@@ -2,7 +2,7 @@
   "variant": "octogram",
   "package_name": "it.octogram.android",
   "version": "3.5.1",
-  "updated": "2026-02-03",
+  "updated": "2026-02-04",
   "mappings": {
     "org.telegram.SQLite.SQLiteCursor": {
       "fields": {},
@@ -299,6 +299,14 @@
     },
     "org.telegram.tgnet.TLRPC$Message": {
       "fields": {
+        "date": {
+          "hint": "messageOwner\\.\\w* == 214748",
+          "obfuscated": "f"
+        },
+        "flags": {
+          "hint": "edited = true",
+          "obfuscated": "k"
+        },
         "ttl": {
           "hint": "if (\\w*.messageOwner.\\w* == Integer.MAX_VALUE)",
           "obfuscated": "h0"

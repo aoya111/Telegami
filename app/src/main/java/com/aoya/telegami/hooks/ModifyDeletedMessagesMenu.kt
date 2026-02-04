@@ -29,7 +29,7 @@ class ModifyDeletedMessagesMenu :
             "lambda\$createMenu$290",
             HookStage.BEFORE,
             filter = {
-                Config.isEnabled("show_deleted_messages")
+                Config.isHookEnabled("show_deleted_messages")
             },
         ) { param ->
             if (!msgIsDeleted) return@findAndHook
@@ -93,7 +93,7 @@ class ModifyDeletedMessagesMenu :
             "createMenu",
             HookStage.BEFORE,
             filter = {
-                Config.isEnabled("show_deleted_messages")
+                Config.isHookEnabled("show_deleted_messages")
             },
         ) { param ->
             val p1 = param.arg<Any>(0)
@@ -124,7 +124,7 @@ class ModifyDeletedMessagesMenu :
             "request",
             HookStage.BEFORE,
             filter = {
-                Config.isEnabled("show_deleted_messages")
+                Config.isHookEnabled("show_deleted_messages")
             },
         ) { param ->
             val o = param.thisObject()

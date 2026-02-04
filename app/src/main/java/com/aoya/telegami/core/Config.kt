@@ -141,7 +141,7 @@ object Config {
         writeConfig()
     }
 
-    fun isEnabled(hookName: String): Boolean = localConfig.hooks[hookName] ?: false
+    fun isHookEnabled(hookName: String): Boolean = localConfig.hooks[hookName] ?: false
 
     fun initHookSettings(
         name: String,

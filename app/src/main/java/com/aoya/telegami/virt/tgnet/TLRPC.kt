@@ -11,6 +11,10 @@ import de.robv.android.xposed.XposedHelpers.setObjectField
 import com.aoya.telegami.core.obfuscate.ResolverManager as resolver
 
 class TLRPC {
+    companion object {
+        const val MESSAGE_FLAG_EDITED = 0x00008000
+    }
+
     class User(
         private val instance: Any,
     ) {
@@ -52,6 +56,9 @@ class TLRPC {
 
         val date: Int
             get() = getIntField(instance, resolver.getField(objPath, "date"))
+
+        val flags: Int
+            get() = getIntField(instance, resolver.getField(objPath, "flags"))
 
         var ttl: Int
             get() = getIntField(instance, resolver.getField(objPath, "ttl"))
