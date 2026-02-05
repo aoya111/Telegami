@@ -570,9 +570,9 @@
           "hint": "public <MessageObject> \\w*()",
           "obfuscated": "getMessageObject"
         },
-        "measureTime": {
-          "hint": "final void \\w*(<MessageObject>",
-          "obfuscated": "m6"
+        "setMessageContent": {
+          "hint": "final void \\w*(<MessageObject> \\w*, <MessageObject.GroupedMessages>",
+          "obfuscated": "O6"
         }
       },
       "obfuscated": "xg3"

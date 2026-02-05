@@ -34,7 +34,7 @@ class MarkMessages :
             }
         }
 
-        findAndHook("org.telegram.ui.Cells.ChatMessageCell", "measureTime", HookStage.AFTER, filter = { true }) { param ->
+        findAndHook("org.telegram.ui.Cells.ChatMessageCell", "setMessageContent", HookStage.AFTER, filter = { true }) { param ->
             val msgCell = ChatMessageCell(param.thisObject())
             val msgObj = MessageObject(param.arg<Any>(0))
             val dialogId = msgObj.getDialogId()
@@ -44,6 +44,7 @@ class MarkMessages :
             var timeStr = msgCell.currentTimeString
             var timeTextWidth = msgCell.timeTextWidth
             var timeWidth = msgCell.timeWidth
+            var backgroundWidth = msgCell.backgroundWidth
             var customDrawableWidth = 0
 
             var isDeleted = false
@@ -57,13 +58,9 @@ class MarkMessages :
                         val drawableAdjustment =
                             customDrawableWidth * (Theme.chatTimePaint.textSize - AndroidUtilities.dp(2.0f)) / customDrawableWidth
                         timeTextWidth += drawableAdjustment.toInt()
+                        backgroundWidth += drawableAdjustment.toInt()
                     }
-                    if (Telegami.packageName == "tw.nekomimi.nekogram") {
-                        timeTextWidth = timeTextWidth + AndroidUtilities.dp(6.0f)
-                        timeWidth = timeTextWidth - AndroidUtilities.dp(6.0f)
-                    } else {
-                        timeWidth = timeTextWidth
-                    }
+                    timeWidth = timeTextWidth
                     isDeleted = true
                 }
             }
@@ -76,6 +73,7 @@ class MarkMessages :
                     timeTextWidth = msgCell.timeTextWidth
                     if (customDrawableWidth != 0) {
                         timeTextWidth -= AndroidUtilities.dp(24.0f)
+                        backgroundWidth -= AndroidUtilities.dp(24.0f)
                     }
                     timeWidth = timeTextWidth
                 }
@@ -83,6 +81,7 @@ class MarkMessages :
             msgCell.currentTimeString = timeStr
             msgCell.timeTextWidth = timeTextWidth
             msgCell.timeWidth = timeWidth
+            msgCell.backgroundWidth = backgroundWidth
         }
     }
 }
