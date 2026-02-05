@@ -13,6 +13,8 @@ class ColoredImageSpan(
 
     fun setSize(size: Int) = callMethod(instance, resolver.getMethod(objPath, "setSize"), size) as Unit?
 
+    fun setOverrideColor(color: Int) = callMethod(instance, resolver.getMethod(objPath, "setOverrideColor"), color) as Unit?
+
     fun getNativeInstance() = instance
 
     companion object {

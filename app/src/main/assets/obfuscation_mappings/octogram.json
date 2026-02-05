@@ -2,7 +2,7 @@
   "variant": "octogram",
   "package_name": "it.octogram.android",
   "version": "3.5.1",
-  "updated": "2026-02-04",
+  "updated": "2026-02-05",
   "mappings": {
     "org.telegram.SQLite.SQLiteCursor": {
       "fields": {},
@@ -657,6 +657,10 @@
       "fields": {},
       "hint": "isRelativeSize",
       "methods": {
+        "setOverrideColor": {
+          "hint": null,
+          "obfuscated": "d"
+        },
         "setSize": {
           "hint": null,
           "obfuscated": "h"

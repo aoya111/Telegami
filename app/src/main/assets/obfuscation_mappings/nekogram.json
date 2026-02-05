@@ -2,7 +2,7 @@
   "variant": "nekogram",
   "package_name": "tw.nekomimi.nekogram",
   "version": "12.3.1",
-  "updated": "2026-02-03",
+  "updated": "2026-02-05",
   "mappings": {
     "org.telegram.SQLite.SQLiteCursor": {
       "fields": {},
@@ -299,6 +299,14 @@
     },
     "org.telegram.tgnet.TLRPC$Message": {
       "fields": {
+        "date": {
+          "hint": "messageOwner\\.\\w* == 214748",
+          "obfuscated": "f"
+        },
+        "flags": {
+          "hint": "edited = true",
+          "obfuscated": "k"
+        },
         "ttl": {
           "hint": "if (\\w*.messageOwner.\\w* == Integer.MAX_VALUE)",
           "obfuscated": "i0"
@@ -655,6 +663,10 @@
       "fields": {},
       "hint": "isRelativeSize",
       "methods": {
+        "setOverrideColor": {
+          "hint": null,
+          "obfuscated": "d"
+        },
         "setSize": {
           "hint": null,
           "obfuscated": "h"

@@ -7,6 +7,7 @@ import com.aoya.telegami.data.DeletedMessage
 import com.aoya.telegami.virt.messenger.AndroidUtilities
 import com.aoya.telegami.virt.messenger.LocaleController
 import com.aoya.telegami.virt.messenger.MessageObject
+import com.aoya.telegami.virt.ui.actionbar.Theme
 import com.aoya.telegami.virt.ui.components.ColoredImageSpan
 
 object MessageHelper {
@@ -15,7 +16,7 @@ object MessageHelper {
 
     fun createDeletedString(msg: DeletedMessage): CharSequence {
         if (deleteIcon == null) {
-            deleteIcon = createIconSpan("msg_delete")
+            deleteIcon = createIconSpan("msg_delete", color = 0xFFFF6B6B.toInt())
         }
         return SpannableStringBuilder().apply {
             append(deleteIcon)
@@ -32,7 +33,7 @@ object MessageHelper {
 
     fun createEditedString(msgObj: MessageObject): CharSequence {
         if (editIcon == null) {
-            editIcon = createIconSpan("msg_edit")
+            editIcon = createIconSpan("msg_edit", color = 0xFF5FA8D3.toInt())
         }
         return SpannableStringBuilder().apply {
             append(editIcon)
@@ -47,7 +48,7 @@ object MessageHelper {
 
     private fun createIconSpan(
         resourceName: String,
-        iconSize: Float = 12f,
+        color: Int? = null,
     ): CharSequence {
         val drawableResId =
             Telegami.context.resources
@@ -59,7 +60,10 @@ object MessageHelper {
 
         val drawable = Telegami.context.getDrawable(drawableResId)?.mutate()
         val span = ColoredImageSpan.newInstance(drawable)
-        span.setSize(AndroidUtilities.dp(iconSize))
+        span.setSize(Theme.chatTimePaint.textSize.toInt())
+
+        color?.let { span.setOverrideColor(it) }
+
         // if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
         //     span.contentDescription = LocaleController.getString(R.string.EditedMessage)
         // }
