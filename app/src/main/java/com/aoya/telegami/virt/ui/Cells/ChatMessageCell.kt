@@ -22,6 +22,10 @@ class ChatMessageCell(
         get() = getIntField(instance, "timeTextWidth")
         set(value) = setIntField(instance, "timeTextWidth", value)
 
+    var backgroundWidth: Int
+        get() = getIntField(instance, "backgroundWidth")
+        set(value) = setIntField(instance, "backgroundWidth", value)
+
     var currentTimeString: CharSequence
         get() = getObjectField(instance, resolver.getField(objPath, "currentTimeString")) as CharSequence
         set(value) = setObjectField(instance, resolver.getField(objPath, "currentTimeString"), value)

@@ -573,12 +573,12 @@
       "hint": "this\\.currentMessageObject\\.isMediaSpoilersRevealed = true",
       "methods": {
         "getMessageObject": {
-          "hint": "returns MessageObject",
+          "hint": "public <MessageObject> \\w*()",
           "obfuscated": "L5"
         },
-        "measureTime": {
-          "hint": "final void \\w*(<MessageObject>",
-          "obfuscated": "M8"
+        "setMessageContent": {
+          "hint": "final void \\w*(<MessageObject> \\w*, <MessageObject.GroupedMessages>",
+          "obfuscated": "J8"
         }
       },
       "obfuscated": "i33"
