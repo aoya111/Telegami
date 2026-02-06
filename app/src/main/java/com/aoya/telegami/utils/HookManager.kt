@@ -7,6 +7,7 @@ import com.aoya.telegami.hooks.AllowScreenshots
 import com.aoya.telegami.hooks.ApplyColor
 import com.aoya.telegami.hooks.BoostDownload
 import com.aoya.telegami.hooks.FakePremium
+import com.aoya.telegami.hooks.HideBetaUpdate
 import com.aoya.telegami.hooks.HideOnlineStatus
 import com.aoya.telegami.hooks.HidePhone
 import com.aoya.telegami.hooks.HideSeenStatus
@@ -32,6 +33,7 @@ class HookManager {
             ApplyColor(),
             BoostDownload(),
             ProfileDetails(),
+            HideBetaUpdate(),
         )
 
     private val configurableHooks =
