@@ -36,9 +36,6 @@ class Settings :
             Config.initialize(Telegami.packageName, user)
         }
 
-        val settingsLabel = "${i18n.get("AppName")} ${getStringResource("Settings")}"
-        val settingsIcon = getResource("msg_settings_old", "drawable")
-
         fun showAlert(ctx: Context) {
             val layout = LinearLayout(ctx)
             layout.setOrientation(LinearLayout.VERTICAL)
@@ -85,6 +82,9 @@ class Settings :
                 }.show()
         }
 
+        val settingsLabel = "${i18n.get("AppName")} ${getStringResource("Settings")}"
+        val settingsIcon = getResource("msg_settings_old", "drawable")
+
         if (Telegami.packageName == "org.telegram.messenger.beta") {
             findAndHook("org.telegram.ui.SettingsActivity", "fillItems", HookStage.AFTER, filter = { true }) { param ->
                 val arrayList = param.arg<Any>(0) as ArrayList<Any?>
@@ -111,20 +111,10 @@ class Settings :
         } else {
             findAndHook("org.telegram.ui.Adapters.DrawerLayoutAdapter", "resetItems", HookStage.AFTER, filter = { true }) { param ->
                 val o = DrawerLayoutAdapter(param.thisObject())
-                val nth = if (Telegami.packageName == "org.telegram.plus") 3 else 2
-                var nullCount = 0
-                val insertIdx =
-                    o.items.indexOfFirst { item ->
-                        if (item == null) {
-                            nullCount++
-                            nullCount == nth
-                        } else {
-                            false
-                        }
-                    }
+                val insertIdx = o.items.indexOfFirst { it?.let { it.id == 8 } ?: false }
                 val newItem = DrawerLayoutAdapter.Item(itemID, settingsLabel, settingsIcon)
                 if (insertIdx != -1) {
-                    o.addItem(insertIdx, newItem)
+                    o.addItem(insertIdx + 1, newItem)
                 } else {
                     o.addItem(newItem)
                 }
