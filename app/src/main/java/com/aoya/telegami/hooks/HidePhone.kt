@@ -16,7 +16,9 @@ class HidePhone :
             listOf(
                 "it.octogram.android",
                 "tw.nekomimi.nekogram",
+                "org.telegram.messenger",
                 "org.telegram.messenger.beta",
+                "org.telegram.messenger.web",
                 "uz.unnarsx.cherrygram",
                 "xyz.nextalone.nagram",
             )
