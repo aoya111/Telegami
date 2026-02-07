@@ -85,7 +85,7 @@ class Settings :
         val settingsLabel = "${i18n.get("AppName")} ${getStringResource("Settings")}"
         val settingsIcon = getResource("msg_settings_old", "drawable")
 
-        if (Telegami.packageName == "org.telegram.messenger.beta") {
+        if (Telegami.packageName in listOf("org.telegram.messenger", "org.telegram.messenger.beta", "org.telegram.messenger.web")) {
             findAndHook("org.telegram.ui.SettingsActivity", "fillItems", HookStage.AFTER, filter = { true }) { param ->
                 val arrayList = param.arg<Any>(0) as ArrayList<Any?>
                 val item =
