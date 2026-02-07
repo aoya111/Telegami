@@ -113,6 +113,10 @@
         "getInstance": {
           "hint": "catch (Throwable",
           "obfuscated": "A1"
+        },
+        "getString": {
+          "hint": null,
+          "obfuscated": "K1"
         }
       },
       "obfuscated": "org.telegram.messenger.f0"

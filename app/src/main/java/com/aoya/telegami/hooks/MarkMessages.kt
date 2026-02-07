@@ -14,6 +14,7 @@ import com.aoya.telegami.virt.ui.ChatActivity
 import com.aoya.telegami.virt.ui.actionbar.Theme
 import com.aoya.telegami.virt.ui.cells.ChatMessageCell
 import kotlinx.coroutines.launch
+import kotlin.math.ceil
 import com.aoya.telegami.core.i18n.TranslationManager as i18n
 
 class MarkMessages :
@@ -53,7 +54,6 @@ class MarkMessages :
                     timeStr = MessageHelper.createDeletedString(msg)
                     customDrawableWidth = getDrawableResource("msg_delete")?.getIntrinsicWidth() ?: 0
 
-                    timeTextWidth = msgCell.timeTextWidth
                     if (customDrawableWidth != 0) {
                         val drawableAdjustment =
                             customDrawableWidth * (Theme.chatTimePaint.textSize - AndroidUtilities.dp(2.0f)) / customDrawableWidth
@@ -65,15 +65,20 @@ class MarkMessages :
                 }
             }
             if (!isDeleted) {
-                val isEdited = (msgObj.messageOwner.flags and TLRPC.MESSAGE_FLAG_EDITED) != 0
-                if (isEdited && (Telegami.packageName != "tw.nekomimi.nekogram")) {
-                    timeStr = MessageHelper.createEditedString(msgObj)
+                val oldWidth = ceil(Theme.chatTimePaint.measureText(timeStr, 0, timeStr.length)).toInt()
+                timeStr = MessageHelper.replaceWithIcon(timeStr)
+                val newWidth = ceil(Theme.chatTimePaint.measureText(timeStr, 0, timeStr.length)).toInt()
+
+                val dwidth = newWidth - oldWidth
+                if (dwidth != 0) {
                     customDrawableWidth = getDrawableResource("msg_edit")?.getIntrinsicWidth() ?: 0
 
                     timeTextWidth = msgCell.timeTextWidth
                     if (customDrawableWidth != 0) {
-                        timeTextWidth -= AndroidUtilities.dp(24.0f)
-                        backgroundWidth -= AndroidUtilities.dp(24.0f)
+                        val drawableAdjustment =
+                            customDrawableWidth * (Theme.chatTimePaint.textSize - AndroidUtilities.dp(2.0f)) / customDrawableWidth
+                        timeTextWidth += drawableAdjustment.toInt() + dwidth
+                        backgroundWidth += drawableAdjustment.toInt() + dwidth
                     }
                     timeWidth = timeTextWidth
                 }

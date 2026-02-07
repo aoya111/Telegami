@@ -46,6 +46,42 @@ object MessageHelper {
         }
     }
 
+    fun replaceWithIcon(text: CharSequence): CharSequence {
+        if (editIcon == null) {
+            editIcon = createIconSpan("msg_edit", color = 0xFF5FA8D3.toInt())
+        }
+
+        val str = text.toString()
+
+        var newTxt = SpannableStringBuilder("")
+        for (l in listOf("EditedMessage")) {
+            val editedStr = getResourceString(l)
+            val start = text.indexOf(editedStr)
+            if (start < 0) continue
+
+            newTxt =
+                SpannableStringBuilder().apply {
+                    append(str.substring(0, start))
+                    append(editIcon)
+                    append(' ')
+                    append(str.substring(start + editedStr.length))
+                }
+            break
+        }
+        return if (newTxt.isEmpty()) text else newTxt
+    }
+
+    private fun getResourceString(resourceName: String): String {
+        val strResId =
+            Telegami.context.resources
+                .getIdentifier(
+                    resourceName,
+                    "string",
+                    Telegami.context.packageName,
+                ).takeIf { it != 0 } ?: return ""
+        return LocaleController.getString(strResId)
+    }
+
     private fun createIconSpan(
         resourceName: String,
         color: Int? = null,
