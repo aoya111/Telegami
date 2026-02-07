@@ -2,7 +2,7 @@
   "variant": "nekogram",
   "package_name": "tw.nekomimi.nekogram",
   "version": "12.3.1",
-  "updated": "2026-02-05",
+  "updated": "2026-02-07",
   "mappings": {
     "org.telegram.SQLite.SQLiteCursor": {
       "fields": {},
@@ -459,7 +459,7 @@
           "obfuscated": "D"
         },
         "setView": {
-          "hint": null,
+          "hint": "return \\w*(\\w*, -2)",
           "obfuscated": "K"
         },
         "show": {
@@ -664,11 +664,11 @@
       "hint": "isRelativeSize",
       "methods": {
         "setOverrideColor": {
-          "hint": null,
+          "hint": "overrideColor =",
           "obfuscated": "d"
         },
         "setSize": {
-          "hint": null,
+          "hint": "\\.size = i;",
           "obfuscated": "h"
         }
       },
