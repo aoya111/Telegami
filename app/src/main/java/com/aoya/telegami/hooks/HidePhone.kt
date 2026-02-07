@@ -13,7 +13,13 @@ class HidePhone :
     ) {
     override fun init() {
         if (Telegami.packageName in
-            listOf("it.octogram.android", "tw.nekomimi.nekogram", "org.telegram.messenger.beta", "xyz.nextalone.nagram")
+            listOf(
+                "it.octogram.android",
+                "tw.nekomimi.nekogram",
+                "org.telegram.messenger.beta",
+                "uz.unnarsx.cherrygram",
+                "xyz.nextalone.nagram",
+            )
         ) {
             return
         }

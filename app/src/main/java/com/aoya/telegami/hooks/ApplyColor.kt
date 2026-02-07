@@ -13,7 +13,7 @@ class ApplyColor :
         "Apply selected color and emoji on profile and name",
     ) {
     override fun init() {
-        if (Telegami.packageName == "xyz.nextalone.nagram") return
+        if (Telegami.packageName in listOf("uz.unnarsx.cherrygram", "xyz.nextalone.nagram")) return
 
         findAndHook("org.telegram.ui.PeerColorActivity", "apply", HookStage.AFTER, filter = { true }) { param ->
             Config.reload()

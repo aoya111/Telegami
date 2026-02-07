@@ -2,7 +2,7 @@
   "variant": "octogram",
   "package_name": "it.octogram.android",
   "version": "3.5.1",
-  "updated": "2026-02-05",
+  "updated": "2026-02-07",
   "mappings": {
     "org.telegram.SQLite.SQLiteCursor": {
       "fields": {},
@@ -453,7 +453,7 @@
           "obfuscated": "D"
         },
         "setView": {
-          "hint": null,
+          "hint": "return \\w*(\\w*, -2)",
           "obfuscated": "K"
         },
         "show": {
@@ -503,7 +503,7 @@
     "org.telegram.ui.ActionBar.Theme": {
       "fields": {
         "chat_timePaint": {
-          "hint": "public static boolean \\w*()",
+          "hint": null,
           "obfuscated": "T2"
         }
       },
@@ -633,7 +633,7 @@
     },
     "org.telegram.ui.Components.Bulletin": {
       "fields": {},
-      "hint": null,
+      "hint": "fragmentDelegates",
       "methods": {
         "show": {
           "hint": null,
@@ -658,11 +658,11 @@
       "hint": "isRelativeSize",
       "methods": {
         "setOverrideColor": {
-          "hint": null,
+          "hint": "overrideColor =",
           "obfuscated": "d"
         },
         "setSize": {
-          "hint": null,
+          "hint": "\\.size = i;",
           "obfuscated": "h"
         }
       },

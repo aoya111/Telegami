@@ -11,6 +11,7 @@ object Constants {
             "org.telegram.messenger.web",
             "org.telegram.plus",
             "tw.nekomimi.nekogram",
+            "uz.unnarsx.cherrygram",
             "xyz.nextalone.nagram",
         )
 
@@ -39,6 +40,7 @@ object Constants {
                     "hide_phone",
                     "unlock_channel_features",
                 ),
+            "uz.unnarsx.cherrygram" to setOf("hide_phone"),
             "xyz.nextalone.nagram" to
                 setOf(
                     "hide_phone",
