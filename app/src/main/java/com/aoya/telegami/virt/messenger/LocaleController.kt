@@ -29,5 +29,12 @@ class LocaleController(
                     resolver.getMethod(OBJ_PATH, "getInstance"),
                 ),
             )
+
+        fun getString(id: Int): String =
+            callStaticMethod(
+                Telegami.loadClass(resolver.get(OBJ_PATH)),
+                resolver.getMethod(OBJ_PATH, "getString"),
+                id,
+            ) as String
     }
 }
