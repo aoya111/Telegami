@@ -35,7 +35,7 @@ class MarkMessages :
             }
         }
 
-        findAndHook("org.telegram.ui.Cells.ChatMessageCell", "setMessageContent", HookStage.AFTER, filter = { true }) { param ->
+        findAndHook("org.telegram.ui.Cells.ChatMessageCell", "measureTime", HookStage.AFTER, filter = { true }) { param ->
             val msgCell = ChatMessageCell(param.thisObject())
             val msgObj = MessageObject(param.arg<Any>(0))
             val dialogId = msgObj.getDialogId()
@@ -45,27 +45,30 @@ class MarkMessages :
             var timeStr = msgCell.currentTimeString
             var timeTextWidth = msgCell.timeTextWidth
             var timeWidth = msgCell.timeWidth
-            var backgroundWidth = msgCell.backgroundWidth
             var customDrawableWidth = 0
 
             var isDeleted = false
+            val oldWidth = ceil(Theme.chatTimePaint.measureText(timeStr, 0, timeStr.length)).toInt()
             if (Config.isHookEnabled("show_deleted_messages")) {
                 deletedMessagesCache[msgKey]?.let { msg ->
                     timeStr = MessageHelper.createDeletedString(msg)
-                    customDrawableWidth = getDrawableResource("msg_delete")?.getIntrinsicWidth() ?: 0
+                    val newWidth = ceil(Theme.chatTimePaint.measureText(timeStr, 0, timeStr.length)).toInt()
 
-                    if (customDrawableWidth != 0) {
-                        val drawableAdjustment =
-                            customDrawableWidth * (Theme.chatTimePaint.textSize - AndroidUtilities.dp(2.0f)) / customDrawableWidth
-                        timeTextWidth += drawableAdjustment.toInt()
-                        backgroundWidth += drawableAdjustment.toInt()
+                    val dwidth = newWidth - oldWidth
+                    if (dwidth != 0) {
+                        customDrawableWidth = getDrawableResource("msg_delete")?.getIntrinsicWidth() ?: 0
+                        if (customDrawableWidth != 0) {
+                            val drawableAdjustment =
+                                customDrawableWidth * (Theme.chatTimePaint.textSize - AndroidUtilities.dp(2.0f)) / customDrawableWidth
+                            timeTextWidth += drawableAdjustment.toInt() + dwidth
+                            timeWidth += drawableAdjustment.toInt() + 5 * dwidth / 6
+                        }
+                        // timeWidth = timeTextWidth
                     }
-                    timeWidth = timeTextWidth
                     isDeleted = true
                 }
             }
             if (!isDeleted) {
-                val oldWidth = ceil(Theme.chatTimePaint.measureText(timeStr, 0, timeStr.length)).toInt()
                 timeStr = MessageHelper.replaceWithIcon(timeStr)
                 val newWidth = ceil(Theme.chatTimePaint.measureText(timeStr, 0, timeStr.length)).toInt()
 
@@ -78,15 +81,13 @@ class MarkMessages :
                         val drawableAdjustment =
                             customDrawableWidth * (Theme.chatTimePaint.textSize - AndroidUtilities.dp(2.0f)) / customDrawableWidth
                         timeTextWidth += drawableAdjustment.toInt() + dwidth
-                        backgroundWidth += drawableAdjustment.toInt() + dwidth
+                        timeWidth += drawableAdjustment.toInt() + 5 * dwidth / 6
                     }
-                    timeWidth = timeTextWidth
                 }
             }
             msgCell.currentTimeString = timeStr
             msgCell.timeTextWidth = timeTextWidth
             msgCell.timeWidth = timeWidth
-            msgCell.backgroundWidth = backgroundWidth
         }
     }
 }

@@ -2,7 +2,7 @@
   "variant": "nekogram",
   "package_name": "tw.nekomimi.nekogram",
   "version": "12.3.1",
-  "updated": "2026-02-07",
+  "updated": "2026-02-08",
   "mappings": {
     "org.telegram.SQLite.SQLiteCursor": {
       "fields": {},
@@ -579,6 +579,10 @@
         "getMessageObject": {
           "hint": "public <MessageObject> \\w*()",
           "obfuscated": "L5"
+        },
+        "measureTime": {
+          "hint": "final void \\w*(<MessageObject>",
+          "obfuscated": "M8"
         },
         "setMessageContent": {
           "hint": "final void \\w*(<MessageObject> \\w*, <MessageObject.GroupedMessages>",
