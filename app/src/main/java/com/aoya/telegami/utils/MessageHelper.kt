@@ -11,15 +11,19 @@ import com.aoya.telegami.virt.ui.actionbar.Theme
 import com.aoya.telegami.virt.ui.components.ColoredImageSpan
 
 object MessageHelper {
-    private var editIcon: CharSequence? = null
-    private var deleteIcon: CharSequence? = null
+    private val icons =
+        mapOf<String, CharSequence>(
+            "edit" to createIconSpan("msg_edit", 0xFF5FA8D3.toInt()),
+            "delete" to createIconSpan("msg_delete", 0xFFFF6B6B.toInt()),
+        )
+    private val labels =
+        mapOf(
+            "edit" to getResourceString("EditedMessage"),
+        )
 
-    fun createDeletedString(msg: DeletedMessage): CharSequence {
-        if (deleteIcon == null) {
-            deleteIcon = createIconSpan("msg_delete", color = 0xFFFF6B6B.toInt())
-        }
-        return SpannableStringBuilder().apply {
-            append(deleteIcon)
+    fun createDeletedString(msg: DeletedMessage): CharSequence =
+        SpannableStringBuilder().apply {
+            append(icons["delete"])
             append(' ')
             msg.createdAt?.let {
                 append(
@@ -29,14 +33,10 @@ object MessageHelper {
                 )
             }
         }
-    }
 
-    fun createEditedString(msgObj: MessageObject): CharSequence {
-        if (editIcon == null) {
-            editIcon = createIconSpan("msg_edit", color = 0xFF5FA8D3.toInt())
-        }
-        return SpannableStringBuilder().apply {
-            append(editIcon)
+    fun createEditedString(msgObj: MessageObject): CharSequence =
+        SpannableStringBuilder().apply {
+            append(icons["edit"])
             append(' ')
             append(
                 LocaleController.getInstance().getFormatterDay().format(
@@ -44,27 +44,21 @@ object MessageHelper {
                 ),
             )
         }
-    }
 
     fun replaceWithIcon(text: CharSequence): CharSequence {
-        if (editIcon == null) {
-            editIcon = createIconSpan("msg_edit", color = 0xFF5FA8D3.toInt())
-        }
-
         val str = text.toString()
 
         var newTxt = SpannableStringBuilder("")
-        for (l in listOf("EditedMessage")) {
-            val editedStr = getResourceString(l)
-            val start = text.indexOf(editedStr)
+        for (entry in labels.entries.iterator()) {
+            val start = text.indexOf(entry.value)
             if (start < 0) continue
 
             newTxt =
                 SpannableStringBuilder().apply {
                     append(str.substring(0, start))
-                    append(editIcon)
+                    append(icons[entry.key])
                     append(' ')
-                    append(str.substring(start + editedStr.length))
+                    append(str.substring(start + entry.value.length))
                 }
             break
         }

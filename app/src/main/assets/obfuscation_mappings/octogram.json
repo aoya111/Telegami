@@ -2,7 +2,7 @@
   "variant": "octogram",
   "package_name": "it.octogram.android",
   "version": "3.5.1",
-  "updated": "2026-02-07",
+  "updated": "2026-02-08",
   "mappings": {
     "org.telegram.SQLite.SQLiteCursor": {
       "fields": {},
@@ -573,6 +573,10 @@
         "getMessageObject": {
           "hint": "public <MessageObject> \\w*()",
           "obfuscated": "getMessageObject"
+        },
+        "measureTime": {
+          "hint": "final void \\w*(<MessageObject>",
+          "obfuscated": "m6"
         },
         "setMessageContent": {
           "hint": "final void \\w*(<MessageObject> \\w*, <MessageObject.GroupedMessages>",

@@ -2,7 +2,7 @@
   "variant": "cherrygram",
   "package_name": "uz.unnarsx.cherrygram",
   "version": "10.2.0",
-  "updated": "2026-02-07",
+  "updated": "2026-02-08",
   "mappings": {
     "org.telegram.messenger.browser.Browser": {
       "fields": {},
@@ -195,6 +195,10 @@
       "fields": {},
       "hint": "this\\.currentMessageObject\\.isMediaSpoilersRevealed = true",
       "methods": {
+        "measureTime": {
+          "hint": "final void \\w*(<MessageObject>",
+          "obfuscated": "f6"
+        },
         "setMessageContent": {
           "hint": "final void \\w*(<MessageObject> \\w*, <MessageObject.GroupedMessages>",
           "obfuscated": "H6"
