@@ -1,0 +1,20 @@
+{
+  "AppName": "Telegami",
+  "chat_scroll_to_top": "Scroll to top",
+  "input_msg_id": "Input Message Id",
+  "hide_seen_status": "Hide 'Seen' status for messages",
+  "hide_story_view_status": "Hide 'Story View' status",
+  "hide_typing": "Hide Typing...",
+  "unlock_channel_features": "Unlock all restricted and encrypted features for channels",
+  "show_delete_msg_button": "Show 'Delete Messages' button",
+  "allow_save_videos": "Allow saving videos to the gallery",
+  "developer_channel": "Developer Channel",
+  "hide_online_status": "Hide online status",
+  "prevent_secret_media_deletion": "Prevent Deletion of Secret Media.",
+  "hide_phone": "Hide 'Phone' number",
+  "show_deleted_messages": "Show 'Deleted Messages'",
+  "CopiedToClipboardHint": "'{item}' copied",
+  "ProfileStatusOffline": "offline",
+  "ProfileCopyUserId": "Copy ID",
+  "ProfileCopyChatId": "Copy ID"
+}

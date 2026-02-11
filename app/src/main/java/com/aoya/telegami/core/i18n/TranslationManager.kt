@@ -6,7 +6,10 @@ import android.os.Build
 object TranslationManager {
     private lateinit var translation: Translation
 
-    fun init(context: Context) {
+    fun init(
+        context: Context,
+        modulePath: String,
+    ) {
         val locale =
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                 context.resources.configuration.locales[0]
@@ -14,13 +17,7 @@ object TranslationManager {
                 @Suppress("DEPRECATION")
                 context.resources.configuration.locale
             }
-
-        translation =
-            when {
-                locale.language == "ar" -> I18NarSA
-                locale.language == "zh" -> I18NzhCN
-                else -> I18NenUS
-            }
+        translation = JsonResolver.fromModuleAssets(modulePath, locale.language)
     }
 
     fun get(key: String): String = translation.get(key)
