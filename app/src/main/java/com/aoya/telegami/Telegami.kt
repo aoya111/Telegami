@@ -44,7 +44,7 @@ object Telegami {
         newModule.setReadOnly()
 
         this.classLoader =
-            DexClassLoader(newModule.absolutePath, null, null, context.classLoader)
+            DexClassLoader(newModule.absolutePath, context.codeCacheDir.absolutePath, null, context.classLoader)
         this.hookManager = HookManager()
         this.packageName = context.packageName
         this.db = AppDatabase.getDatabase(context)
