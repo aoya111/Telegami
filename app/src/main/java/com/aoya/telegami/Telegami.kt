@@ -36,7 +36,7 @@ object Telegami {
     ) {
         this.context = app
 
-        TranslationManager.init(context)
+        TranslationManager.init(context, modulePath)
         ResolverManager.init(context.packageName, modulePath)
 
         val newModule = File(context.filesDir, "telegami.dex")
