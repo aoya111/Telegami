@@ -3,6 +3,7 @@
     <string-array name="xposed_scope">
         <item>it.octogram.android</item>
         <item>org.forkgram.messenger</item>
+        <item>org.telegram.group</item>
         <item>org.telegram.messenger</item>
         <item>org.telegram.messenger.beta</item>
         <item>org.telegram.messenger.web</item>
