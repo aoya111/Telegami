@@ -1,17 +1,15 @@
 package com.aoya.telegami.virt.ui
 
-import android.content.Context
 import com.aoya.telegami.Telegami
+import com.aoya.telegami.virt.ui.actionbar.BaseFragment
 import de.robv.android.xposed.XposedHelpers.callMethod
 import de.robv.android.xposed.XposedHelpers.callStaticMethod
 import com.aoya.telegami.core.obfuscate.ResolverManager as resolver
 
 class SettingsActivity(
-    private val instance: Any,
-) {
+    instance: Any,
+) : BaseFragment(instance) {
     private val objPath = OBJ_PATH
-
-    fun getContext() = callMethod(instance, resolver.getMethod(objPath, "getContext")) as Context
 
     companion object {
         private const val OBJ_PATH = "org.telegram.ui.SettingsActivity"
