@@ -1,5 +1,6 @@
 package com.aoya.telegami.virt.ui.actionbar
 
+import android.content.Context
 import com.aoya.telegami.virt.messenger.MessagesController
 import com.aoya.telegami.virt.messenger.UserConfig
 import de.robv.android.xposed.XposedHelpers.callMethod
@@ -9,6 +10,8 @@ open class BaseFragment(
     protected val instance: Any,
 ) {
     private val objPath = "org.telegram.ui.ActionBar.BaseFragment"
+
+    fun getContext() = callMethod(instance, resolver.getMethod(objPath, "getContext")) as Context
 
     fun getMessagesController(): MessagesController =
         MessagesController(callMethod(instance, resolver.getMethod(objPath, "getMessagesController")))
