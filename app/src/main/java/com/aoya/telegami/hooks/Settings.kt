@@ -86,7 +86,13 @@ class Settings :
         val settingsIcon = getResource("msg_settings_old", "drawable")
 
         if (Telegami.packageName in
-            listOf("tw.nekomimi.nekogram", "org.telegram.messenger", "org.telegram.messenger.beta", "org.telegram.messenger.web")
+            listOf(
+                "tw.nekomimi.nekogram",
+                "org.forkgram.messenger",
+                "org.telegram.messenger",
+                "org.telegram.messenger.beta",
+                "org.telegram.messenger.web",
+            )
         ) {
             findAndHook("org.telegram.ui.SettingsActivity", "fillItems", HookStage.AFTER, filter = { true }) { param ->
                 val arrayList = param.arg<Any>(0) as ArrayList<Any?>
