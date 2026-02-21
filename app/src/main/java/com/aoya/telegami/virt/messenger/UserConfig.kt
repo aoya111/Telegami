@@ -12,9 +12,10 @@ class UserConfig(
     val userId: Long
         get() = getLongField(instance, "userId")
 
-    fun getClientUserId(): Long? =
-        callMethod(
-            instance,
-            resolver.getMethod(objPath, "getClientUserId"),
-        ) as? Long
+    val clientUserId: Long
+        get() =
+            callMethod(
+                instance,
+                resolver.getMethod(objPath, "getClientUserId"),
+            ) as? Long ?: 0L
 }
