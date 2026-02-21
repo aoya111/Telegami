@@ -32,7 +32,7 @@ class Settings :
     override fun init() {
         findAndHook("org.telegram.messenger.UserConfig", "setCurrentUser", HookStage.AFTER, filter = { true }) { param ->
             val tgUser = TLRPC.User(param.arg<Any>(0))
-            val user = User(tgUser.id, tgUser.username, tgUser.phone)
+            val user = User(tgUser.id, tgUser.username)
             Config.initialize(Telegami.packageName, user)
         }
 

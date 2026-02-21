@@ -54,7 +54,6 @@ This is a fork of [TeleVip by @mustafa1dev](https://github.com/mustafa1dev/TeleV
 - Hide seen status for groups, channels, and private messages
 - Hide typing indicator
 - Hide story view status
-- Hide phone number
 - Hide online status
 - Disable stories
 

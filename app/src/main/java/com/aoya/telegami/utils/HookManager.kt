@@ -9,7 +9,6 @@ import com.aoya.telegami.hooks.BoostDownload
 import com.aoya.telegami.hooks.FakePremium
 import com.aoya.telegami.hooks.HideBetaUpdate
 import com.aoya.telegami.hooks.HideOnlineStatus
-import com.aoya.telegami.hooks.HidePhone
 import com.aoya.telegami.hooks.HideSeenStatus
 import com.aoya.telegami.hooks.HideStoryViewStatus
 import com.aoya.telegami.hooks.HideTyping
@@ -41,7 +40,6 @@ class HookManager {
             HideSeenStatus(),
             HideStoryViewStatus(),
             HideOnlineStatus(),
-            HidePhone(),
             HideTyping(),
             ShowDeletedMessages(),
             PreventSecretMediaDeletion(),

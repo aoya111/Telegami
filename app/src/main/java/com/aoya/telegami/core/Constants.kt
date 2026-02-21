@@ -22,7 +22,6 @@ object Constants {
             "hide_seen_status",
             "hide_story_view_status",
             "hide_online_status",
-            "hide_phone",
             "hide_typing",
             "show_deleted_messages",
             "prevent_secret_media_deletion",
@@ -32,22 +31,20 @@ object Constants {
 
     private val EXCLUDED_FEATURES =
         mapOf(
-            "it.octogram.android" to setOf("hide_phone"),
-            "org.forkgram.messenger" to setOf("hide_phone"),
-            "org.telegram.group" to setOf("hide_phone"),
-            "org.telegram.messenger" to setOf("hide_phone"),
-            "org.telegram.messenger.beta" to setOf("hide_phone"),
-            "org.telegram.messenger.web" to setOf("hide_phone"),
+            "it.octogram.android" to emptySet(),
+            "org.forkgram.messenger" to emptySet(),
+            "org.telegram.group" to emptySet(),
+            "org.telegram.messenger" to emptySet(),
+            "org.telegram.messenger.beta" to emptySet(),
+            "org.telegram.messenger.web" to emptySet(),
             "org.telegram.plus" to emptySet(),
             "tw.nekomimi.nekogram" to
                 setOf(
-                    "hide_phone",
                     "unlock_channel_features",
                 ),
-            "uz.unnarsx.cherrygram" to setOf("hide_phone"),
+            "uz.unnarsx.cherrygram" to emptySet(),
             "xyz.nextalone.nagram" to
                 setOf(
-                    "hide_phone",
                     "unlock_channel_features",
                 ),
         )
