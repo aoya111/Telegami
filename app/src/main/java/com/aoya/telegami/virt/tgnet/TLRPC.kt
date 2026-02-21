@@ -26,10 +26,6 @@ class TLRPC {
         val username: String
             get() = (getObjectField(instance, resolver.getField(objPath, "username")) as? String) ?: ""
 
-        var phone: String
-            get() = (getObjectField(instance, resolver.getField(objPath, "phone")) as? String) ?: ""
-            set(value) = setObjectField(instance, resolver.getField(objPath, "phone"), value)
-
         var flags: Int
             get() = getIntField(instance, resolver.getField(objPath, "flags"))
             set(value) = setIntField(instance, resolver.getField(objPath, "flags"), value)
