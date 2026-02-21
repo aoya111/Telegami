@@ -12,6 +12,7 @@ import com.aoya.telegami.hooks.HideOnlineStatus
 import com.aoya.telegami.hooks.HideSeenStatus
 import com.aoya.telegami.hooks.HideStoryViewStatus
 import com.aoya.telegami.hooks.HideTyping
+import com.aoya.telegami.hooks.LocaleController
 import com.aoya.telegami.hooks.MarkMessages
 import com.aoya.telegami.hooks.PreventSecretMediaDeletion
 import com.aoya.telegami.hooks.ProfileDetails
@@ -26,6 +27,7 @@ class HookManager {
     private val alwaysOnHooks =
         listOf(
             Settings(),
+            LocaleController(),
             FakePremium(),
             MarkMessages(),
             AllowScreenshots(),
