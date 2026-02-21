@@ -106,6 +106,10 @@
       "fields": {},
       "hint": "unofficial_base_",
       "methods": {
+        "applyLanguage": {
+          "hint": "public int \\w*(final",
+          "obfuscated": "B"
+        },
         "getFormatterDay": {
           "hint": "\"formatterDay24H\"",
           "obfuscated": "k1"
@@ -120,6 +124,17 @@
         }
       },
       "obfuscated": "org.telegram.messenger.f0"
+    },
+    "org.telegram.messenger.LocaleController$LocaleInfo": {
+      "fields": {
+        "shortName": {
+          "hint": null,
+          "obfuscated": "c"
+        }
+      },
+      "hint": null,
+      "methods": {},
+      "obfuscated": "org.telegram.messenger.f0$a"
     },
     "org.telegram.messenger.MediaController": {
       "fields": {},
