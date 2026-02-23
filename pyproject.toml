@@ -1,0 +1,22 @@
+[project]
+name = "telegami"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "requests>=2.32.5",
+]
+
+[tool.ruff]
+target-version = "py312"
+
+[tool.basedpyright]
+pythonVersion = "3.12"
+typeCheckingMode = "standard"
+
+[dependency-groups]
+dev = [
+    "basedpyright>=1.38.1",
+    "ruff>=0.15.2",
+]
