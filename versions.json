@@ -7,7 +7,7 @@
     "latest_version_url": "https://github.com/OctoGramApp/OctoGram/releases/tag/v3.5.1_3801",
     "source": "github",
     "update_available": false,
-    "last_checked": "2026-02-23T13:29:53.887072Z"
+    "last_checked": "2026-02-23T13:49:24.763232Z"
   },
   "org.forkgram.messenger": {
     "name": "Forkgram",
@@ -17,17 +17,17 @@
     "latest_version_url": "https://github.com/forkgram/TelegramAndroid/releases/tag/12.4.2.0",
     "source": "github",
     "update_available": false,
-    "last_checked": "2026-02-23T13:29:54.309792Z"
+    "last_checked": "2026-02-23T13:49:24.954898Z"
   },
   "org.telegram.messenger": {
     "name": "Telegram (Official)",
     "package_name": "org.telegram.messenger",
     "current_version": "12.4.3",
-    "latest_version": "12.4.3",
-    "latest_version_url": "https://www.apkmirror.com/apk/telegram-fz-llc/telegram/",
-    "source": "apkmirror",
+    "latest_version": "Unknown",
+    "latest_version_url": "",
+    "source": "none",
     "update_available": false,
-    "last_checked": "2026-02-23T13:29:54.642455Z"
+    "last_checked": "2026-02-23T13:49:25.091620Z"
   },
   "org.telegram.messenger.beta": {
     "name": "Telegram Beta",
@@ -37,7 +37,7 @@
     "latest_version_url": "https://www.apkmirror.com/apk/telegram-fz-llc/telegram-beta/",
     "source": "apkmirror",
     "update_available": false,
-    "last_checked": "2026-02-23T13:29:55.425399Z"
+    "last_checked": "2026-02-23T13:49:25.225710Z"
   },
   "org.telegram.messenger.web": {
     "name": "Telegram Web",
@@ -47,7 +47,7 @@
     "latest_version_url": "https://www.apkmirror.com/apk/telegram-fz-llc/telegram-web-version/",
     "source": "apkmirror",
     "update_available": false,
-    "last_checked": "2026-02-23T13:29:55.965827Z"
+    "last_checked": "2026-02-23T13:49:25.795009Z"
   },
   "org.telegram.plus": {
     "name": "Plus Messenger",
@@ -57,7 +57,7 @@
     "latest_version_url": "https://www.apkmirror.com/apk/rafalense/plus-messenger/",
     "source": "apkmirror",
     "update_available": false,
-    "last_checked": "2026-02-23T13:29:56.677013Z"
+    "last_checked": "2026-02-23T13:49:26.152359Z"
   },
   "tw.nekomimi.nekogram": {
     "name": "Nekogram",
@@ -67,17 +67,17 @@
     "latest_version_url": "https://github.com/Nekogram/Nekogram/releases/tag/v12.4.1",
     "source": "github",
     "update_available": false,
-    "last_checked": "2026-02-23T13:29:56.944461Z"
+    "last_checked": "2026-02-23T13:49:27.167874Z"
   },
   "uz.unnarsx.cherrygram": {
     "name": "Cherrygram",
     "package_name": "uz.unnarsx.cherrygram",
     "current_version": "10.2.0",
-    "latest_version": "10.2.0",
-    "latest_version_url": "https://github.com/arsLan4k1390/Cherrygram/releases/tag/10.2.0",
+    "latest_version": "10.3.0",
+    "latest_version_url": "https://github.com/arsLan4k1390/Cherrygram/releases/tag/10.3.0",
     "source": "github",
-    "update_available": false,
-    "last_checked": "2026-02-23T13:29:57.280959Z"
+    "update_available": true,
+    "last_checked": "2026-02-23T13:49:27.272012Z"
   },
   "xyz.nextalone.nagram": {
     "name": "Nagram",
@@ -87,7 +87,6 @@
     "latest_version_url": "https://github.com/NextAlone/Nagram/releases/tag/1229",
     "source": "github",
     "update_available": false,
-    "last_checked": "2026-02-23T13:29:57.645779Z"
+    "last_checked": "2026-02-23T13:49:27.444304Z"
   }
 }
-
