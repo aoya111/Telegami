@@ -9,7 +9,15 @@
   #   buildTools.version = [ "35.0.0" ];
   #   emulator = { enable = true; };
   # };
-  languages.kotlin.enable = true;
+  languages = {
+    kotlin.enable = true;
+    python = {
+      enable = true;
+      version = "3.12";
+      venv.enable = true;
+      uv.enable = true;
+    };
+  };
 
   # https://devenv.sh/processes/
   # processes.cargo-watch.exec = "cargo-watch";
