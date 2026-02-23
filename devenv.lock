@@ -31,6 +31,21 @@
         "type": "github"
       }
     },
+    "flake-compat_2": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1767039857,
+        "owner": "edolstra",
+        "repo": "flake-compat",
+        "rev": "5edf11c44bc78a0d334f6334cdaf7d60d732daab",
+        "type": "github"
+      },
+      "original": {
+        "owner": "edolstra",
+        "repo": "flake-compat",
+        "type": "github"
+      }
+    },
     "git-hooks": {
       "inputs": {
         "flake-compat": "flake-compat",
@@ -90,6 +105,26 @@
         "type": "github"
       }
     },
+    "nixpkgs-python": {
+      "inputs": {
+        "flake-compat": "flake-compat_2",
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1771493264,
+        "owner": "cachix",
+        "repo": "nixpkgs-python",
+        "rev": "7d828f3a6acb63582c6a642e3b0ce0e2ecb03749",
+        "type": "github"
+      },
+      "original": {
+        "owner": "cachix",
+        "repo": "nixpkgs-python",
+        "type": "github"
+      }
+    },
     "nixpkgs-src": {
       "flake": false,
       "locked": {
@@ -127,6 +162,7 @@
         "devenv": "devenv",
         "git-hooks": "git-hooks",
         "nixpkgs": "nixpkgs",
+        "nixpkgs-python": "nixpkgs-python",
         "nixpkgs-unstable": "nixpkgs-unstable",
         "pre-commit-hooks": [
           "git-hooks"
