@@ -50,25 +50,17 @@ jobs:
           name: versions-json
           path: versions.json
 
-      - name: Check for updates
-        id: check_updates
-        run: |
-          # Check if any update_available is true in versions.json
-          if grep -q '"update_available": true' versions.json; then
-            echo "updates_found=true" >> $GITHUB_OUTPUT
-            echo "Updates found!"
-          else
-            echo "updates_found=false" >> $GITHUB_OUTPUT
-            echo "No updates found."
-          fi
-
       - name: Commit version tracking
-        if: steps.check_updates.outputs.updates_found == 'true'
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
           git add versions.json
-          git diff --quiet && git diff --staged --quiet || git commit -m "chore: update version tracking [$(date -u +%Y-%m-%d)]"
-          git push
+          # Only commit if there are actual changes to versions.json
+          if git diff --staged --quiet; then
+            echo "No changes to versions.json, skipping commit"
+          else
+            git commit -m "chore: update version tracking [$(date -u +%Y-%m-%d)]"
+            git push
+          fi
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
