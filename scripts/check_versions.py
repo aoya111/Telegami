@@ -132,26 +132,30 @@ class VersionChecker:
             print(f"Error fetching APKMirror RSS for {app_slug}: {e}")
             return None
 
-    def get_current_version(self, package_name: str):
-        """Get current version from tracking file."""
+    def get_existing_entry(self, package_name):
+        """Get existing entry from tracking file."""
         tracking_file = Path("versions.json")
         if tracking_file.exists():
             with open(tracking_file) as f:
                 data = json.load(f)
-                return data.get(package_name, {}).get("current_version")
+                return data.get(package_name)
         return None
 
-    def check_variant(self, package_name: str, info):
+    def check_variant(self, package_name, info):
         """Check version for a single variant."""
+        # Get existing entry to preserve last_checked if nothing changed
+        existing = self.get_existing_entry(package_name)
+
         result = {
             "name": info["name"],
             "package_name": package_name,
-            "current_version": self.get_current_version(package_name) or "Unknown",
+            "current_version": existing.get("current_version")
+            if existing
+            else "Unknown",
             "latest_version": "Unknown",
             "latest_version_url": "",
             "source": "none",
             "update_available": False,
-            "last_checked": datetime.utcnow().isoformat() + "Z",
         }
 
         # Try GitHub first
@@ -178,6 +182,26 @@ class VersionChecker:
             # Simple string comparison (assumes semantic versioning)
             if result["latest_version"] != result["current_version"]:
                 result["update_available"] = True
+
+        # Only update last_checked if something meaningful changed
+        # or if this is a new entry
+        now = datetime.now().astimezone().isoformat()
+        if existing:
+            # Check if meaningful fields changed
+            changed = (
+                result["latest_version"] != existing.get("latest_version")
+                or result["update_available"] != existing.get("update_available")
+                or result["latest_version_url"] != existing.get("latest_version_url")
+                or result["source"] != existing.get("source")
+            )
+            if changed:
+                result["last_checked"] = now
+            else:
+                # Preserve old last_checked
+                result["last_checked"] = existing.get("last_checked", now)
+        else:
+            # New entry
+            result["last_checked"] = now
 
         return result
 

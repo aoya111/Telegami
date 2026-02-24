@@ -23,11 +23,11 @@
     "name": "Telegram (Official)",
     "package_name": "org.telegram.messenger",
     "current_version": "12.4.3",
-    "latest_version": "Unknown",
-    "latest_version_url": "",
-    "source": "none",
+    "latest_version": "12.4.3",
+    "latest_version_url": "https://www.apkmirror.com/apk/telegram-fz-llc/telegram/",
+    "source": "apkmirror",
     "update_available": false,
-    "last_checked": "2026-02-24T02:43:31.188372Z"
+    "last_checked": "2026-02-24T22:23:03.351434+08:00"
   },
   "org.telegram.messenger.beta": {
     "name": "Telegram Beta",
@@ -77,7 +77,7 @@
     "latest_version_url": "https://github.com/arsLan4k1390/Cherrygram/releases/tag/10.3.0",
     "source": "github",
     "update_available": true,
-    "last_checked": "2026-02-24T02:43:32.889162Z"
+    "last_checked": "2026-02-24T22:23:38.586334+08:00"
   },
   "xyz.nextalone.nagram": {
     "name": "Nagram",
