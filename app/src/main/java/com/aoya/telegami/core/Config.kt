@@ -27,13 +27,7 @@ data class ThemePrefs(
 data class UserConfig(
     var user: User = User(),
     val hooks: MutableMap<String, Boolean> = mutableMapOf(),
-    val contacts: MutableMap<UserId, Contact> = mutableMapOf(),
     var theme: ThemePrefs = ThemePrefs(),
-)
-
-data class Contact(
-    val name: String = "",
-    var newName: String = "",
 )
 
 object Config {
@@ -159,21 +153,6 @@ object Config {
     }
 
     fun getHooksSettings(): Map<String, Boolean> = localConfig.hooks
-
-    fun getContactNewName(id: Long): String {
-        val contact = localConfig.contacts.getOrPut(id) { Contact() }
-        return contact.newName
-    }
-
-    fun setContactNewName(
-        id: Long,
-        name: String,
-    ) {
-        val contact = localConfig.contacts.getOrPut(id) { Contact() }
-        contact.newName = name
-        writeConfig()
-        logd("Contact name updated for ID $id: '$name'")
-    }
 
     fun getCurrentUser(): User = user
 
