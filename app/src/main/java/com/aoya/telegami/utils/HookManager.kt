@@ -63,16 +63,8 @@ class HookManager {
             }
         }
 
-        // Initialize configurable hooks when user is set
-        Config.onUserSet = { user ->
-            logd("User set, initializing configurable hooks")
-            initConfigurableHooks(initConfig = true)
-        }
-
-        if (Config.isUserSet()) {
-            logd("User already set, initializing configurable hooks")
-            initConfigurableHooks()
-        }
+        logd("Initializing configurable hooks")
+        initConfigurableHooks(initConfig = true)
 
         logd("HookManager initialization complete")
     }
