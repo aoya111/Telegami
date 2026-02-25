@@ -7,6 +7,7 @@ import android.content.Context
 import android.os.Bundle
 import android.os.Handler
 import android.widget.Toast
+import com.aoya.telegami.core.Config
 import com.aoya.telegami.core.i18n.TranslationManager
 import com.aoya.telegami.core.obfuscate.ResolverManager
 import com.aoya.telegami.data.AppDatabase
@@ -36,6 +37,7 @@ object Telegami {
     ) {
         this.context = app
 
+        Config.init(context.packageName)
         TranslationManager.init(context, modulePath)
         ResolverManager.init(context.packageName, modulePath)
 

@@ -26,29 +26,18 @@ data class ThemePrefs(
 
 data class UserConfig(
     var user: User = User(),
-    val hooks: MutableMap<String, Boolean> = mutableMapOf(),
     var theme: ThemePrefs = ThemePrefs(),
 )
 
 object Config {
     private var localConfig: UserConfig = UserConfig()
+    private val hooks: MutableMap<String, Boolean> = mutableMapOf()
     private var packageName = ""
     private var xPrefs: XSharedPreferences? = null
 
-    var onUserSet: ((User) -> Unit)? = null
+    private var user: User = User()
 
-    private var user: User by Delegates.observable(User()) { _, old, new ->
-        if (new.id != 0L && old.id != new.id) {
-            logd("User set: ${new.username} (${new.id})")
-            localConfig = readConfig()
-            onUserSet?.invoke(new)
-        }
-    }
-
-    fun initialize(
-        packageName: String? = null,
-        user: User? = null,
-    ) {
+    fun init(packageName: String? = null) {
         logd("Initializing Config")
         packageName?.let {
             if (this.packageName != it) {
@@ -60,14 +49,18 @@ object Config {
                     }
                 logd("XSharedPreferences initialized for package: $it")
             }
+            localConfig = readConfig()
         }
-        user?.let {
-            if (this.user.id != it.id) {
-                logd("Setting user: ${it.username} (${it.id})")
-                this.user = it
-            } else {
-                logd("Same user (${it.id}), skipping")
-            }
+    }
+
+    fun setUser(user: User) {
+        logd("Setting User")
+        if (this.user.id != user.id) {
+            logd("Setting user: ${user.username} (${user.id})")
+            this.user = user
+            localConfig = readConfig()
+        } else {
+            logd("Same user (${user.id}), skipping")
         }
     }
 
@@ -89,35 +82,52 @@ object Config {
 
     @Synchronized
     fun readConfig(): UserConfig {
-        if (user.id == 0L) return UserConfig()
         try {
             reload()
-            val configStr = xPrefs?.getString(user.id.toString(), "{}") ?: "{}"
-            val type = object : TypeToken<UserConfig>() {}.type
-            val conf = Gson().fromJson(configStr, type) ?: UserConfig()
-            conf.user = user
-            logd("Config read successfully for user ${user.id}")
-            return conf
+
+            if (user.id != 0L) {
+                val configStr = xPrefs?.getString(user.id.toString(), "{}") ?: "{}"
+                val type = object : TypeToken<UserConfig>() {}.type
+                val conf = Gson().fromJson(configStr, type) ?: UserConfig()
+                localConfig = conf
+                localConfig.user = user
+                logd("User config read successfully for user ${user.id}")
+            }
+
+            hooks.clear()
+            xPrefs?.all?.forEach { (key, value) ->
+                if (value is Boolean && key != "settings_selected_variant") {
+                    hooks[key] = value
+                }
+            }
+            logd("Hooks loaded: ${hooks.size} hooks")
+
+            return localConfig
         } catch (e: Exception) {
-            loge("Error reading config for user ${user.id}", e)
+            loge("Error reading config", e)
             return UserConfig().apply { this.user = user }
         }
     }
 
     @Synchronized
     fun writeConfig() {
-        if (user.id == 0L) {
-            logw("Cannot write config: no user set")
-            return
-        }
-
         try {
             val pref = Telegami.context.getSharedPreferences("telegami", Context.MODE_PRIVATE)
-            pref.edit().putString(user.id.toString(), Gson().toJson(localConfig)).apply()
+            val editor = pref.edit()
+
+            if (user.id != 0L) {
+                editor.putString(user.id.toString(), Gson().toJson(localConfig))
+            }
+
+            hooks.forEach { (hookName, enabled) ->
+                editor.putBoolean(hookName, enabled)
+            }
+
+            editor.apply()
             reload()
-            logd("Config written successfully for user ${user.id}")
+            logd("Config written successfully")
         } catch (e: Exception) {
-            loge("Error writing config for user ${user.id}", e)
+            loge("Error writing config", e)
         }
     }
 
@@ -125,26 +135,17 @@ object Config {
         hookName: String,
         enabled: Boolean,
     ) {
-        if (user.id == 0L) {
-            logw("Cannot set hook state: no user set")
-            return
-        }
         logd("Hook '$hookName' set to: $enabled")
-        localConfig.hooks[hookName] = enabled
+        hooks[hookName] = enabled
         writeConfig()
     }
 
-    fun isHookEnabled(hookName: String): Boolean = localConfig.hooks[hookName] ?: false
+    fun isHookEnabled(hookName: String): Boolean = hooks[hookName] ?: true
 
     fun initHookSettings(
         name: String,
         state: Boolean,
     ) {
-        if (user.id == 0L) {
-            logw("Cannot init hook settings: no user set")
-            return
-        }
-        val hooks = localConfig.hooks
         if (!hooks.containsKey(name)) {
             hooks[name] = state
             writeConfig()
@@ -152,7 +153,7 @@ object Config {
         }
     }
 
-    fun getHooksSettings(): Map<String, Boolean> = localConfig.hooks
+    fun getHooksSettings(): Map<String, Boolean> = hooks
 
     fun getCurrentUser(): User = user
 

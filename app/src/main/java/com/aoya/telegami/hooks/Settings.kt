@@ -33,7 +33,7 @@ class Settings :
         findAndHook("org.telegram.messenger.UserConfig", "setCurrentUser", HookStage.AFTER, filter = { true }) { param ->
             val tgUser = TLRPC.User(param.arg<Any>(0))
             val user = User(tgUser.id, tgUser.username)
-            Config.initialize(Telegami.packageName, user)
+            Config.setUser(user)
         }
 
         fun showAlert(ctx: Context) {
