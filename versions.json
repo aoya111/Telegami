@@ -73,11 +73,11 @@
     "name": "Cherrygram",
     "package_name": "uz.unnarsx.cherrygram",
     "current_version": "10.2.0",
-    "latest_version": "10.3.0",
-    "latest_version_url": "https://github.com/arsLan4k1390/Cherrygram/releases/tag/10.3.0",
+    "latest_version": "10.4.0",
+    "latest_version_url": "https://github.com/arsLan4k1390/Cherrygram/releases/tag/10.4.0",
     "source": "github",
     "update_available": true,
-    "last_checked": "2026-02-24T22:23:38.586334+08:00"
+    "last_checked": "2026-02-26T02:39:47.708517+00:00"
   },
   "xyz.nextalone.nagram": {
     "name": "Nagram",
