@@ -1,10 +1,7 @@
 package com.aoya.telegami
 
-import android.app.Activity
 import android.app.Application
-import android.app.Application.ActivityLifecycleCallbacks
 import android.content.Context
-import android.os.Bundle
 import android.os.Handler
 import android.widget.Toast
 import com.aoya.telegami.core.Config
@@ -26,9 +23,6 @@ object Telegami {
 
     lateinit var db: AppDatabase
 
-    var currentActivity: Activity? = null
-        private set
-
     fun init(
         modulePath: String,
         app: Application,
@@ -47,36 +41,6 @@ object Telegami {
         this.hookManager = HookManager()
         this.packageName = context.packageName
         this.db = AppDatabase.getDatabase(context)
-
-        app.registerActivityLifecycleCallbacks(
-            object : ActivityLifecycleCallbacks {
-                override fun onActivityCreated(
-                    activity: Activity,
-                    savedInstanceState: Bundle?,
-                ) {}
-
-                override fun onActivityStarted(activity: Activity) {}
-
-                override fun onActivityResumed(activity: Activity) {
-                    currentActivity = activity
-                }
-
-                override fun onActivityPaused(activity: Activity) {
-                    if (currentActivity == activity) {
-                        currentActivity = null
-                    }
-                }
-
-                override fun onActivityStopped(activity: Activity) {}
-
-                override fun onActivitySaveInstanceState(
-                    activity: Activity,
-                    outState: Bundle,
-                ) {}
-
-                override fun onActivityDestroyed(activity: Activity) {}
-            },
-        )
 
         try {
             val initTime = measureTimeMillis { init() }
