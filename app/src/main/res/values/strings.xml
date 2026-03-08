@@ -1,3 +1,19 @@
 <resources>
     <string name="AppName">Telegami</string>
+    <string name="FeatHideSeenStatus">Hide seen status</string>
+    <string name="FeatHideSeenStatusDesc">Hide seen status for messages</string>
+    <string name="FeatHideStoryViewStatus">Hide story view status</string>
+    <string name="FeatHideStoryViewStatusDesc">Hide story view status</string>
+    <string name="FeatHideOnlineStatus">Hide online status</string>
+    <string name="FeatHideOnlineStatusDesc">Hide online status</string>
+    <string name="FeatHideTyping">Hide typing</string>
+    <string name="FeatHideTypingDesc">Hide typing</string>
+    <string name="FeatShowDeletedMessages">Show deleted messages</string>
+    <string name="FeatShowDeletedMessagesDesc">Show deleted messages</string>
+    <string name="FeatPreventSecretMediaDeletion">Prevent secret media deletion</string>
+    <string name="FeatPreventSecretMediaDeletionDesc">Prevent deletion of secret media</string>
+    <string name="FeatUnlockChannelFeatures">Unlock channel features</string>
+    <string name="FeatUnlockChannelFeaturesDesc">Unlock all restricted and encrypted features for channels</string>
+    <string name="FeatAllowSaveVideos">Allow saving videos</string>
+    <string name="FeatAllowSaveVideosDesc">Allow saving videos to the gallery</string>
 </resources>

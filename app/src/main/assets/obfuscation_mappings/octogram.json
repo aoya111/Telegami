@@ -2,7 +2,7 @@
   "variant": "octogram",
   "package_name": "it.octogram.android",
   "version": "3.5.1",
-  "updated": "2026-02-21",
+  "updated": "2026-03-08",
   "mappings": {
     "org.telegram.SQLite.SQLiteCursor": {
       "fields": {},
@@ -542,41 +542,6 @@
       },
       "obfuscated": "org.telegram.ui.ActionBar.q$w"
     },
-    "org.telegram.ui.Adapters.DrawerLayoutAdapter": {
-      "fields": {
-        "items": {
-          "hint": null,
-          "obfuscated": "c"
-        }
-      },
-      "hint": null,
-      "methods": {
-        "getId": {
-          "hint": "public int \\w*(int \\w*)",
-          "obfuscated": "K"
-        },
-        "resetItems": {
-          "hint": "public final void \\w*()",
-          "obfuscated": "N"
-        }
-      },
-      "obfuscated": "org.telegram.ui.Adapters.DrawerLayoutAdapter"
-    },
-    "org.telegram.ui.Adapters.DrawerLayoutAdapter$Item": {
-      "fields": {
-        "icon": {
-          "hint": null,
-          "obfuscated": "a"
-        },
-        "id": {
-          "hint": null,
-          "obfuscated": "c"
-        }
-      },
-      "hint": null,
-      "methods": {},
-      "obfuscated": "org.telegram.ui.Adapters.DrawerLayoutAdapter$Item"
-    },
     "org.telegram.ui.Cells.ChatMessageCell": {
       "fields": {},
       "hint": "this\\.currentMessageObject\\.isMediaSpoilersRevealed = true",
@@ -716,17 +681,6 @@
         }
       },
       "obfuscated": "org.telegram.ui.Components.i2"
-    },
-    "org.telegram.ui.LaunchActivity": {
-      "fields": {},
-      "hint": null,
-      "methods": {
-        "lambda$onCreate$6": {
-          "hint": "void \\w*(View \\w*, int \\w*, float \\w*, float \\w*)",
-          "obfuscated": "a6"
-        }
-      },
-      "obfuscated": "org.telegram.ui.LaunchActivity"
     },
     "org.telegram.ui.PeerColorActivity": {
       "fields": {},

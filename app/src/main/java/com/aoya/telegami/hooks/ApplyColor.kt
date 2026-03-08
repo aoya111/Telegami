@@ -7,11 +7,7 @@ import com.aoya.telegami.utils.HookStage
 import com.aoya.telegami.virt.tgnet.TLRPC
 import com.aoya.telegami.virt.ui.PeerColorActivity
 
-class ApplyColor :
-    Hook(
-        "apply_color",
-        "Apply selected color and emoji on profile and name",
-    ) {
+class ApplyColor : Hook("ApplyColor") {
     override fun init() {
         if (Telegami.packageName in listOf("uz.unnarsx.cherrygram", "xyz.nextalone.nagram")) return
 

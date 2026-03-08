@@ -2,7 +2,7 @@
   "variant": "nekogram",
   "package_name": "tw.nekomimi.nekogram",
   "version": "12.4.1",
-  "updated": "2026-02-21",
+  "updated": "2026-03-08",
   "mappings": {
     "org.telegram.SQLite.SQLiteCursor": {
       "fields": {},
@@ -750,38 +750,6 @@
         }
       },
       "obfuscated": "org.telegram.ui.SecretMediaViewer"
-    },
-    "org.telegram.ui.SettingsActivity": {
-      "fields": {},
-      "hint": null,
-      "methods": {
-        "fillItems": {
-          "hint": "(\"PREMIUM",
-          "obfuscated": "c4"
-        },
-        "onClick": {
-          "hint": null,
-          "obfuscated": "y4"
-        }
-      },
-      "obfuscated": "org.telegram.ui.SettingsActivity"
-    },
-    "org.telegram.ui.SettingsActivity$SettingCell": {
-      "fields": {},
-      "hint": null,
-      "methods": {},
-      "obfuscated": "org.telegram.ui.SettingsActivity$k"
-    },
-    "org.telegram.ui.SettingsActivity$SettingCell$Factory": {
-      "fields": {},
-      "hint": null,
-      "methods": {
-        "of": {
-          "hint": null,
-          "obfuscated": "l"
-        }
-      },
-      "obfuscated": "org.telegram.ui.SettingsActivity$k$b"
     },
     "org.telegram.ui.Stories.PeerStoriesView$StoryItemHolder": {
       "fields": {},

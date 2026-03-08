@@ -2,7 +2,7 @@
   "variant": "cherrygram",
   "package_name": "uz.unnarsx.cherrygram",
   "version": "10.2.0",
-  "updated": "2026-02-08",
+  "updated": "2026-03-08",
   "mappings": {
     "org.telegram.messenger.browser.Browser": {
       "fields": {},
@@ -156,41 +156,6 @@
       },
       "obfuscated": "org.telegram.ui.ActionBar.q$w"
     },
-    "org.telegram.ui.Adapters.DrawerLayoutAdapter": {
-      "fields": {
-        "items": {
-          "hint": null,
-          "obfuscated": "h"
-        }
-      },
-      "hint": null,
-      "methods": {
-        "getId": {
-          "hint": "public int \\w*(int \\w*)",
-          "obfuscated": "R"
-        },
-        "resetItems": {
-          "hint": "public final void \\w*()",
-          "obfuscated": "U"
-        }
-      },
-      "obfuscated": "org.telegram.ui.Adapters.DrawerLayoutAdapter"
-    },
-    "org.telegram.ui.Adapters.DrawerLayoutAdapter$Item": {
-      "fields": {
-        "icon": {
-          "hint": null,
-          "obfuscated": "a"
-        },
-        "id": {
-          "hint": null,
-          "obfuscated": "c"
-        }
-      },
-      "hint": null,
-      "methods": {},
-      "obfuscated": "org.telegram.ui.Adapters.DrawerLayoutAdapter$Item"
-    },
     "org.telegram.ui.Cells.ChatMessageCell": {
       "fields": {},
       "hint": "this\\.currentMessageObject\\.isMediaSpoilersRevealed = true",
@@ -303,17 +268,6 @@
         }
       },
       "obfuscated": "org.telegram.ui.Components.A0"
-    },
-    "org.telegram.ui.LaunchActivity": {
-      "fields": {},
-      "hint": null,
-      "methods": {
-        "lambda$onCreate$6": {
-          "hint": "void \\w*(View \\w*, int \\w*, float \\w*, float \\w*)",
-          "obfuscated": "a6"
-        }
-      },
-      "obfuscated": "org.telegram.ui.LaunchActivity"
     },
     "org.telegram.ui.PeerColorActivity": {
       "fields": {},

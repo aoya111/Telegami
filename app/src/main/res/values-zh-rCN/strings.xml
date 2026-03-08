@@ -1,0 +1,19 @@
+<resources>
+    <string name="AppName">Telegami</string>
+    <string name="FeatHideSeenStatus">隐藏消息的 已读 状态</string>
+    <string name="FeatHideSeenStatusDesc">隐藏消息的已读状态</string>
+    <string name="FeatHideStoryViewStatus">隐藏 故事观看 状态</string>
+    <string name="FeatHideStoryViewStatusDesc">隐藏故事观看状态</string>
+    <string name="FeatHideOnlineStatus">隐藏 在线 状态</string>
+    <string name="FeatHideOnlineStatusDesc">隐藏在线状态</string>
+    <string name="FeatHideTyping">隐藏正在输入</string>
+    <string name="FeatHideTypingDesc">隐藏正在输入</string>
+    <string name="FeatShowDeletedMessages">显示已删除的消息</string>
+    <string name="FeatShowDeletedMessagesDesc">显示已删除的消息</string>
+    <string name="FeatPreventSecretMediaDeletion">防止删除秘密媒体</string>
+    <string name="FeatPreventSecretMediaDeletionDesc">防止删除秘密媒体</string>
+    <string name="FeatUnlockChannelFeatures">解锁频道的所有受限和加密功能</string>
+    <string name="FeatUnlockChannelFeaturesDesc">解锁频道的所有受限和加密功能</string>
+    <string name="FeatAllowSaveVideos">允许将视频保存到图库</string>
+    <string name="FeatAllowSaveVideosDesc">允许将视频保存到图库</string>
+</resources>

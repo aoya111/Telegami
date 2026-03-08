@@ -5,6 +5,10 @@ material = "1.12.0"
 gson = "2.11.0"
 room = "2.7.1"
 xposed = "82"
+activity = "1.9.3"
+recyclerview = "1.3.2"
+fragment = "1.8.5"
+vbpd = "2.0.4"
 
 # Testing
 junit = "4.13.2"
@@ -15,13 +19,17 @@ espressoCore = "3.6.1"
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
+androidx-activity = { group = "androidx.activity", name = "activity", version.ref = "activity" }
+androidx-fragment-ktx = { group = "androidx.fragment", name = "fragment-ktx", version.ref = "fragment" }
+androidx-recyclerview = { group = "androidx.recyclerview", name = "recyclerview", version.ref = "recyclerview" }
 gson = { group = "com.google.code.gson", name = "gson", version.ref = "gson" }
 room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "room" }
 room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room" }
+dev-androidbroadcast-vbpd = { module = "dev.androidbroadcast.vbpd:vbpd", version.ref = "vbpd" }
+dev-androidbroadcast-vbpd-reflection = { module = "dev.androidbroadcast.vbpd:vbpd-reflection", version.ref = "vbpd" }
 
 xposed-api = { group = "de.robv.android.xposed", name = "api", version.ref = "xposed" }
 
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "androidxJunit" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
-

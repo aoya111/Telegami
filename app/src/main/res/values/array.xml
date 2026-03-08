@@ -12,4 +12,14 @@
         <item>uz.unnarsx.cherrygram</item>
         <item>xyz.nextalone.nagram</item>
     </string-array>
+    <string-array name="features">
+        <item>HideSeenStatus</item>
+        <item>HideStoryViewStatus</item>
+        <item>HideOnlineStatus</item>
+        <item>HideTyping</item>
+        <item>ShowDeletedMessages</item>
+        <item>PreventSecretMediaDeletion</item>
+        <item>UnlockChannelFeatures</item>
+        <item>AllowSaveVideos</item>
+    </string-array>
 </resources>

@@ -7,11 +7,7 @@ import com.aoya.telegami.virt.tgnet.tl.TLAccount
 import com.aoya.telegami.virt.ui.ProfileActivity
 import com.aoya.telegami.core.i18n.TranslationManager as i18n
 
-class HideOnlineStatus :
-    Hook(
-        "hide_online_status",
-        "Hide 'Online' status",
-    ) {
+class HideOnlineStatus : Hook("HideOnlineStatus") {
     private val updateStatusClass: Class<*> by lazy {
         findClass("org.telegram.tgnet.tl.TL_account\$updateStatus")
     }

@@ -3,11 +3,7 @@ package com.aoya.telegami.hooks
 import com.aoya.telegami.utils.Hook
 import com.aoya.telegami.utils.HookStage
 
-class HideStoryViewStatus :
-    Hook(
-        "hide_story_view_status",
-        "Hide 'Story View' status",
-    ) {
+class HideStoryViewStatus : Hook("HideStoryViewStatus") {
     override fun init() {
         findAndHook(
             "org.telegram.ui.Stories.StoriesController",

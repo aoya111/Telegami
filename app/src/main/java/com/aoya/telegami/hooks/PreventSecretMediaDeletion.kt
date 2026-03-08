@@ -16,11 +16,7 @@ import de.robv.android.xposed.XposedHelpers.getLongField
 import de.robv.android.xposed.XposedHelpers.getObjectField
 import java.io.File
 
-class PreventSecretMediaDeletion :
-    Hook(
-        "prevent_secret_media_deletion",
-        "Prevent Deletion of Secret Media.",
-    ) {
+class PreventSecretMediaDeletion : Hook("PreventSecretMediaDeletion") {
     override fun init() {
         findAndHook("org.telegram.ui.ChatActivity", "sendSecretMediaDelete", HookStage.BEFORE) { param ->
             param.setResult(null)

@@ -1,0 +1,47 @@
+package com.aoya.telegami.ui.fragment
+
+import android.content.Context
+import android.content.SharedPreferences
+import android.util.Log
+import android.view.View
+import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.aoya.telegami.R
+import com.aoya.telegami.core.Config
+import com.aoya.telegami.databinding.FragmentHomeBinding
+import com.aoya.telegami.ui.adapter.HookAdapter
+import com.aoya.telegami.ui.adapter.HookInfo
+import dev.androidbroadcast.vbpd.viewBinding
+
+class HomeFragment : Fragment(R.layout.fragment_home) {
+    private val binding by viewBinding(FragmentHomeBinding::bind)
+
+    private lateinit var prefs: SharedPreferences
+
+    private fun loadHooks(): List<HookInfo> {
+        val featureKeys = resources.getStringArray(R.array.features)?.toList() ?: emptyList()
+
+        return featureKeys.map { hookKey ->
+            val nameResId = resources.getIdentifier("Feat$hookKey", "string", requireContext().packageName)
+            val name = if (nameResId != 0) getString(nameResId) else hookKey
+
+            val descResId = resources.getIdentifier("Feat${hookKey}Desc", "string", requireContext().packageName)
+            val description = if (descResId != 0) getString(descResId) else ""
+
+            HookInfo(hookKey, name, description, Config.isFeatureEnabledInActivity(requireContext(), hookKey))
+        }
+    }
+
+    override fun onViewCreated(
+        view: View,
+        savedInstanceState: android.os.Bundle?,
+    ) {
+        val hookList = loadHooks()
+        binding.list.layoutManager = LinearLayoutManager(context)
+        binding.list.adapter =
+            HookAdapter(hookList) { hookKey, enabled ->
+                Log.d("HomeFragment", "Toggle $hookKey to $enabled")
+                Config.setFeatureEnabled(requireContext(), hookKey, enabled)
+            }
+    }
+}

@@ -57,34 +57,27 @@ class HookManager {
         alwaysOnHooks.forEach { hook ->
             try {
                 hook.init()
-                logd("Initialized: ${hook.hookName}")
+                logd("Initialized: ${hook.hookKey}")
             } catch (e: Exception) {
-                loge("Failed to initialize ${hook.hookName}", e)
+                loge("Failed to initialize ${hook.hookKey}", e)
             }
         }
 
         logd("Initializing configurable hooks")
-        initConfigurableHooks(initConfig = true)
+        initConfigurableHooks()
 
         logd("HookManager initialization complete")
     }
 
-    private fun initConfigurableHooks(initConfig: Boolean = false) {
+    private fun initConfigurableHooks() {
         runBlocking(Dispatchers.IO) {
-            if (initConfig) {
-                logd("Initializing config for ${configurableHooks.size} configurable hooks")
-                configurableHooks.forEach { hook ->
-                    Config.initHookSettings(hook.hookName, true)
-                }
-            }
-
             logd("Registering ${configurableHooks.size} configurable hooks...")
             configurableHooks.forEach { hook ->
                 try {
                     hook.init()
-                    logd("Initialized: ${hook.hookName}")
+                    logd("Initialized: ${hook.hookKey}")
                 } catch (e: Exception) {
-                    loge("Failed to initialize ${hook.hookName}", e)
+                    loge("Failed to initialize ${hook.hookKey}", e)
                 }
             }
         }
@@ -95,7 +88,7 @@ class HookManager {
      */
     fun getHookNames(): Map<String, List<String>> =
         mapOf(
-            "alwaysOn" to alwaysOnHooks.map { it.hookName },
-            "configurable" to configurableHooks.map { it.hookName },
+            "alwaysOn" to alwaysOnHooks.map { it.hookKey },
+            "configurable" to configurableHooks.map { it.hookKey },
         )
 }

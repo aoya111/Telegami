@@ -1,6 +1,7 @@
 package com.aoya.telegami.core
 
 import android.content.Context
+import com.aoya.telegami.BuildConfig
 import com.aoya.telegami.Telegami
 import com.aoya.telegami.utils.logd
 import com.aoya.telegami.utils.loge
@@ -31,26 +32,21 @@ data class UserConfig(
 
 object Config {
     private var localConfig: UserConfig = UserConfig()
-    private val hooks: MutableMap<String, Boolean> = mutableMapOf()
-    private var packageName = ""
+    private val packageName = BuildConfig.APPLICATION_ID
+    private var hookedPackageName = ""
     private var xPrefs: XSharedPreferences? = null
 
     private var user: User = User()
 
-    fun init(packageName: String? = null) {
+    fun init(pkgName: String) {
         logd("Initializing Config")
-        packageName?.let {
-            if (this.packageName != it) {
-                logd("Initializing package: $it")
-                this.packageName = it
-                xPrefs =
-                    XSharedPreferences(it, "telegami").apply {
-                        makeWorldReadable()
-                    }
-                logd("XSharedPreferences initialized for package: $it")
+        this.hookedPackageName = pkgName
+        xPrefs =
+            XSharedPreferences(pkgName, "telegami").apply {
+                makeWorldReadable()
             }
-            localConfig = readConfig()
-        }
+        logd("XSharedPreferences initialized for package: $pkgName")
+        localConfig = readConfig()
     }
 
     fun setUser(user: User) {
@@ -70,17 +66,6 @@ object Config {
     }
 
     @Synchronized
-    fun hasConfig(): Boolean {
-        if (user.id == 0L) {
-            logd("No user set, config unavailable")
-            return false
-        }
-        reload()
-        val configStr = xPrefs?.getString(user.id.toString(), null)
-        return !configStr.isNullOrEmpty() && configStr != "{}"
-    }
-
-    @Synchronized
     fun readConfig(): UserConfig {
         try {
             reload()
@@ -93,14 +78,6 @@ object Config {
                 localConfig.user = user
                 logd("User config read successfully for user ${user.id}")
             }
-
-            hooks.clear()
-            xPrefs?.all?.forEach { (key, value) ->
-                if (value is Boolean && key != "settings_selected_variant") {
-                    hooks[key] = value
-                }
-            }
-            logd("Hooks loaded: ${hooks.size} hooks")
 
             return localConfig
         } catch (e: Exception) {
@@ -119,10 +96,6 @@ object Config {
                 editor.putString(user.id.toString(), Gson().toJson(localConfig))
             }
 
-            hooks.forEach { (hookName, enabled) ->
-                editor.putBoolean(hookName, enabled)
-            }
-
             editor.apply()
             reload()
             logd("Config written successfully")
@@ -131,33 +104,33 @@ object Config {
         }
     }
 
-    fun setHookEnabled(
-        hookName: String,
+    fun setFeatureEnabled(
+        context: Context,
+        featureKey: String,
         enabled: Boolean,
     ) {
-        logd("Hook '$hookName' set to: $enabled")
-        hooks[hookName] = enabled
-        writeConfig()
+        val prefs = context.getSharedPreferences("features", Context.MODE_WORLD_READABLE)
+        prefs.edit().putBoolean(featureKey, enabled).apply()
     }
 
-    fun isHookEnabled(hookName: String): Boolean = hooks[hookName] ?: true
-
-    fun initHookSettings(
-        name: String,
-        state: Boolean,
-    ) {
-        if (!hooks.containsKey(name)) {
-            hooks[name] = state
-            writeConfig()
-            logd("Hook '$name' initialized with state: $state")
-        }
+    fun isFeatureEnabled(featureKey: String): Boolean {
+        val xPrefs =
+            XSharedPreferences(packageName, "features").apply {
+                makeWorldReadable()
+            }
+        xPrefs.reload()
+        return xPrefs.getBoolean(featureKey, false)
     }
 
-    fun getHooksSettings(): Map<String, Boolean> = hooks
+    fun isFeatureEnabledInActivity(
+        context: Context,
+        featureKey: String,
+    ): Boolean {
+        val prefs = context.getSharedPreferences("features", Context.MODE_WORLD_READABLE)
+        return prefs.getBoolean(featureKey, false)
+    }
 
     fun getCurrentUser(): User = user
-
-    fun isUserSet(): Boolean = user.id != 0L
 
     fun getProfileColor(): Int? = localConfig.theme.profileColor
 

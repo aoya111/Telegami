@@ -14,11 +14,7 @@ import com.aoya.telegami.virt.ui.ProfileActivity
 import com.aoya.telegami.virt.ui.components.ItemOptions
 import com.aoya.telegami.core.i18n.TranslationManager as i18n
 
-class ProfileDetails :
-    Hook(
-        "profile_details",
-        "Add extra fields and details to profiles",
-    ) {
+class ProfileDetails : Hook("ProfileDetails") {
     override fun init() {
         findAndHook("org.telegram.ui.ProfileActivity", "editRow", HookStage.BEFORE, filter = { true }) { param ->
             val o = ProfileActivity(param.thisObject())

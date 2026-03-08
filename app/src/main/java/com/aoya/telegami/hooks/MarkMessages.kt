@@ -17,11 +17,7 @@ import kotlinx.coroutines.launch
 import kotlin.math.ceil
 import com.aoya.telegami.core.i18n.TranslationManager as i18n
 
-class MarkMessages :
-    Hook(
-        "mark_messages",
-        "Mark messages",
-    ) {
+class MarkMessages : Hook("MarkMessages") {
     private val deletedMessagesCache = mutableMapOf<Pair<Long, Int>, DeletedMessage>()
 
     override fun init() {
@@ -49,7 +45,7 @@ class MarkMessages :
 
             var isDeleted = false
             val oldWidth = ceil(Theme.chatTimePaint.measureText(timeStr, 0, timeStr.length)).toInt()
-            if (Config.isHookEnabled("show_deleted_messages")) {
+            if (Config.isFeatureEnabled("ShowDeletedMessages")) {
                 deletedMessagesCache[msgKey]?.let { msg ->
                     timeStr = MessageHelper.createDeletedString(msg)
                     val newWidth = ceil(Theme.chatTimePaint.measureText(timeStr, 0, timeStr.length)).toInt()

@@ -5,11 +5,7 @@ import android.view.WindowManager.LayoutParams.FLAG_SECURE
 import com.aoya.telegami.utils.Hook
 import com.aoya.telegami.utils.HookStage
 
-class AllowScreenshots :
-    Hook(
-        "allow_screenshots",
-        "Allow screenshots everywhere in the app",
-    ) {
+class AllowScreenshots : Hook("AllowScreenshots") {
     override fun init() {
         findAndHook("android.view.Window", "setFlags", HookStage.BEFORE) { param ->
             var flags = param.arg<Int>(0)

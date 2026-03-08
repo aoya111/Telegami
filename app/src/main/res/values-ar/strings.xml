@@ -1,0 +1,19 @@
+<resources>
+    <string name="AppName">تليجامي</string>
+    <string name="FeatHideSeenStatus">اخفاء علامة الاستلام</string>
+    <string name="FeatHideSeenStatusDesc">اخفاء علامة استلام الرسائل</string>
+    <string name="FeatHideStoryViewStatus">اخفاء مشاهدة قصة</string>
+    <string name="FeatHideStoryViewStatusDesc">اخفاء حالة مشاهدة القصة</string>
+    <string name="FeatHideOnlineStatus">إخفاء حالة الاتصال بالإنترنت</string>
+    <string name="FeatHideOnlineStatusDesc">إخفاء حالة الاتصال بالإنترنت</string>
+    <string name="FeatHideTyping">اخفاء مؤشر الكتاب</string>
+    <string name="FeatHideTypingDesc">اخفاء مؤشر الكتاب</string>
+    <string name="FeatShowDeletedMessages">اضهار الرسائل المحذوفة</string>
+    <string name="FeatShowDeletedMessagesDesc">اضهار الرسائل المحذوفة</string>
+    <string name="FeatPreventSecretMediaDeletion">تعطيل حذف الوسائط السرية</string>
+    <string name="FeatPreventSecretMediaDeletionDesc">تعطيل حذف الوسائط السرية</string>
+    <string name="FeatUnlockChannelFeatures">فتح جميع الخصائص المشفره والمغلقه</string>
+    <string name="FeatUnlockChannelFeaturesDesc">فتح جميع الخصائص المشفره والمغلقه للقنوات</string>
+    <string name="FeatAllowSaveVideos">سماح حفظ الفيديو في معرض</string>
+    <string name="FeatAllowSaveVideosDesc">سماح حفظ الفيديو في المعرض</string>
+</resources>

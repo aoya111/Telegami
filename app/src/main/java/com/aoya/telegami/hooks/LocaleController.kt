@@ -5,11 +5,7 @@ import com.aoya.telegami.utils.Hook
 import com.aoya.telegami.utils.HookStage
 import com.aoya.telegami.virt.messenger.LocaleController
 
-class LocaleController :
-    Hook(
-        "LocaleController",
-        "locale controller",
-    ) {
+class LocaleController : Hook("LocaleController") {
     override fun init() {
         findAndHook("org.telegram.messenger.LocaleController", "applyLanguage", HookStage.AFTER, filter = { true }) { param ->
             val localeInfo = LocaleController.LocaleInfo(param.arg<Any>(0))

@@ -4,53 +4,18 @@ object Constants {
     const val GITHUB_REPO = "https://github.com/aoya111/Telegami"
 
     val SUPPORTED_TELEGRAM_PACKAGES =
-        arrayOf(
-            "it.octogram.android",
-            "org.forkgram.messenger",
-            "org.telegram.group",
-            "org.telegram.messenger",
-            "org.telegram.messenger.beta",
-            "org.telegram.messenger.web",
-            "org.telegram.plus",
-            "tw.nekomimi.nekogram",
-            "uz.unnarsx.cherrygram",
-            "xyz.nextalone.nagram",
-        )
-
-    val FEATURES =
-        arrayOf(
-            "hide_seen_status",
-            "hide_story_view_status",
-            "hide_online_status",
-            "hide_typing",
-            "show_deleted_messages",
-            "prevent_secret_media_deletion",
-            "unlock_channel_features",
-            "allow_save_videos",
-        )
-
-    private val EXCLUDED_FEATURES =
         mapOf(
-            "it.octogram.android" to emptySet(),
-            "org.forkgram.messenger" to emptySet(),
-            "org.telegram.group" to emptySet(),
-            "org.telegram.messenger" to emptySet(),
-            "org.telegram.messenger.beta" to emptySet(),
-            "org.telegram.messenger.web" to emptySet(),
-            "org.telegram.plus" to emptySet(),
-            "tw.nekomimi.nekogram" to
-                setOf(
-                    "unlock_channel_features",
-                ),
-            "uz.unnarsx.cherrygram" to emptySet(),
-            "xyz.nextalone.nagram" to
-                setOf(
-                    "unlock_channel_features",
-                ),
+            "it.octogram.android" to "Octogram",
+            "org.forkgram.messenger" to "Forkgram",
+            "org.telegram.group" to "Turrit",
+            "org.telegram.messenger" to "Telegram",
+            "org.telegram.messenger.beta" to "Telegram Beta",
+            "org.telegram.messenger.web" to "Telegram Web",
+            "org.telegram.plus" to "Telegram Plus",
+            "tw.nekomimi.nekogram" to "Nekogram",
+            "uz.unnarsx.cherrygram" to "Cherrygram",
+            "xyz.nextalone.nagram" to "Nagram",
         )
 
-    fun getFeaturesForPackage(packageName: String): Array<String> {
-        val excluded = EXCLUDED_FEATURES[packageName] ?: emptySet()
-        return FEATURES.filter { it !in excluded }.toTypedArray()
-    }
+    val SUPPORTED_TELEGRAM_PACKAGES_LIST = SUPPORTED_TELEGRAM_PACKAGES.keys.toList()
 }

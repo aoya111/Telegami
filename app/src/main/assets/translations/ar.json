@@ -1,15 +1,4 @@
 {
-  "input_msg_id": "ادخل معرف الرسالة",
-  "hide_seen_status": "اخفاء علامة الاستلام",
-  "hide_story_view_status": "اخفاء مشاهدة قصة",
-  "hide_typing": "اخفاء مؤشر الكتاب",
-  "unlock_channel_features": "فتح جميع الخصائص المشفره والمغلقه",
-  "show_delete_msg_button": "عرض زر حذف الرسائل",
-  "allow_save_videos": "سماح حفظ الفيديو في معرض",
-  "developer_channel": "قناة المطور",
-  "hide_online_status": "إخفاء حالة الاتصال بالإنترنت",
-  "prevent_secret_media_deletion": "تعطيل حذف الوسائط السرية",
-  "show_deleted_messages": "اضهار الرسائل المحذوفة",
   "CopiedToClipboardHint": "تم نسخ '{item}' إلى الحافظة",
   "ProfileStatusOffline": "غير متصل"
 }

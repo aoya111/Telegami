@@ -10,8 +10,7 @@ import de.robv.android.xposed.XC_MethodHook
 import com.aoya.telegami.core.obfuscate.ResolverManager as resolver
 
 abstract class Hook(
-    val hookName: String,
-    val hookDesc: String = "",
+    val hookKey: String,
 ) {
     /**
      * Hook specific initialization.
@@ -39,7 +38,7 @@ abstract class Hook(
     }
 
     protected val isEnabled: Boolean
-        get() = Config.isHookEnabled(hookName)
+        get() = Config.isFeatureEnabled(hookKey)
 
     protected val isDark: Boolean
         get() = Theme.getActiveTheme().isDark()

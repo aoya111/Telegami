@@ -7,11 +7,7 @@ import com.aoya.telegami.utils.HookStage
 import com.aoya.telegami.virt.messenger.MessagesStorage
 import com.aoya.telegami.virt.messenger.NotificationCenter
 
-class ShowDeletedMessages :
-    Hook(
-        "show_deleted_messages",
-        "Show 'Deleted' messages",
-    ) {
+class ShowDeletedMessages : Hook("ShowDeletedMessages") {
     override fun init() {
         findAndHook("org.telegram.messenger.MessagesController", "deleteMessages", HookStage.BEFORE) { param ->
             if (param.args().size != 12) return@findAndHook

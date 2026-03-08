@@ -12,11 +12,7 @@ import de.robv.android.xposed.XposedHelpers.getObjectField
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
-class ModifyDeletedMessagesMenu :
-    Hook(
-        "modify_deleted_messages_menu",
-        "Modify 'Deleted' messages menu",
-    ) {
+class ModifyDeletedMessagesMenu : Hook("ModifyDeletedMessagesMenu") {
     var msgIsDeleted = false
 
     companion object {
@@ -29,7 +25,7 @@ class ModifyDeletedMessagesMenu :
             "lambda\$createMenu$290",
             HookStage.BEFORE,
             filter = {
-                Config.isHookEnabled("show_deleted_messages")
+                Config.isFeatureEnabled("ShowDeletedMessages")
             },
         ) { param ->
             if (!msgIsDeleted) return@findAndHook
@@ -93,7 +89,7 @@ class ModifyDeletedMessagesMenu :
             "createMenu",
             HookStage.BEFORE,
             filter = {
-                Config.isHookEnabled("show_deleted_messages")
+                Config.isFeatureEnabled("ShowDeletedMessages")
             },
         ) { param ->
             val p1 = param.arg<Any>(0)
@@ -124,7 +120,7 @@ class ModifyDeletedMessagesMenu :
             "request",
             HookStage.BEFORE,
             filter = {
-                Config.isHookEnabled("show_deleted_messages")
+                Config.isFeatureEnabled("ShowDeletedMessages")
             },
         ) { param ->
             val o = param.thisObject()
