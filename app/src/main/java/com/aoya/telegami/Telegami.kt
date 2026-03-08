@@ -1,10 +1,7 @@
 package com.aoya.telegami
 
-import android.app.Activity
 import android.app.Application
-import android.app.Application.ActivityLifecycleCallbacks
 import android.content.Context
-import android.os.Bundle
 import android.os.Handler
 import android.widget.Toast
 import com.aoya.telegami.core.Config
@@ -12,8 +9,6 @@ import com.aoya.telegami.core.i18n.TranslationManager
 import com.aoya.telegami.core.obfuscate.ResolverManager
 import com.aoya.telegami.data.AppDatabase
 import com.aoya.telegami.utils.HookManager
-import dalvik.system.DexClassLoader
-import java.io.File
 import kotlin.system.measureTimeMillis
 
 object Telegami {
@@ -28,9 +23,6 @@ object Telegami {
 
     lateinit var db: AppDatabase
 
-    var currentActivity: Activity? = null
-        private set
-
     fun init(
         modulePath: String,
         app: Application,
@@ -41,45 +33,14 @@ object Telegami {
         TranslationManager.init(context, modulePath)
         ResolverManager.init(context.packageName, modulePath)
 
-        val newModule = File(context.filesDir, "telegami.dex")
-        File(modulePath).copyTo(newModule, true)
-        newModule.setReadOnly()
+        // TODO: This line can be removed in a future version once all users have updated.
+        // Legacy cleanup: remove the telegami.dex file that was unnecessarily copied on every launch.
+        context.filesDir.resolve("telegami.dex").delete()
 
-        this.classLoader =
-            DexClassLoader(newModule.absolutePath, context.codeCacheDir.absolutePath, null, context.classLoader)
+        this.classLoader = context.classLoader
         this.hookManager = HookManager()
         this.packageName = context.packageName
         this.db = AppDatabase.getDatabase(context)
-
-        app.registerActivityLifecycleCallbacks(
-            object : ActivityLifecycleCallbacks {
-                override fun onActivityCreated(
-                    activity: Activity,
-                    savedInstanceState: Bundle?,
-                ) {}
-
-                override fun onActivityStarted(activity: Activity) {}
-
-                override fun onActivityResumed(activity: Activity) {
-                    currentActivity = activity
-                }
-
-                override fun onActivityPaused(activity: Activity) {
-                    if (currentActivity == activity) {
-                        currentActivity = null
-                    }
-                }
-
-                override fun onActivityStopped(activity: Activity) {}
-
-                override fun onActivitySaveInstanceState(
-                    activity: Activity,
-                    outState: Bundle,
-                ) {}
-
-                override fun onActivityDestroyed(activity: Activity) {}
-            },
-        )
 
         try {
             val initTime = measureTimeMillis { init() }
