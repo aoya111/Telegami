@@ -13,11 +13,11 @@
     "name": "Forkgram",
     "package_name": "org.forkgram.messenger",
     "current_version": "12.4.2.0",
-    "latest_version": "12.4.2.0",
-    "latest_version_url": "https://github.com/forkgram/TelegramAndroid/releases/tag/12.4.2.0",
+    "latest_version": "12.5.1.0",
+    "latest_version_url": "https://github.com/forkgram/TelegramAndroid/releases/tag/12.5.1.0",
     "source": "github",
-    "update_available": false,
-    "last_checked": "2026-02-24T02:43:31.021361Z"
+    "update_available": true,
+    "last_checked": "2026-03-13T02:38:49.552620+00:00"
   },
   "org.telegram.messenger": {
     "name": "Telegram (Official)",
