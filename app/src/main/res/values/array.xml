@@ -22,5 +22,6 @@
         <item>PreventSecretMediaDeletion</item>
         <item>UnlockChannelFeatures</item>
         <item>AllowSaveVideos</item>
+        <item>FakePremium</item>
     </string-array>
 </resources>

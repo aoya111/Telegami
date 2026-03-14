@@ -16,4 +16,6 @@
     <string name="FeatUnlockChannelFeaturesDesc">Unlock all restricted and encrypted features for channels</string>
     <string name="FeatAllowSaveVideos">Allow saving videos</string>
     <string name="FeatAllowSaveVideosDesc">Allow saving videos to the gallery</string>
+    <string name="FeatFakePremium">Fake Premium</string>
+    <string name="FeatFakePremiumDesc">Fake Premium</string>
 </resources>
