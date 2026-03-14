@@ -6,6 +6,7 @@ object Constants {
     val SUPPORTED_TELEGRAM_PACKAGES =
         mapOf(
             "it.octogram.android" to "Octogram",
+            "org.forkclient.messenger.beta" to "Forkgram GH",
             "org.forkgram.messenger" to "Forkgram",
             "org.telegram.group" to "Turrit",
             "org.telegram.messenger" to "Telegram",
