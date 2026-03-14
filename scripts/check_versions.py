@@ -22,9 +22,13 @@ TELEGRAM_VARIANTS = {
         "apkmirror": "octogram",
         "package_name": "it.octogram.android",
     },
+    "org.forkclient.messenger.beta": {
+        "name": "Forkgram (github)",
+        "github": "Forkgram/TelegramAndroid",
+        "package_name": "org.forkclient.messenger.beta",
+    },
     "org.forkgram.messenger": {
         "name": "Forkgram",
-        "github": "Forkgram/TelegramAndroid",
         "apkmirror": "forkgram/forkgram-f-droid-version",
         "package_name": "org.forkgram.messenger",
     },
