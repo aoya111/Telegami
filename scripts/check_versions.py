@@ -22,6 +22,12 @@ TELEGRAM_VARIANTS = {
         "apkmirror": "octogram",
         "package_name": "it.octogram.android",
     },
+    "nu.gpu.nagram": {
+        "name": "NagramX",
+        "github": "risin42/NagramX",
+        "apkmirror": "octogram",
+        "package_name": "nu.gpu.nagram",
+    },
     "org.forkclient.messenger.beta": {
         "name": "Forkgram (github)",
         "github": "Forkgram/TelegramAndroid",
