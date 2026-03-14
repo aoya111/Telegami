@@ -9,15 +9,25 @@
     "update_available": false,
     "last_checked": "2026-02-24T02:43:30.675805Z"
   },
+  "org.forkclient.messenger.beta": {
+    "name": "Forkgram (github)",
+    "package_name": "org.forkclient.messenger.beta",
+    "current_version": "Unknown",
+    "latest_version": "12.5.1.0",
+    "latest_version_url": "https://github.com/forkgram/TelegramAndroid/releases/tag/12.5.1.0",
+    "source": "github",
+    "update_available": false,
+    "last_checked": "2026-03-14T21:40:55.013554+08:00"
+  },
   "org.forkgram.messenger": {
     "name": "Forkgram",
     "package_name": "org.forkgram.messenger",
     "current_version": "12.4.2.0",
-    "latest_version": "12.5.1.0",
-    "latest_version_url": "https://github.com/forkgram/TelegramAndroid/releases/tag/12.5.1.0",
-    "source": "github",
-    "update_available": true,
-    "last_checked": "2026-03-13T02:38:49.552620+00:00"
+    "latest_version": "12.4.2.0",
+    "latest_version_url": "https://www.apkmirror.com/apk/forkgram/forkgram-f-droid-version/",
+    "source": "apkmirror",
+    "update_available": false,
+    "last_checked": "2026-03-14T21:40:55.672621+08:00"
   },
   "org.telegram.messenger": {
     "name": "Telegram (Official)",
@@ -90,4 +100,3 @@
     "last_checked": "2026-03-10T02:35:30.229764+00:00"
   }
 }
-
