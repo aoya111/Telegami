@@ -82,11 +82,11 @@
   "xyz.nextalone.nagram": {
     "name": "Nagram",
     "package_name": "xyz.nextalone.nagram",
-    "current_version": "1229",
+    "current_version": "1231",
     "latest_version": "1231",
     "latest_version_url": "https://github.com/NextAlone/Nagram/releases/tag/1231",
     "source": "github",
-    "update_available": true,
+    "update_available": false,
     "last_checked": "2026-03-10T02:35:30.229764+00:00"
   }
 }
