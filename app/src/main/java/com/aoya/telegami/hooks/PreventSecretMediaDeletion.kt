@@ -23,13 +23,14 @@ class PreventSecretMediaDeletion : Hook("PreventSecretMediaDeletion") {
         }
 
         if (Telegami.packageName == "xyz.nextalone.nagram") {
+            // markMessagesContentAsReadInternal
             findAndHook(
-                "org.telegram.messenger.MessagesStorage\$\$ExternalSyntheticLambda13",
+                "org.telegram.ui.Stories.StoriesStorage\$\$ExternalSyntheticLambda5",
                 "run",
                 HookStage.BEFORE,
             ) { param ->
-                val dialogId = getLongField(param.thisObject(), "f\$2")
-                val mIds = getObjectField(param.thisObject(), "f\$1") as ArrayList<Int>
+                val dialogId = getLongField(param.thisObject(), "f\$1")
+                val mIds = getObjectField(param.thisObject(), "f\$2") as ArrayList<Int>
                 if (Globals.handleDeletedMessages(dialogId, mIds)) return@findAndHook
                 param.setResult(null)
             }
