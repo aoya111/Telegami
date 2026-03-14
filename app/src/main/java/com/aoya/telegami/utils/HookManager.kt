@@ -28,7 +28,6 @@ class HookManager {
         listOf(
             Settings(),
             LocaleController(),
-            FakePremium(),
             MarkMessages(),
             AllowScreenshots(),
             ApplyColor(),
@@ -47,6 +46,7 @@ class HookManager {
             PreventSecretMediaDeletion(),
             UnlockChannelFeatures(),
             AllowSaveVideos(),
+            FakePremium(),
         )
 
     fun init() {
