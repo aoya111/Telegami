@@ -2,6 +2,7 @@
 <resources>
     <string-array name="xposed_scope">
         <item>it.octogram.android</item>
+        <item>nu.gpu.nagram</item>
         <item>org.forkclient.messenger.beta</item>
         <item>org.forkgram.messenger</item>
         <item>org.telegram.group</item>
