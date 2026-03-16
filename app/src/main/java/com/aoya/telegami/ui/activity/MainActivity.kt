@@ -4,7 +4,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.commit
 import com.aoya.telegami.databinding.ActivityMainBinding
-import com.aoya.telegami.ui.fragment.HomeFragment
+import com.aoya.telegami.ui.fragment.ConfigFragment
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
@@ -17,7 +17,7 @@ class MainActivity : AppCompatActivity() {
 
         if (savedInstanceState == null) {
             supportFragmentManager.commit {
-                replace(binding.container.id, HomeFragment())
+                replace(binding.container.id, ConfigFragment())
             }
         }
     }
