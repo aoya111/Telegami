@@ -8,13 +8,13 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.aoya.telegami.R
 import com.aoya.telegami.core.Config
-import com.aoya.telegami.databinding.FragmentHomeBinding
+import com.aoya.telegami.databinding.FragmentConfigBinding
 import com.aoya.telegami.ui.adapter.HookAdapter
 import com.aoya.telegami.ui.adapter.HookInfo
 import dev.androidbroadcast.vbpd.viewBinding
 
-class HomeFragment : Fragment(R.layout.fragment_home) {
-    private val binding by viewBinding(FragmentHomeBinding::bind)
+class ConfigFragment : Fragment(R.layout.fragment_config) {
+    private val binding by viewBinding(FragmentConfigBinding::bind)
 
     private lateinit var prefs: SharedPreferences
 
