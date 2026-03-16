@@ -1,7 +1,9 @@
 <resources>
     <string name="AppName">Telegami</string>
-    <string name="FeatHideSeenStatus">Hide seen status</string>
-    <string name="FeatHideSeenStatusDesc">Hide seen status for messages</string>
+    <string name="FeatHideSeenPrivateChat">Hide seen (private chat)</string>
+    <string name="FeatHideSeenPrivateChatDesc">Hide seen status in private chats</string>
+    <string name="FeatHideSeenChannel">Hide seen (channel)</string>
+    <string name="FeatHideSeenChannelDesc">Hide seen status in channels</string>
     <string name="FeatHideStoryViewStatus">Hide story view status</string>
     <string name="FeatHideStoryViewStatusDesc">Hide story view status</string>
     <string name="FeatHideOnlineStatus">Hide online status</string>
