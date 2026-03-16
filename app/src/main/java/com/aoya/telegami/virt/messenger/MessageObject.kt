@@ -12,14 +12,21 @@ class MessageObject(
 ) {
     private val objPath = OBJ_PATH
 
+    private val fieldMessageOwner by lazy { resolver.getField(objPath, "messageOwner") }
+    private val methodGetId by lazy { resolver.getMethod(objPath, "getId") }
+    private val methodGetDialogId by lazy { resolver.getMethod(objPath, "getDialogId") }
+    private val methodIsSecretMedia by lazy { resolver.getMethod(objPath, "isSecretMedia") }
+
     val messageOwner: TLRPC.Message
-        get() = TLRPC.Message(getObjectField(instance, resolver.getField(objPath, "messageOwner")))
+        get() = TLRPC.Message(getObjectField(instance, fieldMessageOwner))
 
-    fun getId(): Int = callMethod(instance, resolver.getMethod(objPath, "getId")) as Int
+    val id: Int
+        get() = callMethod(instance, methodGetId) as Int
 
-    fun getDialogId(): Long = callMethod(instance, resolver.getMethod(objPath, "getDialogId")) as Long
+    val dialogId: Long
+        get() = callMethod(instance, methodGetDialogId) as Long
 
-    fun isSecretMedia(): Boolean = callMethod(instance, resolver.getMethod(objPath, "isSecretMedia")) as Boolean
+    fun isSecretMedia(): Boolean = callMethod(instance, methodIsSecretMedia) as Boolean
 
     companion object {
         private const val OBJ_PATH = "org.telegram.messenger.MessageObject"

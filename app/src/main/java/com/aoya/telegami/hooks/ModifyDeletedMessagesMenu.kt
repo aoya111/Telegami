@@ -102,13 +102,10 @@ class ModifyDeletedMessagesMenu : Hook("ModifyDeletedMessagesMenu") {
             // val type = callMethod(o, "getMessageType", msg) as Int
             // if (type != 3) return@hook
 
-            val mid = msgObj.getId()
-            val did = msgObj.getDialogId()
-
             msgIsDeleted = false
             runBlocking {
                 launch {
-                    db.deletedMessageDao().get(mid, did)?.let {
+                    db.deletedMessageDao().get(msgObj.id, msgObj.dialogId)?.let {
                         msgIsDeleted = true
                     }
                 }.join()

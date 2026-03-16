@@ -34,8 +34,8 @@ class MarkMessages : Hook("MarkMessages") {
         findAndHook("org.telegram.ui.Cells.ChatMessageCell", "measureTime", HookStage.AFTER, filter = { true }) { param ->
             val msgCell = ChatMessageCell(param.thisObject())
             val msgObj = MessageObject(param.arg<Any>(0))
-            val dialogId = msgObj.getDialogId()
-            val mid = msgObj.getId()
+            val dialogId = msgObj.dialogId
+            val mid = msgObj.id
             val msgKey = dialogId to mid
 
             var timeStr = msgCell.currentTimeString

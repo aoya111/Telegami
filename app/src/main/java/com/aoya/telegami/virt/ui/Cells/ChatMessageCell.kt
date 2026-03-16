@@ -14,6 +14,9 @@ class ChatMessageCell(
 ) {
     private val objPath = "org.telegram.ui.Cells.ChatMessageCell"
 
+    private val fieldCurrentTimeString by lazy { resolver.getField(objPath, "currentTimeString") }
+    private val methodGetMessageObject by lazy { resolver.getMethod(objPath, "getMessageObject") }
+
     var timeWidth: Int
         get() = getIntField(instance, "timeWidth")
         set(value) = setIntField(instance, "timeWidth", value)
@@ -27,8 +30,8 @@ class ChatMessageCell(
         set(value) = setIntField(instance, "backgroundWidth", value)
 
     var currentTimeString: CharSequence
-        get() = getObjectField(instance, resolver.getField(objPath, "currentTimeString")) as CharSequence
-        set(value) = setObjectField(instance, resolver.getField(objPath, "currentTimeString"), value)
+        get() = getObjectField(instance, fieldCurrentTimeString) as CharSequence
+        set(value) = setObjectField(instance, fieldCurrentTimeString, value)
 
-    fun getMessageObject(): MessageObject = MessageObject(callMethod(instance, resolver.getMethod(objPath, "getMessageObject")))
+    fun getMessageObject(): MessageObject = MessageObject(callMethod(instance, methodGetMessageObject))
 }
