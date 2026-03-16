@@ -15,7 +15,8 @@
         <item>xyz.nextalone.nagram</item>
     </string-array>
     <string-array name="features">
-        <item>HideSeenStatus</item>
+        <item>HideSeenPrivateChat</item>
+        <item>HideSeenChannel</item>
         <item>HideStoryViewStatus</item>
         <item>HideOnlineStatus</item>
         <item>HideTyping</item>
