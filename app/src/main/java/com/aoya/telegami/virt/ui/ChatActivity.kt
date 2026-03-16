@@ -11,8 +11,14 @@ class ChatActivity(
 ) {
     private val objPath = "org.telegram.ui.ChatActivity"
 
+    private val fieldDialogId by lazy { resolver.getField(objPath, "dialog_id") }
+    private val methodScrollToMessageId by lazy { resolver.getMethod(objPath, "scrollToMessageId") }
+    private val methodUpdatePagedownButtonVisibility by lazy { resolver.getMethod(objPath, "updatePagedownButtonVisibility") }
+    private val fieldCanShowPagedownButton by lazy { resolver.getField(objPath, "canShowPagedownButton") }
+    private val fieldPagedownButtonShowedByScroll by lazy { resolver.getField(objPath, "pagedownButtonShowedByScroll") }
+
     val dialogId: Long
-        get() = getLongField(instance, resolver.getField(objPath, "dialog_id"))
+        get() = getLongField(instance, fieldDialogId)
 
     fun scrollToMessageId(
         id: Int,
@@ -23,7 +29,7 @@ class ChatActivity(
         forcePinnedMessageId: Int,
     ) = callMethod(
         instance,
-        resolver.getMethod(objPath, "scrollToMessageId"),
+        methodScrollToMessageId,
         id,
         fromMessageId,
         select,
@@ -35,15 +41,15 @@ class ChatActivity(
     fun updatePagedownButtonVisibility(animated: Boolean) =
         callMethod(
             instance,
-            resolver.getMethod(objPath, "updatePagedownButtonVisibility"),
+            methodUpdatePagedownButtonVisibility,
             animated,
         )
 
     var canShowPagedownButton: Boolean
-        get() = getBooleanField(instance, resolver.getField(objPath, "canShowPagedownButton"))
-        set(value) = setBooleanField(instance, resolver.getField(objPath, "canShowPagedownButton"), value)
+        get() = getBooleanField(instance, fieldCanShowPagedownButton)
+        set(value) = setBooleanField(instance, fieldCanShowPagedownButton, value)
 
     var pagedownButtonShowedByScroll: Boolean
-        get() = getBooleanField(instance, resolver.getField(objPath, "pagedownButtonShowedByScroll"))
-        set(value) = setBooleanField(instance, resolver.getField(objPath, "pagedownButtonShowedByScroll"), value)
+        get() = getBooleanField(instance, fieldPagedownButtonShowedByScroll)
+        set(value) = setBooleanField(instance, fieldPagedownButtonShowedByScroll, value)
 }
