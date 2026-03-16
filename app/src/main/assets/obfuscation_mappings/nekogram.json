@@ -193,6 +193,17 @@
       },
       "obfuscated": "org.telegram.messenger.m0"
     },
+    "org.telegram.messenger.MessagesController$ReadTask": {
+      "fields": {
+        "dialogId": {
+          "hint": null,
+          "obfuscated": "a"
+        }
+      },
+      "hint": "see completeReadTask",
+      "methods": {},
+      "obfuscated": "org.telegram.messenger.m0$t"
+    },
     "org.telegram.messenger.MessagesStorage": {
       "fields": {
         "database": {
