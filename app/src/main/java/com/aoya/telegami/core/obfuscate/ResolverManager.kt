@@ -11,7 +11,6 @@ object ResolverManager {
             "it.octogram.android" to "octogram",
             "tw.nekomimi.nekogram" to "nekogram",
             "uz.unnarsx.cherrygram" to "cherrygram",
-            "xyz.nextalone.nagram" to "nagram",
         )
 
     fun init(
