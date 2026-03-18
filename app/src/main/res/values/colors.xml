@@ -8,4 +8,16 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="ic_launcher_background">#FFFFFF</color>
+
+    <color name="switch_thumb_checked">@android:color/white</color>
+    <color name="switch_thumb_unchecked">?attr/colorSurface</color>
+    <color name="switch_thumb_disabled_checked">?attr/colorSurface</color>
+    <color name="switch_thumb_disabled_unchecked">?attr/colorSurface</color>
+
+    <color name="switch_track_checked">?attr/colorPrimary</color>
+    <color name="switch_track_unchecked">?attr/colorSurfaceContainerHigh</color>
+    <color name="switch_track_disabled_checked">?attr/colorSurfaceVariant</color>
+    <color name="switch_track_disabled_unchecked">?attr/colorSurfaceContainerHigh</color>
+
+    <color name="switch_outline">?attr/colorOutline</color>
 </resources>

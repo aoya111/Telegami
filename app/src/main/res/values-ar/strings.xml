@@ -1,8 +1,9 @@
 <resources>
     <string name="AppName">تليجامي</string>
-    <string name="FeatHideSeenPrivateChat">اخفاء علامة الاستلام (خاص)</string>
+    <string name="FeatHideSeen">اخفاء علامة الاستلام</string>
+    <string name="FeatHideSeenPrivateChat">محادثة خاصة</string>
     <string name="FeatHideSeenPrivateChatDesc">اخفاء علامة استلام الرسائل في المحادثات الخاصة</string>
-    <string name="FeatHideSeenChannel">اخفاء علامة الاستلام (قناة)</string>
+    <string name="FeatHideSeenChannel">قناة</string>
     <string name="FeatHideSeenChannelDesc">اخفاء علامة استلام الرسائل في القنوات</string>
     <string name="FeatHideStoryViewStatus">اخفاء مشاهدة قصة</string>
     <string name="FeatHideStoryViewStatusDesc">اخفاء حالة مشاهدة القصة</string>
