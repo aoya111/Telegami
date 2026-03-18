@@ -9,7 +9,6 @@
 
     <com.google.android.material.appbar.AppBarLayout
         android:background="@android:color/transparent"
-        android:id="@+id/app_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -17,32 +16,18 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?actionBarSize"
-            android:elevation="0dp" />
+            android:elevation="0dp"
+            app:title="@string/AppName"
+            app:titleTextAppearance="?textAppearanceTitleLarge" />
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <LinearLayout
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:padding="16dp">
-
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/featuresText"
-            android:text="Features"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:textAppearance="?textAppearanceTitleLarge"
-            android:layout_marginBottom="8dp" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/list"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:clipToPadding="false"
-            android:paddingBottom="16dp" />
-
-    </LinearLayout>
+        android:clipToPadding="false"
+        android:paddingTop="8dp"
+        android:paddingBottom="16dp" />
 
 </LinearLayout>
