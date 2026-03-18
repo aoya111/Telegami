@@ -1,8 +1,9 @@
 <resources>
     <string name="AppName">Telegami</string>
-    <string name="FeatHideSeenPrivateChat">隐藏已读状态 (私聊)</string>
+    <string name="FeatHideSeen">隐藏已读状态</string>
+    <string name="FeatHideSeenPrivateChat">私聊</string>
     <string name="FeatHideSeenPrivateChatDesc">隐藏私聊中消息的已读状态</string>
-    <string name="FeatHideSeenChannel">隐藏已读状态 (频道)</string>
+    <string name="FeatHideSeenChannel">频道</string>
     <string name="FeatHideSeenChannelDesc">隐藏频道中消息的已读状态</string>
     <string name="FeatHideStoryViewStatus">隐藏 故事观看 状态</string>
     <string name="FeatHideStoryViewStatusDesc">隐藏故事观看状态</string>

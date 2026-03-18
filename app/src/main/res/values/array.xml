@@ -15,15 +15,16 @@
         <item>xyz.nextalone.nagram</item>
     </string-array>
     <string-array name="features">
+        <item>HideOnlineStatus</item>
+        <item>HeaderHideSeen</item>
         <item>HideSeenPrivateChat</item>
         <item>HideSeenChannel</item>
-        <item>HideStoryViewStatus</item>
-        <item>HideOnlineStatus</item>
         <item>HideTyping</item>
+        <item>HideStoryViewStatus</item>
         <item>ShowDeletedMessages</item>
         <item>PreventSecretMediaDeletion</item>
-        <item>UnlockChannelFeatures</item>
         <item>AllowSaveVideos</item>
+        <item>UnlockChannelFeatures</item>
         <item>FakePremium</item>
     </string-array>
 </resources>
