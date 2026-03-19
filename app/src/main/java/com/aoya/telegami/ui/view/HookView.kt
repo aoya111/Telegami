@@ -53,12 +53,13 @@ class HookView
 
         fun showAsHeader() {
             binding.text.typeface = android.graphics.Typeface.DEFAULT_BOLD
-            val paddingVertical = (resources.displayMetrics.density * 8f).toInt()
+            val paddingTop = (resources.displayMetrics.density * 8f).toInt()
+            val paddingBottom = (resources.displayMetrics.density * 4f).toInt()
             binding.text.setPaddingRelative(
                 0,
-                paddingVertical,
+                paddingTop,
                 0,
-                paddingVertical,
+                paddingBottom,
             )
             binding.toggle.isVisible = false
             binding.subText.isVisible = false
@@ -66,12 +67,12 @@ class HookView
 
         fun showAsChild(isLast: Boolean = false) {
             val indent = (resources.displayMetrics.density * 24f).toInt()
-            val currentPaddingVertical = paddingTop
+            val paddingVertical = (resources.displayMetrics.density * 2f).toInt()
             setPaddingRelative(
                 indent,
-                currentPaddingVertical,
+                paddingVertical,
                 paddingEnd,
-                currentPaddingVertical,
+                paddingVertical,
             )
         }
 
