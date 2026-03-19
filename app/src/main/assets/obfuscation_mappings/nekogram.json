@@ -2,7 +2,7 @@
   "variant": "nekogram",
   "package_name": "tw.nekomimi.nekogram",
   "version": "12.5.1",
-  "updated": "2026-03-14",
+  "updated": "2026-03-19",
   "mappings": {
     "org.telegram.SQLite.SQLiteCursor": {
       "fields": {},
@@ -586,13 +586,13 @@
       "fields": {},
       "hint": "headerItem;",
       "methods": {
-        "createMenu": {
-          "hint": "\"open menu",
-          "obfuscated": "mt"
-        },
         "createView": {
           "hint": "View \\w*(Context context)",
           "obfuscated": "D0"
+        },
+        "fillMessageMenu": {
+          "hint": "public void \\w*(<MessageObject> \\w*, ArrayList ",
+          "obfuscated": "Rt"
         },
         "getContext": {
           "hint": "\\ \\w*().getResources().getDrawable",
@@ -601,10 +601,6 @@
         "getResourceProvider": {
           "hint": "AlertDialog.Builder(<getContext>(), \\w*())",
           "obfuscated": "x"
-        },
-        "lambda$createMenu$290": {
-          "hint": "scrimPopupWindow\\.showAtLocation(this\\.chatListView, 51,",
-          "obfuscated": "ax"
         },
         "scrollToMessageId": {
           "hint": "public void \\w*(int \\w*, int \\w*, boolean \\w*, int \\w*, boolean \\w*, int \\w*)",

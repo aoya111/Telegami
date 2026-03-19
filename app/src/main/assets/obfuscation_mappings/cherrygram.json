@@ -175,13 +175,9 @@
       "fields": {},
       "hint": "\"open menu",
       "methods": {
-        "createMenu": {
-          "hint": "\"open menu",
-          "obfuscated": "Eo"
-        },
-        "lambda$createMenu$290": {
-          "hint": "scrimPopupWindow\\.showAtLocation(this\\.chatListView, 51,",
-          "obfuscated": "zs"
+        "fillMessageMenu": {
+          "hint": "public void \\w*(<MessageObject> \\w*, ArrayList ",
+          "obfuscated": "kp"
         },
         "scrollToMessageId": {
           "hint": "public void \\w*(int \\w*, int \\w*, boolean \\w*, int \\w*, boolean \\w*, int \\w*)",
