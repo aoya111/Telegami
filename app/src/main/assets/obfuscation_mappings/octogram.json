@@ -592,10 +592,6 @@
           "hint": "AlertDialog.Builder(<see getContext>, \\w*())",
           "obfuscated": "l"
         },
-        "scrollToMessageId": {
-          "hint": "public void \\w*(int \\w*, int \\w*, boolean \\w*, int \\w*, boolean \\w*, int \\w*)",
-          "obfuscated": "C"
-        },
         "sendSecretMediaDelete": {
           "hint": "Runnable \\w*(final ",
           "obfuscated": "MF"
@@ -603,10 +599,6 @@
         "sendSecretMessageRead": {
           "hint": "Runnable \\w*(final ",
           "obfuscated": "NF"
-        },
-        "updatePagedownButtonVisibility": {
-          "hint": "function below canShowPagedownButton = false;",
-          "obfuscated": "XH"
         }
       },
       "obfuscated": "org.telegram.ui.o"
@@ -710,10 +702,6 @@
       "fields": {},
       "hint": null,
       "methods": {
-        "createView": {
-          "hint": "\\ setWillNotDraw(false)",
-          "obfuscated": "p1"
-        },
         "editRow": {
           "hint": "view)\\.dialogCell",
           "obfuscated": "Fe"
