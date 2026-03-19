@@ -17,6 +17,11 @@ class ConfigFragment : Fragment(R.layout.fragment_config) {
 
     private lateinit var prefs: SharedPreferences
 
+    private val featureDependencies =
+        mapOf(
+            "MarkMessagesDeleted" to "ShowDeletedMessages",
+        )
+
     private fun loadHooks(): List<HookInfo> {
         val featureKeys = resources.getStringArray(R.array.features).toList()
         val hooks = mutableListOf<HookInfo>()
@@ -56,6 +61,7 @@ class ConfigFragment : Fragment(R.layout.fragment_config) {
                         enabled = Config.isFeatureEnabledInActivity(requireContext(), hookKey),
                         isHeader = false,
                         groupId = groupId,
+                        dependsOn = featureDependencies[hookKey],
                     ),
                 )
             } else {
@@ -66,7 +72,13 @@ class ConfigFragment : Fragment(R.layout.fragment_config) {
                 val description = if (descResId != 0) getString(descResId) else ""
 
                 hooks.add(
-                    HookInfo(hookKey, name, description, Config.isFeatureEnabledInActivity(requireContext(), hookKey)),
+                    HookInfo(
+                        key = hookKey,
+                        name = name,
+                        desc = description,
+                        enabled = Config.isFeatureEnabledInActivity(requireContext(), hookKey),
+                        dependsOn = featureDependencies[hookKey],
+                    ),
                 )
             }
         }

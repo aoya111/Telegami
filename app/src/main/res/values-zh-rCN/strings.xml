@@ -13,6 +13,10 @@
     <string name="FeatHideTypingDesc">隐藏正在输入</string>
     <string name="FeatShowDeletedMessages">显示已删除的消息</string>
     <string name="FeatShowDeletedMessagesDesc">显示已删除的消息</string>
+    <string name="FeatMarkMessagesDeleted">标记已删除的消息</string>
+    <string name="FeatMarkMessagesDeletedDesc">在聊天中标记已删除的消息</string>
+    <string name="FeatMarkMessagesEdited">标记已编辑的消息</string>
+    <string name="FeatMarkMessagesEditedDesc">在聊天中标记已编辑的消息</string>
     <string name="FeatPreventSecretMediaDeletion">防止删除秘密媒体</string>
     <string name="FeatPreventSecretMediaDeletionDesc">防止删除秘密媒体</string>
     <string name="FeatUnlockChannelFeatures">解锁频道的所有受限和加密功能</string>

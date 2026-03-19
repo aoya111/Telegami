@@ -13,6 +13,10 @@
     <string name="FeatHideTypingDesc">Hide typing</string>
     <string name="FeatShowDeletedMessages">Show deleted messages</string>
     <string name="FeatShowDeletedMessagesDesc">Show deleted messages</string>
+    <string name="FeatMarkMessagesDeleted">Mark deleted messages</string>
+    <string name="FeatMarkMessagesDeletedDesc">Mark deleted messages in chat</string>
+    <string name="FeatMarkMessagesEdited">Mark edited messages</string>
+    <string name="FeatMarkMessagesEditedDesc">Mark edited messages in chat</string>
     <string name="FeatPreventSecretMediaDeletion">Prevent secret media deletion</string>
     <string name="FeatPreventSecretMediaDeletionDesc">Prevent deletion of secret media</string>
     <string name="FeatUnlockChannelFeatures">Unlock channel features</string>
