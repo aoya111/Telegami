@@ -13,6 +13,10 @@
     <string name="FeatHideTypingDesc">اخفاء مؤشر الكتاب</string>
     <string name="FeatShowDeletedMessages">اضهار الرسائل المحذوفة</string>
     <string name="FeatShowDeletedMessagesDesc">اضهار الرسائل المحذوفة</string>
+    <string name="FeatMarkMessagesDeleted">وضع علامة على الرسائل المحذوفة</string>
+    <string name="FeatMarkMessagesDeletedDesc">وضع علامة على الرسائل المحذوفة في المحادثة</string>
+    <string name="FeatMarkMessagesEdited">وضع علامة على الرسائل المعدلة</string>
+    <string name="FeatMarkMessagesEditedDesc">وضع علامة على الرسائل المعدلة في المحادثة</string>
     <string name="FeatPreventSecretMediaDeletion">تعطيل حذف الوسائط السرية</string>
     <string name="FeatPreventSecretMediaDeletionDesc">تعطيل حذف الوسائط السرية</string>
     <string name="FeatUnlockChannelFeatures">فتح جميع الخصائص المشفره والمغلقه</string>

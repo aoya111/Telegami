@@ -23,6 +23,9 @@
         <item>HideStoryViewStatus</item>
         <item>ShowDeletedMessages</item>
         <item>PreventSecretMediaDeletion</item>
+        <item>HeaderMarkMessages</item>
+        <item>MarkMessagesDeleted</item>
+        <item>MarkMessagesEdited</item>
         <item>AllowSaveVideos</item>
         <item>UnlockChannelFeatures</item>
         <item>FakePremium</item>
