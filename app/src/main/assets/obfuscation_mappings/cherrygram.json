@@ -179,10 +179,6 @@
           "hint": "public void \\w*(<MessageObject> \\w*, ArrayList ",
           "obfuscated": "kp"
         },
-        "scrollToMessageId": {
-          "hint": "public void \\w*(int \\w*, int \\w*, boolean \\w*, int \\w*, boolean \\w*, int \\w*)",
-          "obfuscated": "B"
-        },
         "sendSecretMediaDelete": {
           "hint": "Runnable \\w*(final ",
           "obfuscated": "lB"
@@ -190,10 +186,6 @@
         "sendSecretMessageRead": {
           "hint": "Runnable \\w*(final ",
           "obfuscated": "mB"
-        },
-        "updatePagedownButtonVisibility": {
-          "hint": "function below canShowPagedownButton = false;",
-          "obfuscated": "rD"
         }
       },
       "obfuscated": "org.telegram.ui.p"
