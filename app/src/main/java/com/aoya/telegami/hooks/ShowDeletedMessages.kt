@@ -76,6 +76,6 @@ class ShowDeletedMessages : Hook("ShowDeletedMessages") {
             param.setResult(null)
         }
 
-        // ModifyDeletedMessagesMenu().init()
+        ModifyDeletedMessagesMenu().init()
     }
 }
