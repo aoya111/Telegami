@@ -1,34 +1,21 @@
 package com.aoya.telegami.hooks
 
-import android.text.SpannableStringBuilder
-import com.aoya.telegami.Telegami
 import com.aoya.telegami.core.Config
-import com.aoya.telegami.data.DeletedMessage
 import com.aoya.telegami.utils.Hook
 import com.aoya.telegami.utils.HookStage
 import com.aoya.telegami.utils.MessageHelper
 import com.aoya.telegami.virt.messenger.AndroidUtilities
 import com.aoya.telegami.virt.messenger.MessageObject
-import com.aoya.telegami.virt.tgnet.TLRPC
 import com.aoya.telegami.virt.ui.ChatActivity
 import com.aoya.telegami.virt.ui.actionbar.Theme
 import com.aoya.telegami.virt.ui.cells.ChatMessageCell
-import kotlinx.coroutines.launch
 import kotlin.math.ceil
-import com.aoya.telegami.core.i18n.TranslationManager as i18n
 
 class MarkMessages : Hook("MarkMessages") {
-    private val deletedMessagesCache = mutableMapOf<Pair<Long, Int>, DeletedMessage>()
-
     override fun init() {
         findAndHook("org.telegram.ui.ChatActivity", "createView", HookStage.AFTER, filter = { true }) { param ->
             val o = ChatActivity(param.thisObject())
-            Globals.coroutineScope.launch {
-                val deleted = db.deletedMessageDao().getAllForDialog(o.dialogId)
-                deleted.forEach { msg ->
-                    deletedMessagesCache[o.dialogId to msg.id] = msg
-                }
-            }
+            Globals.loadDeletedMessagesForDialog(o.dialogId)
         }
 
         findAndHook("org.telegram.ui.Cells.ChatMessageCell", "measureTime", HookStage.AFTER, filter = { true }) { param ->
@@ -36,7 +23,6 @@ class MarkMessages : Hook("MarkMessages") {
             val msgObj = MessageObject(param.arg<Any>(0))
             val dialogId = msgObj.dialogId
             val mid = msgObj.id
-            val msgKey = dialogId to mid
 
             var timeStr = msgCell.currentTimeString
             var timeTextWidth = msgCell.timeTextWidth
@@ -46,7 +32,9 @@ class MarkMessages : Hook("MarkMessages") {
             var isDeleted = false
             val oldWidth = ceil(Theme.chatTimePaint.measureText(timeStr, 0, timeStr.length)).toInt()
             if (Config.isFeatureEnabled("ShowDeletedMessages")) {
-                deletedMessagesCache[msgKey]?.let { msg ->
+                isDeleted = Globals.isDeletedMessage(dialogId, mid)
+                if (isDeleted) {
+                    val msg = Globals.getDeletedMessage(dialogId, mid)!!
                     timeStr = MessageHelper.createDeletedString(msg)
                     val newWidth = ceil(Theme.chatTimePaint.measureText(timeStr, 0, timeStr.length)).toInt()
 
@@ -59,9 +47,7 @@ class MarkMessages : Hook("MarkMessages") {
                             timeTextWidth += drawableAdjustment.toInt() + dwidth
                             timeWidth += drawableAdjustment.toInt() + 5 * dwidth / 6
                         }
-                        // timeWidth = timeTextWidth
                     }
-                    isDeleted = true
                 }
             }
             if (!isDeleted) {

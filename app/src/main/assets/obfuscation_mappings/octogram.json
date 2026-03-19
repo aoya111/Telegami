@@ -2,7 +2,7 @@
   "variant": "octogram",
   "package_name": "it.octogram.android",
   "version": "3.5.1",
-  "updated": "2026-03-16",
+  "updated": "2026-03-19",
   "mappings": {
     "org.telegram.SQLite.SQLiteCursor": {
       "fields": {},
@@ -576,13 +576,13 @@
       "fields": {},
       "hint": "headerItem;",
       "methods": {
-        "createMenu": {
-          "hint": "\"open menu",
-          "obfuscated": "Xs"
-        },
         "createView": {
           "hint": "View \\w*(Context context)",
           "obfuscated": "n0"
+        },
+        "fillMessageMenu": {
+          "hint": "public void \\w*(<MessageObject> \\w*, ArrayList ",
+          "obfuscated": "Dt"
         },
         "getContext": {
           "hint": "\\ \\w*().getResources().getDrawable",
@@ -591,10 +591,6 @@
         "getResourceProvider": {
           "hint": "AlertDialog.Builder(<see getContext>, \\w*())",
           "obfuscated": "l"
-        },
-        "lambda$createMenu$290": {
-          "hint": "scrimPopupWindow\\.showAtLocation(this\\.chatListView, 51,",
-          "obfuscated": "Lw"
         },
         "scrollToMessageId": {
           "hint": "public void \\w*(int \\w*, int \\w*, boolean \\w*, int \\w*, boolean \\w*, int \\w*)",
