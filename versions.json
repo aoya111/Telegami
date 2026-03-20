@@ -13,11 +13,11 @@
     "name": "NagramX",
     "package_name": "nu.gpu.nagram",
     "current_version": "Unknown",
-    "latest_version": "1238",
-    "latest_version_url": "https://github.com/risin42/NagramX/releases/tag/1238",
+    "latest_version": "1240",
+    "latest_version_url": "https://github.com/risin42/NagramX/releases/tag/1240",
     "source": "github",
     "update_available": false,
-    "last_checked": "2026-03-14T23:51:43.122456+08:00"
+    "last_checked": "2026-03-20T02:39:35.984941+00:00"
   },
   "org.forkclient.messenger.beta": {
     "name": "Forkgram (github)",
@@ -83,11 +83,11 @@
     "name": "Nekogram",
     "package_name": "tw.nekomimi.nekogram",
     "current_version": "12.5.1",
-    "latest_version": "12.5.1",
-    "latest_version_url": "https://github.com/Nekogram/Nekogram/releases/tag/v12.5.1",
+    "latest_version": "12.5.2",
+    "latest_version_url": "https://github.com/Nekogram/Nekogram/releases/tag/v12.5.2",
     "source": "github",
-    "update_available": false,
-    "last_checked": "2026-03-11T02:34:48.504645+00:00"
+    "update_available": true,
+    "last_checked": "2026-03-20T02:39:38.998753+00:00"
   },
   "uz.unnarsx.cherrygram": {
     "name": "Cherrygram",
