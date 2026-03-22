@@ -1,8 +1,8 @@
 {
   "variant": "cherrygram",
   "package_name": "uz.unnarsx.cherrygram",
-  "version": "10.4.0",
-  "updated": "2026-03-14",
+  "version": "10.5.0",
+  "updated": "2026-03-22",
   "mappings": {
     "org.telegram.messenger.browser.Browser": {
       "fields": {},
@@ -13,13 +13,13 @@
           "obfuscated": "J"
         }
       },
-      "obfuscated": "GE"
+      "obfuscated": "nF"
     },
     "org.telegram.tgnet.tl.TL_account$updateStatus": {
       "fields": {},
       "hint": "boolean offline;",
       "methods": {},
-      "obfuscated": "oV4"
+      "obfuscated": "a25"
     },
     "org.telegram.ui.ActionBar.ActionBar": {
       "fields": {},
@@ -127,7 +127,7 @@
           "obfuscated": "o"
         }
       },
-      "obfuscated": "xi4"
+      "obfuscated": "pp4"
     },
     "org.telegram.ui.ActionBar.Theme": {
       "fields": {
@@ -161,31 +161,31 @@
       "hint": "this\\.currentMessageObject\\.isMediaSpoilersRevealed = true",
       "methods": {
         "measureTime": {
-          "hint": "final void \\w*(<MessageObject>",
-          "obfuscated": "h6"
+          "hint": "final void \\w*(MessageObject",
+          "obfuscated": "l6"
         },
         "setMessageContent": {
-          "hint": "final void \\w*(<MessageObject> \\w*, <MessageObject.GroupedMessages>",
-          "obfuscated": "J6"
+          "hint": "final void \\w*(MessageObject \\w*, MessageObject.GroupedMessages",
+          "obfuscated": "O6"
         }
       },
-      "obfuscated": "Xn0"
+      "obfuscated": "Xo0"
     },
     "org.telegram.ui.ChatActivity": {
       "fields": {},
       "hint": "\"open menu",
       "methods": {
         "fillMessageMenu": {
-          "hint": "public void \\w*(<MessageObject> \\w*, ArrayList ",
-          "obfuscated": "kp"
+          "hint": "public void \\w*(MessageObject \\w*, ArrayList ",
+          "obfuscated": "pp"
         },
         "sendSecretMediaDelete": {
-          "hint": "Runnable \\w*(final ",
-          "obfuscated": "lB"
+          "hint": "Runnable \\w*(final MessageObject \\w*)",
+          "obfuscated": "wB"
         },
         "sendSecretMessageRead": {
-          "hint": "Runnable \\w*(final ",
-          "obfuscated": "mB"
+          "hint": "Runnable \\w*(final MessageObject \\w*, boolean",
+          "obfuscated": "xB"
         }
       },
       "obfuscated": "org.telegram.ui.p"
@@ -218,7 +218,7 @@
       "methods": {
         "createSaveToGalleryBulletin": {
           "hint": "public static <Bulletin> \\w*(FrameLayout \\w*, boolean \\w*,",
-          "obfuscated": "n0"
+          "obfuscated": "p0"
         }
       },
       "obfuscated": "org.telegram.ui.Components.w"
@@ -236,7 +236,7 @@
           "obfuscated": "h"
         }
       },
-      "obfuscated": "Hz0"
+      "obfuscated": "dz0"
     },
     "org.telegram.ui.Components.ItemOptions": {
       "fields": {},
@@ -244,15 +244,15 @@
       "methods": {
         "add": {
           "hint": "public <ItemOptions> \\w*(int \\w*, CharSequence \\w*, Runnable ",
-          "obfuscated": "W"
+          "obfuscated": "X"
         },
         "setGravity": {
           "hint": "swipeBackGravityRight = true",
-          "obfuscated": "G1"
+          "obfuscated": "O1"
         },
         "show": {
           "hint": "public <ItemOptions> \\w*()",
-          "obfuscated": "T1"
+          "obfuscated": "b2"
         }
       },
       "obfuscated": "org.telegram.ui.Components.B0"
@@ -263,7 +263,7 @@
       "methods": {
         "apply": {
           "hint": "private void \\w*()",
-          "obfuscated": "v1"
+          "obfuscated": "x1"
         }
       },
       "obfuscated": "org.telegram.ui.a0"
@@ -291,19 +291,19 @@
       "methods": {
         "editRow": {
           "hint": "view)\\.dialogCell",
-          "obfuscated": "rb"
+          "obfuscated": "Bb"
         },
         "getParentActivity": {
           "hint": "\\w*().getWindowManager()",
-          "obfuscated": "Wb"
+          "obfuscated": "hc"
         },
         "processOnClickOrPress": {
           "hint": "\"888\"",
-          "obfuscated": "of"
+          "obfuscated": "Ef"
         },
         "updateProfileData": {
           "hint": "\"avatar\",",
-          "obfuscated": "bg"
+          "obfuscated": "sg"
         }
       },
       "obfuscated": "org.telegram.ui.ProfileActivity"
