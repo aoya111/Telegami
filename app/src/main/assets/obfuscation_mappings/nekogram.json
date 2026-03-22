@@ -1,8 +1,8 @@
 {
   "variant": "nekogram",
   "package_name": "tw.nekomimi.nekogram",
-  "version": "12.5.1",
-  "updated": "2026-03-19",
+  "version": "12.5.2",
+  "updated": "2026-03-22",
   "mappings": {
     "org.telegram.SQLite.SQLiteCursor": {
       "fields": {},
@@ -48,7 +48,7 @@
         },
         "dp": {
           "hint": "public static int \\w*(float; return Math.ceil",
-          "obfuscated": "A0"
+          "obfuscated": "B0"
         }
       },
       "obfuscated": "org.telegram.messenger.a"
@@ -313,19 +313,19 @@
           "obfuscated": "G"
         }
       },
-      "obfuscated": "z01"
+      "obfuscated": "d11"
     },
     "org.telegram.messenger.secretmedia.EncryptedFileInputStream": {
       "fields": {},
       "hint": "extends FileInputStream",
       "methods": {},
-      "obfuscated": "gh5"
+      "obfuscated": "oh5"
     },
     "org.telegram.messenger.time.FastDateFormat": {
       "fields": {},
       "hint": "extends Format",
       "methods": {},
-      "obfuscated": "aq5"
+      "obfuscated": "gq5"
     },
     "org.telegram.tgnet.TLRPC$Message": {
       "fields": {
@@ -339,7 +339,7 @@
         },
         "ttl": {
           "hint": "if (\\w*.messageOwner.\\w* == Integer.MAX_VALUE)",
-          "obfuscated": "i0"
+          "obfuscated": "j0"
         }
       },
       "hint": "-2082087340:",
@@ -407,7 +407,7 @@
       },
       "hint": ">= 55000",
       "methods": {},
-      "obfuscated": "nyg"
+      "obfuscated": "iyg"
     },
     "org.telegram.ui.ActionBar.ActionBar": {
       "fields": {},
@@ -512,7 +512,7 @@
       "methods": {
         "getContext": {
           "hint": "public Context \\w*",
-          "obfuscated": "P0"
+          "obfuscated": "R0"
         },
         "getMessagesController": {
           "hint": "public <MessagesController> \\w*()",
@@ -534,7 +534,7 @@
           "obfuscated": "l0"
         }
       },
-      "obfuscated": "qxe"
+      "obfuscated": "kxe"
     },
     "org.telegram.ui.ActionBar.Theme": {
       "fields": {
@@ -580,7 +580,7 @@
           "obfuscated": "N8"
         }
       },
-      "obfuscated": "a73"
+      "obfuscated": "g73"
     },
     "org.telegram.ui.ChatActivity": {
       "fields": {},
@@ -592,7 +592,7 @@
         },
         "fillMessageMenu": {
           "hint": "public void \\w*(<MessageObject> \\w*, ArrayList ",
-          "obfuscated": "Rt"
+          "obfuscated": "Xt"
         },
         "getContext": {
           "hint": "\\ \\w*().getResources().getDrawable",
@@ -604,11 +604,11 @@
         },
         "sendSecretMediaDelete": {
           "hint": "Runnable \\w*(final ",
-          "obfuscated": "fG"
+          "obfuscated": "pG"
         },
         "sendSecretMessageRead": {
           "hint": "Runnable \\w*(final ",
-          "obfuscated": "gG"
+          "obfuscated": "qG"
         }
       },
       "obfuscated": "org.telegram.ui.ChatActivity"
@@ -659,23 +659,23 @@
           "obfuscated": "h"
         }
       },
-      "obfuscated": "in3"
+      "obfuscated": "nn3"
     },
     "org.telegram.ui.Components.ItemOptions": {
       "fields": {},
       "hint": "> 0\\.705d",
       "methods": {
         "add": {
-          "hint": "public <ItemOptions> \\w*(int",
-          "obfuscated": "T"
+          "hint": "public <ItemOptions> \\w*(int \\w*, CharSequence \\w*, Runnable \\w*)",
+          "obfuscated": "U"
         },
         "setGravity": {
           "hint": "swipeBackGravityRight = true",
-          "obfuscated": "z1"
+          "obfuscated": "C1"
         },
         "show": {
           "hint": null,
-          "obfuscated": "M1"
+          "obfuscated": "P1"
         }
       },
       "obfuscated": "org.telegram.ui.Components.v1"
