@@ -14,20 +14,21 @@ import kotlin.math.ceil
 class MarkMessages : Hook("MarkMessages") {
     private var deleteDrawableWidth: Int = 0
     private var editDrawableWidth: Int = 0
+    private var isMarkDeletedEnabled: Boolean = false
+    private var isMarkEditedEnabled: Boolean = false
+    private var isAnyMarkEnabled: Boolean = false
 
     override fun init() {
         deleteDrawableWidth = getDrawableResource("msg_delete")?.getIntrinsicWidth() ?: 0
         editDrawableWidth = getDrawableResource("msg_edit")?.getIntrinsicWidth() ?: 0
+        refreshFeatureStates()
 
         findAndHook("org.telegram.ui.ChatActivity", "createView", HookStage.AFTER, filter = { true }) { param ->
             val o = ChatActivity(param.thisObject())
             Globals.loadDeletedMessagesForDialog(o.dialogId)
         }
 
-        findAndHook("org.telegram.ui.Cells.ChatMessageCell", "measureTime", HookStage.AFTER, filter = {
-            Config.isFeatureEnabled("MarkMessagesDeleted") ||
-                Config.isFeatureEnabled("MarkMessagesEdited")
-        }) { param ->
+        findAndHook("org.telegram.ui.Cells.ChatMessageCell", "measureTime", HookStage.AFTER, filter = { isAnyMarkEnabled }) { param ->
             val msgCell = ChatMessageCell(param.thisObject())
             val msgObj = MessageObject(param.arg<Any>(0))
             val dialogId = msgObj.dialogId
@@ -40,7 +41,7 @@ class MarkMessages : Hook("MarkMessages") {
 
             var isDeleted = false
             val oldWidth = ceil(Theme.chatTimePaint.measureText(timeStr, 0, timeStr.length)).toInt()
-            if (Config.isFeatureEnabled("MarkMessagesDeleted")) {
+            if (isMarkDeletedEnabled) {
                 isDeleted = Globals.isDeletedMessage(dialogId, mid)
                 if (isDeleted) {
                     val msg = Globals.getDeletedMessage(dialogId, mid)!!
@@ -60,7 +61,7 @@ class MarkMessages : Hook("MarkMessages") {
                 }
             }
             if (!isDeleted) {
-                if (Config.isFeatureEnabled("MarkMessagesEdited")) {
+                if (isMarkEditedEnabled) {
                     timeStr = MessageHelper.replaceWithIcon(timeStr)
                     val newWidth = ceil(Theme.chatTimePaint.measureText(timeStr, 0, timeStr.length)).toInt()
 
@@ -82,5 +83,11 @@ class MarkMessages : Hook("MarkMessages") {
             msgCell.timeTextWidth = timeTextWidth
             msgCell.timeWidth = timeWidth
         }
+    }
+
+    private fun refreshFeatureStates() {
+        isMarkDeletedEnabled = Config.isFeatureEnabled("MarkMessagesDeleted")
+        isMarkEditedEnabled = Config.isFeatureEnabled("MarkMessagesEdited")
+        isAnyMarkEnabled = isMarkDeletedEnabled || isMarkEditedEnabled
     }
 }

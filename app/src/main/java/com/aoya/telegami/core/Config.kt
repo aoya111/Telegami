@@ -5,11 +5,9 @@ import com.aoya.telegami.BuildConfig
 import com.aoya.telegami.Telegami
 import com.aoya.telegami.utils.logd
 import com.aoya.telegami.utils.loge
-import com.aoya.telegami.utils.logw
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import de.robv.android.xposed.XSharedPreferences
-import kotlin.properties.Delegates
 
 typealias UserId = Long
 
@@ -36,17 +34,26 @@ object Config {
     private var hookedPackageName = ""
     private var xPrefs: XSharedPreferences? = null
 
+    private val featureCache = mutableMapOf<String, Boolean>()
+
     private var user: User = User()
 
     fun init(pkgName: String) {
         logd("Initializing Config")
         this.hookedPackageName = pkgName
-        xPrefs =
-            XSharedPreferences(pkgName, "telegami").apply {
-                makeWorldReadable()
-            }
+        xPrefs = XSharedPreferences(pkgName, "telegami")
         logd("XSharedPreferences initialized for package: $pkgName")
         localConfig = readConfig()
+        loadFeatureCache()
+    }
+
+    private fun loadFeatureCache() {
+        val prefs = XSharedPreferences(packageName, "features")
+        prefs.all.forEach { (key, value) ->
+            if (value is Boolean) {
+                featureCache[key] = value
+            }
+        }
     }
 
     fun setUser(user: User) {
@@ -113,14 +120,7 @@ object Config {
         prefs.edit().putBoolean(featureKey, enabled).apply()
     }
 
-    fun isFeatureEnabled(featureKey: String): Boolean {
-        val xPrefs =
-            XSharedPreferences(packageName, "features").apply {
-                makeWorldReadable()
-            }
-        xPrefs.reload()
-        return xPrefs.getBoolean(featureKey, false)
-    }
+    fun isFeatureEnabled(featureKey: String): Boolean = featureCache[featureKey] ?: false
 
     fun isFeatureEnabledInActivity(
         context: Context,
