@@ -12,7 +12,13 @@ import com.aoya.telegami.virt.ui.cells.ChatMessageCell
 import kotlin.math.ceil
 
 class MarkMessages : Hook("MarkMessages") {
+    private var deleteDrawableWidth: Int = 0
+    private var editDrawableWidth: Int = 0
+
     override fun init() {
+        deleteDrawableWidth = getDrawableResource("msg_delete")?.getIntrinsicWidth() ?: 0
+        editDrawableWidth = getDrawableResource("msg_edit")?.getIntrinsicWidth() ?: 0
+
         findAndHook("org.telegram.ui.ChatActivity", "createView", HookStage.AFTER, filter = { true }) { param ->
             val o = ChatActivity(param.thisObject())
             Globals.loadDeletedMessagesForDialog(o.dialogId)
@@ -43,7 +49,7 @@ class MarkMessages : Hook("MarkMessages") {
 
                     val dwidth = newWidth - oldWidth
                     if (dwidth != 0) {
-                        customDrawableWidth = getDrawableResource("msg_delete")?.getIntrinsicWidth() ?: 0
+                        customDrawableWidth = deleteDrawableWidth
                         if (customDrawableWidth != 0) {
                             val drawableAdjustment =
                                 customDrawableWidth * (Theme.chatTimePaint.textSize - AndroidUtilities.dp(2.0f)) / customDrawableWidth
@@ -60,7 +66,7 @@ class MarkMessages : Hook("MarkMessages") {
 
                     val dwidth = newWidth - oldWidth
                     if (dwidth != 0) {
-                        customDrawableWidth = getDrawableResource("msg_edit")?.getIntrinsicWidth() ?: 0
+                        customDrawableWidth = editDrawableWidth
 
                         timeTextWidth = msgCell.timeTextWidth
                         if (customDrawableWidth != 0) {

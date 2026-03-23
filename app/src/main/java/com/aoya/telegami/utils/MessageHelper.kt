@@ -11,15 +11,16 @@ import com.aoya.telegami.virt.ui.actionbar.Theme
 import com.aoya.telegami.virt.ui.components.ColoredImageSpan
 
 object MessageHelper {
-    private val icons =
-        mapOf<String, CharSequence>(
+    private val icons: Map<String, CharSequence> by lazy {
+        mapOf(
             "edit" to createIconSpan("msg_edit", 0xFF5FA8D3.toInt()),
             "delete" to createIconSpan("msg_delete", 0xFFFF6B6B.toInt()),
         )
-    private val labels =
-        mapOf(
-            "edit" to getResourceString("EditedMessage"),
-        )
+    }
+
+    private val editedLabel: String by lazy {
+        getResourceString("EditedMessage")
+    }
 
     fun createDeletedString(msg: DeletedMessage): CharSequence =
         SpannableStringBuilder().apply {
@@ -46,23 +47,19 @@ object MessageHelper {
         }
 
     fun replaceWithIcon(text: CharSequence): CharSequence {
+        val label = editedLabel
+        if (label.isEmpty()) return text
+
+        val start = text.indexOf(label)
+        if (start < 0) return text
+
         val str = text.toString()
-
-        var newTxt = SpannableStringBuilder("")
-        for (entry in labels.entries.iterator()) {
-            val start = text.indexOf(entry.value)
-            if (start < 0) continue
-
-            newTxt =
-                SpannableStringBuilder().apply {
-                    append(str.substring(0, start))
-                    append(icons[entry.key])
-                    append(' ')
-                    append(str.substring(start + entry.value.length))
-                }
-            break
+        return SpannableStringBuilder().apply {
+            append(str.substring(0, start))
+            append(icons["edit"])
+            append(' ')
+            append(str.substring(start + label.length))
         }
-        return if (newTxt.isEmpty()) text else newTxt
     }
 
     private fun getResourceString(resourceName: String): String {
