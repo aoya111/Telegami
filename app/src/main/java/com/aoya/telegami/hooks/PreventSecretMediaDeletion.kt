@@ -1,5 +1,6 @@
 package com.aoya.telegami.hooks
 
+import android.graphics.drawable.Drawable
 import android.view.View
 import android.widget.FrameLayout
 import android.widget.Toast
@@ -17,7 +18,11 @@ import de.robv.android.xposed.XposedHelpers.getObjectField
 import java.io.File
 
 class PreventSecretMediaDeletion : Hook("PreventSecretMediaDeletion") {
+    private var galleryDrawable: Drawable? = null
+
     override fun init() {
+        galleryDrawable = getDrawableResource("msg_gallery")
+
         findAndHook("org.telegram.ui.ChatActivity", "sendSecretMediaDelete", HookStage.BEFORE) { param ->
             param.setResult(null)
         }
@@ -55,7 +60,7 @@ class PreventSecretMediaDeletion : Hook("PreventSecretMediaDeletion") {
             var downloadItem: FrameLayout? = null
             if (menu == null) {
                 menu = o.actionBar.createMenu()
-                val resDownload = getDrawableResource("msg_gallery") ?: return@findAndHook
+                val resDownload = galleryDrawable ?: return@findAndHook
                 downloadItem = menu.addItem(1, resDownload) as FrameLayout
             } else {
                 downloadItem = menu.getItem(1) as FrameLayout
