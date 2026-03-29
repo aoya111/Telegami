@@ -2,7 +2,7 @@
   "variant": "octogram",
   "package_name": "it.octogram.android",
   "version": "3.5.1",
-  "updated": "2026-03-20",
+  "updated": "2026-03-29",
   "mappings": {
     "org.telegram.SQLite.SQLiteCursor": {
       "fields": {},
@@ -177,6 +177,10 @@
         "getChat": {
           "hint": "public TLRPC\\.Chat \\w*(Long",
           "obfuscated": "ha"
+        },
+        "getSponsoredMessages": {
+          "hint": "public \\w* \\w*(final long \\w*)",
+          "obfuscated": "Ab"
         },
         "getUser": {
           "hint": "public TLRPC\\.User \\w*(Long",
@@ -576,6 +580,10 @@
       "fields": {},
       "hint": "headerItem;",
       "methods": {
+        "addSponsoredMessages": {
+          "hint": "sponsoredUrlPattern ==",
+          "obfuscated": "qr"
+        },
         "createView": {
           "hint": "View \\w*(Context context)",
           "obfuscated": "n0"
@@ -591,6 +599,10 @@
         "getResourceProvider": {
           "hint": "AlertDialog.Builder(<see getContext>, \\w*())",
           "obfuscated": "l"
+        },
+        "getSponsoredMessagesCount": {
+          "hint": "public final int \\w*()",
+          "obfuscated": "Mu"
         },
         "sendSecretMediaDelete": {
           "hint": "Runnable \\w*(final ",

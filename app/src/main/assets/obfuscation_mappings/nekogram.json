@@ -2,7 +2,7 @@
   "variant": "nekogram",
   "package_name": "tw.nekomimi.nekogram",
   "version": "12.5.2",
-  "updated": "2026-03-22",
+  "updated": "2026-03-29",
   "mappings": {
     "org.telegram.SQLite.SQLiteCursor": {
       "fields": {},
@@ -177,6 +177,10 @@
         "getChat": {
           "hint": "return (TLRPC\\.\\w*) this\\.\\w*\\.get(\\w*);",
           "obfuscated": "la"
+        },
+        "getSponsoredMessages": {
+          "hint": "public \\w* \\w*(final long \\w*)",
+          "obfuscated": "Fb"
         },
         "getUser": {
           "hint": "return (TLRPC\\.\\w*) this\\.\\w*\\.get(\\w*); (with if)",
@@ -586,6 +590,10 @@
       "fields": {},
       "hint": "headerItem;",
       "methods": {
+        "addSponsoredMessages": {
+          "hint": "sponsoredUrlPattern ==",
+          "obfuscated": "Lr"
+        },
         "createView": {
           "hint": "View \\w*(Context context)",
           "obfuscated": "D0"
@@ -601,6 +609,10 @@
         "getResourceProvider": {
           "hint": "AlertDialog.Builder(<getContext>(), \\w*())",
           "obfuscated": "x"
+        },
+        "getSponsoredMessagesCount": {
+          "hint": "public final int \\w*()",
+          "obfuscated": "hv"
         },
         "sendSecretMediaDelete": {
           "hint": "Runnable \\w*(final ",

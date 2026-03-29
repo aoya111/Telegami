@@ -6,6 +6,7 @@ import com.aoya.telegami.hooks.AllowSaveVideos
 import com.aoya.telegami.hooks.AllowScreenshots
 import com.aoya.telegami.hooks.ApplyColor
 import com.aoya.telegami.hooks.BoostDownload
+import com.aoya.telegami.hooks.DisableAds
 import com.aoya.telegami.hooks.FakePremium
 import com.aoya.telegami.hooks.HideBetaUpdate
 import com.aoya.telegami.hooks.HideOnlineStatus
@@ -46,6 +47,7 @@ class HookManager {
             PreventSecretMediaDeletion(),
             UnlockChannelFeatures(),
             AllowSaveVideos(),
+            DisableAds(),
             FakePremium(),
         )
 

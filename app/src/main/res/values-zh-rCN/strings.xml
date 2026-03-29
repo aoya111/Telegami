@@ -23,6 +23,8 @@
     <string name="FeatUnlockChannelFeaturesDesc">解锁频道的所有受限和加密功能</string>
     <string name="FeatAllowSaveVideos">允许将视频保存到图库</string>
     <string name="FeatAllowSaveVideosDesc">允许将视频保存到图库</string>
+    <string name="FeatDisableAds">Disable Advertisement</string>
+    <string name="FeatDisableAdsDesc">Disable Advertisement</string>
     <string name="FeatFakePremium">Fake Premium</string>
     <string name="FeatFakePremiumDesc">Fake Premium</string>
 </resources>

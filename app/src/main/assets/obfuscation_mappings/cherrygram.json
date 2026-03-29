@@ -2,7 +2,7 @@
   "variant": "cherrygram",
   "package_name": "uz.unnarsx.cherrygram",
   "version": "10.5.0",
-  "updated": "2026-03-22",
+  "updated": "2026-03-29",
   "mappings": {
     "org.telegram.messenger.browser.Browser": {
       "fields": {},
@@ -175,9 +175,17 @@
       "fields": {},
       "hint": "\"open menu",
       "methods": {
+        "addSponsoredMessages": {
+          "hint": "sponsoredUrlPattern ==",
+          "obfuscated": "cn"
+        },
         "fillMessageMenu": {
           "hint": "public void \\w*(MessageObject \\w*, ArrayList ",
           "obfuscated": "pp"
+        },
+        "getSponsoredMessagesCount": {
+          "hint": "public final int \\w*()",
+          "obfuscated": "Aq"
         },
         "sendSecretMediaDelete": {
           "hint": "Runnable \\w*(final MessageObject \\w*)",
