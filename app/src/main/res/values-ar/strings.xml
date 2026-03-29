@@ -23,6 +23,8 @@
     <string name="FeatUnlockChannelFeaturesDesc">فتح جميع الخصائص المشفره والمغلقه للقنوات</string>
     <string name="FeatAllowSaveVideos">سماح حفظ الفيديو في معرض</string>
     <string name="FeatAllowSaveVideosDesc">سماح حفظ الفيديو في المعرض</string>
+    <string name="FeatDisableAds">Disable Advertisement</string>
+    <string name="FeatDisableAdsDesc">Disable Advertisement</string>
     <string name="FeatFakePremium">Fake Premium</string>
     <string name="FeatFakePremiumDesc">Fake Premium</string>
 </resources>
