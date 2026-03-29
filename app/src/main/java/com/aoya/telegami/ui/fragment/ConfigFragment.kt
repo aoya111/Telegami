@@ -6,7 +6,7 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.aoya.telegami.R
-import com.aoya.telegami.core.Config
+import com.aoya.telegami.core.AppConfig
 import com.aoya.telegami.databinding.FragmentConfigBinding
 import com.aoya.telegami.ui.adapter.HookAdapter
 import com.aoya.telegami.ui.adapter.HookInfo
@@ -82,7 +82,7 @@ class ConfigFragment : Fragment(R.layout.fragment_config) {
                     if (isModuleFeature(hookKey)) {
                         isModuleFeatureEnabled(hookKey)
                     } else {
-                        Config.isFeatureEnabledInActivity(requireContext(), hookKey)
+                        AppConfig.isFeatureEnabled(requireContext(), hookKey)
                     }
 
                 hooks.add(
@@ -104,7 +104,7 @@ class ConfigFragment : Fragment(R.layout.fragment_config) {
                 val description = if (descResId != 0) getString(descResId) else ""
 
                 val optionLabels = options.map { getString(resources.getIdentifier(it, "string", requireContext().packageName)) }
-                val selectedIndex = Config.getFeatureValueInActivity(requireContext(), hookKey, 0)
+                val selectedIndex = AppConfig.getFeatureValue(requireContext(), hookKey, 0)
 
                 hooks.add(
                     HookInfo(
@@ -128,7 +128,7 @@ class ConfigFragment : Fragment(R.layout.fragment_config) {
                     if (isModuleFeature(hookKey)) {
                         isModuleFeatureEnabled(hookKey)
                     } else {
-                        Config.isFeatureEnabledInActivity(requireContext(), hookKey)
+                        AppConfig.isFeatureEnabled(requireContext(), hookKey)
                     }
 
                 hooks.add(
@@ -158,11 +158,11 @@ class ConfigFragment : Fragment(R.layout.fragment_config) {
                     if (isModuleFeature(hookKey)) {
                         setModuleFeatureEnabled(hookKey, enabled)
                     } else {
-                        Config.setFeatureEnabled(requireContext(), hookKey, enabled)
+                        AppConfig.setFeatureEnabled(requireContext(), hookKey, enabled)
                     }
                 },
                 onSelectionChanged = { hookKey, index ->
-                    Config.setFeatureValue(requireContext(), hookKey, index)
+                    AppConfig.setFeatureValue(requireContext(), hookKey, index)
                 },
             )
     }

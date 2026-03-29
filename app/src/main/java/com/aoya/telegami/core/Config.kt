@@ -111,24 +111,6 @@ object Config {
         }
     }
 
-    fun setFeatureEnabled(
-        context: Context,
-        featureKey: String,
-        enabled: Boolean,
-    ) {
-        val prefs = context.getSharedPreferences("features", Context.MODE_WORLD_READABLE)
-        prefs.edit().putBoolean(featureKey, enabled).apply()
-    }
-
-    fun setFeatureValue(
-        context: Context,
-        featureKey: String,
-        value: Int,
-    ) {
-        val prefs = context.getSharedPreferences("features", Context.MODE_WORLD_READABLE)
-        prefs.edit().putInt(featureKey, value).apply()
-    }
-
     fun isFeatureEnabled(featureKey: String): Boolean = featureCache[featureKey] ?: false
 
     fun getFeatureValue(
@@ -136,23 +118,6 @@ object Config {
         defaultValue: Int = 0,
     ): Int {
         val prefs = XSharedPreferences(packageName, "features")
-        return prefs.getInt(featureKey, defaultValue)
-    }
-
-    fun isFeatureEnabledInActivity(
-        context: Context,
-        featureKey: String,
-    ): Boolean {
-        val prefs = context.getSharedPreferences("features", Context.MODE_WORLD_READABLE)
-        return prefs.getBoolean(featureKey, false)
-    }
-
-    fun getFeatureValueInActivity(
-        context: Context,
-        featureKey: String,
-        defaultValue: Int = 0,
-    ): Int {
-        val prefs = context.getSharedPreferences("features", Context.MODE_WORLD_READABLE)
         return prefs.getInt(featureKey, defaultValue)
     }
 
