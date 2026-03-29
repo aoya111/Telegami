@@ -23,6 +23,8 @@ class FileLoader(
     companion object {
         private const val OBJ_PATH = "org.telegram.messenger.FileLoader"
 
+        val DEFAULT_MAX_FILE_SIZE = 1024L * 1024L * 2000L
+
         val MEDIA_DIR_CACHE: Int
             get() =
                 if (Telegami.packageName in listOf("it.octogram.android", "tw.nekomimi.nekogram", "xyz.nextalone.nagram")) {

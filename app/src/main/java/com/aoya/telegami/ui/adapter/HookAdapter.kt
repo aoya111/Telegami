@@ -3,6 +3,7 @@ package com.aoya.telegami.ui.adapter
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.aoya.telegami.ui.view.HookView
+import com.aoya.telegami.ui.view.HookViewType
 
 data class HookInfo(
     val key: String,
@@ -12,11 +13,15 @@ data class HookInfo(
     val isHeader: Boolean = false,
     val groupId: String? = null,
     val dependsOn: String? = null,
+    val type: HookViewType = HookViewType.TOGGLE,
+    val options: List<String> = emptyList(),
+    var selectedIndex: Int = 0,
 )
 
 class HookAdapter(
     hooks: List<HookInfo>,
     private val onToggleChanged: (String, Boolean) -> Unit,
+    private val onSelectionChanged: ((String, Int) -> Unit)? = null,
 ) : RecyclerView.Adapter<HookAdapter.HookViewHolder>() {
     private val hooks = hooks.toMutableList()
 
@@ -54,6 +59,17 @@ class HookAdapter(
         }
     }
 
+    private fun onSelection(
+        hookKey: String,
+        index: Int,
+    ) {
+        val hookIndex = hooks.indexOfFirst { it.key == hookKey }
+        if (hookIndex == -1) return
+
+        hooks[hookIndex] = hooks[hookIndex].copy(selectedIndex = index)
+        onSelectionChanged?.invoke(hookKey, index)
+    }
+
     inner class HookViewHolder(
         view: HookView,
     ) : RecyclerView.ViewHolder(view) {
@@ -67,6 +83,18 @@ class HookAdapter(
                     hook.isHeader -> {
                         showAsHeader()
                         text = hook.name
+                    }
+
+                    hook.type == HookViewType.DROPDOWN -> {
+                        showAsStandalone()
+                        text = hook.name
+                        subText = hook.desc
+                        showAsDropdown()
+                        dropdownOptions = hook.options
+                        selectedIndex = hook.selectedIndex
+                        onSelectionChanged = { index ->
+                            onSelection(hook.key, index)
+                        }
                     }
 
                     hook.groupId != null -> {
