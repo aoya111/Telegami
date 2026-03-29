@@ -10,6 +10,7 @@ import com.aoya.telegami.core.Config
 import com.aoya.telegami.databinding.FragmentConfigBinding
 import com.aoya.telegami.ui.adapter.HookAdapter
 import com.aoya.telegami.ui.adapter.HookInfo
+import com.aoya.telegami.ui.view.HookViewType
 import dev.androidbroadcast.vbpd.viewBinding
 
 class ConfigFragment : Fragment(R.layout.fragment_config) {
@@ -20,6 +21,11 @@ class ConfigFragment : Fragment(R.layout.fragment_config) {
     private val featureDependencies =
         mapOf(
             "MarkMessagesDeleted" to "ShowDeletedMessages",
+        )
+
+    private val dropdownFeatures =
+        mapOf(
+            "BoostDownload" to listOf("BoostDownloadOff", "BoostDownloadOn", "BoostDownloadExtreme"),
         )
 
     private fun loadHooks(): List<HookInfo> {
@@ -45,6 +51,7 @@ class ConfigFragment : Fragment(R.layout.fragment_config) {
             }
 
             val groupId = headers.find { hookKey.startsWith(it) }
+            val options = dropdownFeatures[hookKey]
 
             if (groupId != null) {
                 val nameResId = resources.getIdentifier("Feat$hookKey", "string", requireContext().packageName)
@@ -62,6 +69,27 @@ class ConfigFragment : Fragment(R.layout.fragment_config) {
                         isHeader = false,
                         groupId = groupId,
                         dependsOn = featureDependencies[hookKey],
+                    ),
+                )
+            } else if (options != null) {
+                val nameResId = resources.getIdentifier("Feat$hookKey", "string", requireContext().packageName)
+                val name = if (nameResId != 0) getString(nameResId) else hookKey
+
+                val descResId = resources.getIdentifier("Feat${hookKey}Desc", "string", requireContext().packageName)
+                val description = if (descResId != 0) getString(descResId) else ""
+
+                val optionLabels = options.map { getString(resources.getIdentifier(it, "string", requireContext().packageName)) }
+                val selectedIndex = Config.getFeatureValueInActivity(requireContext(), hookKey, 0)
+
+                hooks.add(
+                    HookInfo(
+                        key = hookKey,
+                        name = name,
+                        desc = description,
+                        enabled = true,
+                        type = HookViewType.DROPDOWN,
+                        options = optionLabels,
+                        selectedIndex = selectedIndex,
                     ),
                 )
             } else {
@@ -92,9 +120,16 @@ class ConfigFragment : Fragment(R.layout.fragment_config) {
     ) {
         binding.list.layoutManager = LinearLayoutManager(context)
         binding.list.adapter =
-            HookAdapter(loadHooks()) { hookKey, enabled ->
-                Log.d("ConfigFragment", "Toggle $hookKey to $enabled")
-                Config.setFeatureEnabled(requireContext(), hookKey, enabled)
-            }
+            HookAdapter(
+                loadHooks(),
+                onToggleChanged = { hookKey, enabled ->
+                    Log.d("ConfigFragment", "Toggle $hookKey to $enabled")
+                    Config.setFeatureEnabled(requireContext(), hookKey, enabled)
+                },
+                onSelectionChanged = { hookKey, index ->
+                    Log.d("ConfigFragment", "Selection $hookKey to $index")
+                    Config.setFeatureValue(requireContext(), hookKey, index)
+                },
+            )
     }
 }

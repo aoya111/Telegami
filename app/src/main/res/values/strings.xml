@@ -27,4 +27,9 @@
     <string name="FeatDisableAdsDesc">Disable Advertisement</string>
     <string name="FeatFakePremium">Fake Premium</string>
     <string name="FeatFakePremiumDesc">Fake Premium</string>
+    <string name="FeatBoostDownload">Download boost</string>
+    <string name="FeatBoostDownloadDesc">Increase download speed</string>
+    <string name="BoostDownloadOff">off</string>
+    <string name="BoostDownloadOn">on</string>
+    <string name="BoostDownloadExtreme">extreme</string>
 </resources>
