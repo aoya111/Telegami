@@ -11,6 +11,7 @@ import com.aoya.telegami.databinding.FragmentConfigBinding
 import com.aoya.telegami.ui.adapter.HookAdapter
 import com.aoya.telegami.ui.adapter.HookInfo
 import com.aoya.telegami.ui.view.HookViewType
+import com.aoya.telegami.utils.AppIconManager
 import dev.androidbroadcast.vbpd.viewBinding
 
 class ConfigFragment : Fragment(R.layout.fragment_config) {
@@ -27,6 +28,23 @@ class ConfigFragment : Fragment(R.layout.fragment_config) {
         mapOf(
             "BoostDownload" to listOf("BoostDownloadOff", "BoostDownloadOn", "BoostDownloadExtreme"),
         )
+
+    private fun isModuleFeature(hookKey: String): Boolean = hookKey.startsWith("Telegami")
+
+    private fun isModuleFeatureEnabled(hookKey: String): Boolean =
+        when (hookKey) {
+            "TelegamiHideFromLauncher" -> AppIconManager.isHidden(requireContext())
+            else -> false
+        }
+
+    private fun setModuleFeatureEnabled(
+        hookKey: String,
+        enabled: Boolean,
+    ) {
+        when (hookKey) {
+            "TelegamiHideFromLauncher" -> AppIconManager.setHidden(requireContext(), enabled)
+        }
+    }
 
     private fun loadHooks(): List<HookInfo> {
         val featureKeys = resources.getStringArray(R.array.features).toList()
@@ -60,12 +78,19 @@ class ConfigFragment : Fragment(R.layout.fragment_config) {
                 val descResId = resources.getIdentifier("Feat${hookKey}Desc", "string", requireContext().packageName)
                 val description = if (descResId != 0) getString(descResId) else ""
 
+                val enabled =
+                    if (isModuleFeature(hookKey)) {
+                        isModuleFeatureEnabled(hookKey)
+                    } else {
+                        Config.isFeatureEnabledInActivity(requireContext(), hookKey)
+                    }
+
                 hooks.add(
                     HookInfo(
                         key = hookKey,
                         name = name,
                         desc = description,
-                        enabled = Config.isFeatureEnabledInActivity(requireContext(), hookKey),
+                        enabled = enabled,
                         isHeader = false,
                         groupId = groupId,
                         dependsOn = featureDependencies[hookKey],
@@ -99,12 +124,19 @@ class ConfigFragment : Fragment(R.layout.fragment_config) {
                 val descResId = resources.getIdentifier("Feat${hookKey}Desc", "string", requireContext().packageName)
                 val description = if (descResId != 0) getString(descResId) else ""
 
+                val enabled =
+                    if (isModuleFeature(hookKey)) {
+                        isModuleFeatureEnabled(hookKey)
+                    } else {
+                        Config.isFeatureEnabledInActivity(requireContext(), hookKey)
+                    }
+
                 hooks.add(
                     HookInfo(
                         key = hookKey,
                         name = name,
                         desc = description,
-                        enabled = Config.isFeatureEnabledInActivity(requireContext(), hookKey),
+                        enabled = enabled,
                         dependsOn = featureDependencies[hookKey],
                     ),
                 )
@@ -123,12 +155,14 @@ class ConfigFragment : Fragment(R.layout.fragment_config) {
             HookAdapter(
                 loadHooks(),
                 onToggleChanged = { hookKey, enabled ->
-                    Log.d("ConfigFragment", "Toggle $hookKey to $enabled")
-                    Config.setFeatureEnabled(requireContext(), hookKey, enabled)
+                    if (isModuleFeature(hookKey)) {
+                        setModuleFeatureEnabled(hookKey, enabled)
+                    } else {
+                        Config.setFeatureEnabled(requireContext(), hookKey, enabled)
+                    }
                 },
-                onSelectionChanged = { hookKey, index ->
-                    Log.d("ConfigFragment", "Selection $hookKey to $index")
-                    Config.setFeatureValue(requireContext(), hookKey, index)
+                onSelectionChanged = { hookKey, _ ->
+                    Config.setFeatureValue(requireContext(), hookKey, 0)
                 },
             )
     }

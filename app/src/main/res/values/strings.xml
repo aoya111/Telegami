@@ -32,4 +32,7 @@
     <string name="BoostDownloadOff">off</string>
     <string name="BoostDownloadOn">on</string>
     <string name="BoostDownloadExtreme">extreme</string>
+    <string name="FeatTelegami">Telegami</string>
+    <string name="FeatTelegamiHideFromLauncher">Hide from launcher</string>
+    <string name="FeatTelegamiHideFromLauncherDesc">Hide module icon from launcher</string>
 </resources>
