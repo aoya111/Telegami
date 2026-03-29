@@ -161,8 +161,8 @@ class ConfigFragment : Fragment(R.layout.fragment_config) {
                         Config.setFeatureEnabled(requireContext(), hookKey, enabled)
                     }
                 },
-                onSelectionChanged = { hookKey, _ ->
-                    Config.setFeatureValue(requireContext(), hookKey, 0)
+                onSelectionChanged = { hookKey, index ->
+                    Config.setFeatureValue(requireContext(), hookKey, index)
                 },
             )
     }
