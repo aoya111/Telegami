@@ -6,7 +6,7 @@
     <application
         android:name=".TelegamiApp"
         android:icon="@mipmap/ic_launcher"
-        android:label="@string/AppName"
+        android:label="@string/app_name"
         android:theme="@style/AppTheme"
         tools:targetApi="33">
 

@@ -111,14 +111,23 @@ object Config {
         }
     }
 
-    fun isFeatureEnabled(featureKey: String): Boolean = featureCache[featureKey] ?: false
+    private fun String.toSnakeCase(): String =
+        replace(Regex("([a-z])([A-Z])")) { "${it.groupValues[1]}_${it.groupValues[2]}" }
+            .replace(Regex("([A-Z]+)([A-Z][a-z])")) { "${it.groupValues[1]}_${it.groupValues[2]}" }
+            .lowercase()
+
+    fun isFeatureEnabled(featureKey: String): Boolean {
+        val normalizedKey = featureKey.toSnakeCase()
+        return featureCache[featureKey] ?: featureCache[normalizedKey] ?: false
+    }
 
     fun getFeatureValue(
         featureKey: String,
         defaultValue: Int = 0,
     ): Int {
+        val normalizedKey = featureKey.toSnakeCase()
         val prefs = XSharedPreferences(packageName, "features")
-        return prefs.getInt(featureKey, defaultValue)
+        return prefs.getInt(featureKey, prefs.getInt(normalizedKey, defaultValue))
     }
 
     fun getCurrentUser(): User = user

@@ -27,7 +27,7 @@ class SettingsFragment :
     ) {
         setupToolbar(
             toolbar = binding.toolbar,
-            title = getString(R.string.TitleSettings),
+            title = getString(R.string.title_settings),
             navigationIcon = R.drawable.baseline_arrow_back_24,
             navigationOnClick = { navController.navigateUp() },
         )
