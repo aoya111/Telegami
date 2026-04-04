@@ -22,12 +22,12 @@ class FeaturesFragment : Fragment(R.layout.fragment_features) {
 
     private val featureDependencies =
         mapOf(
-            "MarkMessagesDeleted" to "ShowDeletedMessages",
+            "mark_messages_deleted" to "show_deleted_messages",
         )
 
     private val dropdownFeatures =
         mapOf(
-            "BoostDownload" to listOf("BoostDownloadOff", "BoostDownloadOn", "BoostDownloadExtreme"),
+            "boost_download" to listOf("boost_download_off", "boost_download_on", "boost_download_extreme"),
         )
 
     override fun onViewCreated(
@@ -37,7 +37,7 @@ class FeaturesFragment : Fragment(R.layout.fragment_features) {
         with(binding.toolbar) {
             setupToolbar(
                 toolbar = binding.toolbar,
-                title = getString(R.string.TitleFeatures),
+                title = getString(R.string.title_features),
                 navigationIcon = R.drawable.baseline_arrow_back_24,
                 navigationOnClick = { navController.navigateUp() },
             )
@@ -73,12 +73,12 @@ class FeaturesFragment : Fragment(R.layout.fragment_features) {
         val featureKeys = resources.getStringArray(R.array.features).toList()
         val hooks = mutableListOf<HookInfo>()
 
-        val headers = featureKeys.filter { it.startsWith("Header") }.map { it.removePrefix("Header") }.toSet()
+        val headers = featureKeys.filter { it.startsWith("header_") }.map { it.removePrefix("header_") }.toSet()
 
         for (hookKey in featureKeys) {
-            if (hookKey.startsWith("Header")) {
-                val name = hookKey.removePrefix("Header")
-                val nameResId = resources.getIdentifier("Feat$name", "string", requireContext().packageName)
+            if (hookKey.startsWith("header_")) {
+                val name = hookKey.removePrefix("header_")
+                val nameResId = resources.getIdentifier("feat_$name", "string", requireContext().packageName)
                 hooks.add(
                     HookInfo(
                         key = name,
@@ -95,10 +95,10 @@ class FeaturesFragment : Fragment(R.layout.fragment_features) {
             val options = dropdownFeatures[hookKey]
 
             if (groupId != null) {
-                val nameResId = resources.getIdentifier("Feat$hookKey", "string", requireContext().packageName)
+                val nameResId = resources.getIdentifier("feat_${hookKey.lowercase()}", "string", requireContext().packageName)
                 val name = if (nameResId != 0) getString(nameResId) else hookKey
 
-                val descResId = resources.getIdentifier("Feat${hookKey}Desc", "string", requireContext().packageName)
+                val descResId = resources.getIdentifier("feat_${hookKey.lowercase()}_desc", "string", requireContext().packageName)
                 val description = if (descResId != 0) getString(descResId) else ""
 
                 val enabled = PrefManager.isFeatureEnabled(hookKey)
@@ -115,10 +115,10 @@ class FeaturesFragment : Fragment(R.layout.fragment_features) {
                     ),
                 )
             } else if (options != null) {
-                val nameResId = resources.getIdentifier("Feat$hookKey", "string", requireContext().packageName)
+                val nameResId = resources.getIdentifier("feat_${hookKey.lowercase()}", "string", requireContext().packageName)
                 val name = if (nameResId != 0) getString(nameResId) else hookKey
 
-                val descResId = resources.getIdentifier("Feat${hookKey}Desc", "string", requireContext().packageName)
+                val descResId = resources.getIdentifier("feat_${hookKey.lowercase()}_desc", "string", requireContext().packageName)
                 val description = if (descResId != 0) getString(descResId) else ""
 
                 val optionLabels =
@@ -137,10 +137,10 @@ class FeaturesFragment : Fragment(R.layout.fragment_features) {
                     ),
                 )
             } else {
-                val nameResId = resources.getIdentifier("Feat$hookKey", "string", requireContext().packageName)
+                val nameResId = resources.getIdentifier("feat_${hookKey.lowercase()}", "string", requireContext().packageName)
                 val name = if (nameResId != 0) getString(nameResId) else hookKey
 
-                val descResId = resources.getIdentifier("Feat${hookKey}Desc", "string", requireContext().packageName)
+                val descResId = resources.getIdentifier("feat_${hookKey.lowercase()}_desc", "string", requireContext().packageName)
                 val description = if (descResId != 0) getString(descResId) else ""
 
                 val enabled = PrefManager.isFeatureEnabled(hookKey)

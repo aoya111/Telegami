@@ -24,7 +24,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         with(binding.toolbar) {
             setupToolbar(
                 toolbar = binding.toolbar,
-                title = getString(R.string.AppName),
+                title = getString(R.string.app_name),
             )
         }
 
@@ -57,17 +57,17 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                 moduleStatusIcon.setImageResource(R.drawable.sentiment_calm_24px)
                 val versionNameSimple = BuildConfig.VERSION_NAME.substringBefore(".r")
                 moduleStatus.text =
-                    getString(R.string.HomeXposedActivated, versionNameSimple)
+                    getString(R.string.home_xposed_activated, versionNameSimple)
             } else {
                 moduleStatusIcon.setImageResource(R.drawable.sentiment_very_dissatisfied_24px)
-                moduleStatus.setText(R.string.HomeXposedNotActivated)
+                moduleStatus.setText(R.string.home_xposed_not_activated)
             }
         }
     }
 
     fun setupHomeItems() {
         with(binding.navFeatures) {
-            text1.text = getString(R.string.TitleFeatures)
+            text1.text = getString(R.string.title_features)
             icon.setImageResource(R.drawable.outline_extension_24)
             root.setOnClickListener {
                 navigate(R.id.nav_features)
@@ -75,7 +75,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         }
 
         with(binding.navSettings) {
-            text1.text = getString(R.string.TitleSettings)
+            text1.text = getString(R.string.title_settings)
             icon.setImageResource(R.drawable.outline_settings_24)
             root.setOnClickListener {
                 navigate(R.id.nav_settings)

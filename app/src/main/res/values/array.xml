@@ -15,21 +15,21 @@
         <item>xyz.nextalone.nagram</item>
     </string-array>
     <string-array name="features">
-        <item>HideOnlineStatus</item>
-        <item>HeaderHideSeen</item>
-        <item>HideSeenPrivateChat</item>
-        <item>HideSeenChannel</item>
-        <item>HideTyping</item>
-        <item>HideStoryViewStatus</item>
-        <item>ShowDeletedMessages</item>
-        <item>PreventSecretMediaDeletion</item>
-        <item>HeaderMarkMessages</item>
-        <item>MarkMessagesDeleted</item>
-        <item>MarkMessagesEdited</item>
-        <item>AllowSaveVideos</item>
-        <item>UnlockChannelFeatures</item>
-        <item>BoostDownload</item>
-        <item>DisableAds</item>
-        <item>FakePremium</item>
+        <item>hide_online_status</item>
+        <item>header_hide_seen</item>
+        <item>hide_seen_private_chat</item>
+        <item>hide_seen_channel</item>
+        <item>hide_typing</item>
+        <item>hide_story_view_status</item>
+        <item>show_deleted_messages</item>
+        <item>prevent_secret_media_deletion</item>
+        <item>header_mark_messages</item>
+        <item>mark_messages_deleted</item>
+        <item>mark_messages_edited</item>
+        <item>allow_save_videos</item>
+        <item>unlock_channel_features</item>
+        <item>boost_download</item>
+        <item>disable_ads</item>
+        <item>fake_premium</item>
     </string-array>
 </resources>
