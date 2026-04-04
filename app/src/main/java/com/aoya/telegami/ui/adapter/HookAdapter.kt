@@ -101,8 +101,6 @@ class HookAdapter(
                         showAsChild(isLastInGroup(position))
                         text = hook.name
                         subText = hook.desc
-                        toggle = hook.enabled && dependencyMet
-                        toggleEnabled = dependencyMet
                         onToggleChanged =
                             if (dependencyMet) {
                                 { enabled ->
@@ -111,14 +109,14 @@ class HookAdapter(
                             } else {
                                 null
                             }
+                        toggle = hook.enabled && dependencyMet
+                        toggleEnabled = dependencyMet
                     }
 
                     else -> {
                         showAsStandalone()
                         text = hook.name
                         subText = hook.desc
-                        toggle = hook.enabled && dependencyMet
-                        toggleEnabled = dependencyMet
                         onToggleChanged =
                             if (dependencyMet) {
                                 { enabled ->
@@ -127,6 +125,8 @@ class HookAdapter(
                             } else {
                                 null
                             }
+                        toggle = hook.enabled && dependencyMet
+                        toggleEnabled = dependencyMet
                     }
                 }
             }

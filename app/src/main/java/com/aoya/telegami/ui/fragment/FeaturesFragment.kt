@@ -18,6 +18,8 @@ import dev.androidbroadcast.vbpd.viewBinding
 class FeaturesFragment : Fragment(R.layout.fragment_features) {
     private val binding by viewBinding(FragmentFeaturesBinding::bind)
 
+    private var hookAdapter: HookAdapter? = null
+
     private val featureDependencies =
         mapOf(
             "MarkMessagesDeleted" to "ShowDeletedMessages",
@@ -48,17 +50,23 @@ class FeaturesFragment : Fragment(R.layout.fragment_features) {
         super.onStart()
         with(binding.list) {
             layoutManager = LinearLayoutManager(context)
-            adapter =
+            hookAdapter =
                 HookAdapter(
                     loadHooks(),
                     onToggleChanged = { hookKey, enabled ->
-                        PrefManager.setFeatureEnabled(requireContext(), hookKey, enabled)
+                        PrefManager.setFeatureEnabled(hookKey, enabled)
                     },
                     onSelectionChanged = { hookKey, index ->
-                        PrefManager.setFeatureValue(requireContext(), hookKey, index)
+                        PrefManager.setFeatureValue(hookKey, index)
                     },
                 )
+            adapter = hookAdapter
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        hookAdapter?.notifyDataSetChanged()
     }
 
     private fun loadHooks(): List<HookInfo> {
@@ -93,7 +101,7 @@ class FeaturesFragment : Fragment(R.layout.fragment_features) {
                 val descResId = resources.getIdentifier("Feat${hookKey}Desc", "string", requireContext().packageName)
                 val description = if (descResId != 0) getString(descResId) else ""
 
-                val enabled = PrefManager.isFeatureEnabled(requireContext(), hookKey)
+                val enabled = PrefManager.isFeatureEnabled(hookKey)
 
                 hooks.add(
                     HookInfo(
@@ -115,7 +123,7 @@ class FeaturesFragment : Fragment(R.layout.fragment_features) {
 
                 val optionLabels =
                     options.map { getString(resources.getIdentifier(it, "string", requireContext().packageName)) }
-                val selectedIndex = PrefManager.getFeatureValue(requireContext(), hookKey, 0)
+                val selectedIndex = PrefManager.getFeatureValue(hookKey, 0)
 
                 hooks.add(
                     HookInfo(
@@ -135,7 +143,7 @@ class FeaturesFragment : Fragment(R.layout.fragment_features) {
                 val descResId = resources.getIdentifier("Feat${hookKey}Desc", "string", requireContext().packageName)
                 val description = if (descResId != 0) getString(descResId) else ""
 
-                val enabled = PrefManager.isFeatureEnabled(requireContext(), hookKey)
+                val enabled = PrefManager.isFeatureEnabled(hookKey)
 
                 hooks.add(
                     HookInfo(

@@ -25,28 +25,22 @@ object PrefManager {
     val isLauncherIconInvisible = MutableSharedFlow<Boolean>(replay = 1)
 
     fun setFeatureEnabled(
-        context: Context,
         featureKey: String,
         enabled: Boolean,
     ) {
-        featPref.edit().putBoolean(featureKey, enabled).apply()
+        featPref.edit { putBoolean(featureKey, enabled) }
     }
 
     fun setFeatureValue(
-        context: Context,
         featureKey: String,
         value: Int,
     ) {
-        featPref.edit().putInt(featureKey, value).apply()
+        featPref.edit { putInt(featureKey, value) }
     }
 
-    fun isFeatureEnabled(
-        context: Context,
-        featureKey: String,
-    ): Boolean = featPref.getBoolean(featureKey, false)
+    fun isFeatureEnabled(featureKey: String): Boolean = featPref.getBoolean(featureKey, false)
 
     fun getFeatureValue(
-        context: Context,
         featureKey: String,
         defaultValue: Int = 0,
     ): Int = featPref.getInt(featureKey, defaultValue)
