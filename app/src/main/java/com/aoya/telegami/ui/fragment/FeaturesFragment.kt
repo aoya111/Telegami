@@ -1,21 +1,25 @@
 package com.aoya.telegami.ui.fragment
 
 import android.content.SharedPreferences
+import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.aoya.telegami.R
-import com.aoya.telegami.core.AppConfig
-import com.aoya.telegami.databinding.FragmentConfigBinding
+import com.aoya.telegami.databinding.FragmentFeaturesBinding
+import com.aoya.telegami.service.PrefManager
 import com.aoya.telegami.ui.adapter.HookAdapter
 import com.aoya.telegami.ui.adapter.HookInfo
+import com.aoya.telegami.ui.util.navController
+import com.aoya.telegami.ui.util.setEdge2EdgeFlags
+import com.aoya.telegami.ui.util.setupToolbar
 import com.aoya.telegami.ui.view.HookViewType
 import com.aoya.telegami.utils.AppIconManager
 import dev.androidbroadcast.vbpd.viewBinding
 
-class ConfigFragment : Fragment(R.layout.fragment_config) {
-    private val binding by viewBinding(FragmentConfigBinding::bind)
+class FeaturesFragment : Fragment(R.layout.fragment_features) {
+    private val binding by viewBinding(FragmentFeaturesBinding::bind)
 
     private lateinit var prefs: SharedPreferences
 
@@ -28,6 +32,43 @@ class ConfigFragment : Fragment(R.layout.fragment_config) {
         mapOf(
             "BoostDownload" to listOf("BoostDownloadOff", "BoostDownloadOn", "BoostDownloadExtreme"),
         )
+
+    override fun onViewCreated(
+        view: View,
+        savedInstanceState: Bundle?,
+    ) {
+        with(binding.toolbar) {
+            setupToolbar(
+                toolbar = binding.toolbar,
+                title = getString(R.string.TitleFeatures),
+                navigationIcon = R.drawable.baseline_arrow_back_24,
+                navigationOnClick = { navController.navigateUp() },
+            )
+        }
+
+        setEdge2EdgeFlags(binding.root)
+    }
+
+    override fun onStart() {
+        super.onStart()
+        with(binding.list) {
+            layoutManager = LinearLayoutManager(context)
+            adapter =
+                HookAdapter(
+                    loadHooks(),
+                    onToggleChanged = { hookKey, enabled ->
+                        if (isModuleFeature(hookKey)) {
+                            setModuleFeatureEnabled(hookKey, enabled)
+                        } else {
+                            PrefManager.setFeatureEnabled(requireContext(), hookKey, enabled)
+                        }
+                    },
+                    onSelectionChanged = { hookKey, index ->
+                        PrefManager.setFeatureValue(requireContext(), hookKey, index)
+                    },
+                )
+        }
+    }
 
     private fun isModuleFeature(hookKey: String): Boolean = hookKey.startsWith("Telegami")
 
@@ -82,7 +123,7 @@ class ConfigFragment : Fragment(R.layout.fragment_config) {
                     if (isModuleFeature(hookKey)) {
                         isModuleFeatureEnabled(hookKey)
                     } else {
-                        AppConfig.isFeatureEnabled(requireContext(), hookKey)
+                        PrefManager.isFeatureEnabled(requireContext(), hookKey)
                     }
 
                 hooks.add(
@@ -103,8 +144,9 @@ class ConfigFragment : Fragment(R.layout.fragment_config) {
                 val descResId = resources.getIdentifier("Feat${hookKey}Desc", "string", requireContext().packageName)
                 val description = if (descResId != 0) getString(descResId) else ""
 
-                val optionLabels = options.map { getString(resources.getIdentifier(it, "string", requireContext().packageName)) }
-                val selectedIndex = AppConfig.getFeatureValue(requireContext(), hookKey, 0)
+                val optionLabels =
+                    options.map { getString(resources.getIdentifier(it, "string", requireContext().packageName)) }
+                val selectedIndex = PrefManager.getFeatureValue(requireContext(), hookKey, 0)
 
                 hooks.add(
                     HookInfo(
@@ -128,7 +170,7 @@ class ConfigFragment : Fragment(R.layout.fragment_config) {
                     if (isModuleFeature(hookKey)) {
                         isModuleFeatureEnabled(hookKey)
                     } else {
-                        AppConfig.isFeatureEnabled(requireContext(), hookKey)
+                        PrefManager.isFeatureEnabled(requireContext(), hookKey)
                     }
 
                 hooks.add(
@@ -144,26 +186,5 @@ class ConfigFragment : Fragment(R.layout.fragment_config) {
         }
 
         return hooks
-    }
-
-    override fun onViewCreated(
-        view: View,
-        savedInstanceState: android.os.Bundle?,
-    ) {
-        binding.list.layoutManager = LinearLayoutManager(context)
-        binding.list.adapter =
-            HookAdapter(
-                loadHooks(),
-                onToggleChanged = { hookKey, enabled ->
-                    if (isModuleFeature(hookKey)) {
-                        setModuleFeatureEnabled(hookKey, enabled)
-                    } else {
-                        AppConfig.setFeatureEnabled(requireContext(), hookKey, enabled)
-                    }
-                },
-                onSelectionChanged = { hookKey, index ->
-                    AppConfig.setFeatureValue(requireContext(), hookKey, index)
-                },
-            )
     }
 }

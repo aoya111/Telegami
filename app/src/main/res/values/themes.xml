@@ -1,13 +1,43 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <style name="Base.Theme.Telegami" parent="Theme.Material3.DynamicColors.DayNight">
+
+    <style name="Base.AppTheme.Light" parent="Theme.Material3.DynamicColors.Light">
+        <item name="android:windowLightStatusBar">true</item>
+
+        <item name="android:statusBarColor">?android:colorBackground</item>
         <item name="android:windowActionBar">false</item>
         <item name="android:windowNoTitle">true</item>
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+
+        <!-- Preference title -->
+        <item name="android:textAppearanceListItem">?textAppearanceSubtitle1</item>
+
+        <item name="alertDialogTheme">@style/AppTheme.AlertDialog.Light</item>
+        <item name="dialogCornerRadius">24dp</item>
     </style>
 
-    <style name="Theme.Telegami" parent="Base.Theme.Telegami">
-        <item name="android:statusBarColor">@android:color/transparent</item>
-        <item name="android:navigationBarColor">@android:color/transparent</item>
+    <style name="Theme.Light" parent="Base.AppTheme.Light" />
+
+    <style name="Base.AppTheme" parent="Theme.Material3.DynamicColors.Dark">
+        <item name="android:windowActionBar">false</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+
+        <!-- Preference title -->
+        <item name="android:textAppearanceListItem">?textAppearanceSubtitle1</item>
+
+        <item name="alertDialogTheme">@style/AppTheme.AlertDialog</item>
+        <item name="dialogCornerRadius">24dp</item>
     </style>
+
+    <style name="Theme" parent="Base.AppTheme" />
+
+    <style name="AppTheme.AlertDialog" parent="ThemeOverlay.Material3.MaterialAlertDialog">
+        <item name="android:background">?colorPrimarySurface</item>
+    </style>
+
+    <style name="AppTheme.AlertDialog.Light" parent="ThemeOverlay.Material3.MaterialAlertDialog">
+    </style>
+
 </resources>

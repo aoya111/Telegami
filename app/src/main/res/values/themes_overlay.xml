@@ -1,0 +1,9 @@
+<resources>
+    <style name="ThemeOverlay" />
+
+    <style name="ThemeOverlay.Black" />
+
+    <style name="ThemeOverlay.Wallpaper">
+        <item name="android:windowShowWallpaper">true</item>
+    </style>
+</resources>

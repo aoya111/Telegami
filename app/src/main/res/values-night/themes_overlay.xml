@@ -1,0 +1,13 @@
+<resources>
+    <style name="ThemeOverlay" />
+
+    <style name="ThemeOverlay.Black">
+        <item name="colorSurface">@android:color/black</item>
+        <item name="colorSurfaceContainer">@android:color/black</item>
+        <item name="android:colorBackground">@android:color/black</item>
+    </style>
+
+    <style name="ThemeOverlay.Wallpaper">
+        <item name="android:windowShowWallpaper">true</item>
+    </style>
+</resources>
