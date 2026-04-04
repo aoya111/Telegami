@@ -27,12 +27,16 @@ class HookView
         private var viewType = HookViewType.TOGGLE
         private var options: List<String> = emptyList()
         private var _selectedIndex: Int = 0
+        private var onToggle: ((Boolean) -> Unit)? = null
+        private var currentToggleValue: Boolean = false
 
         init {
             orientation = LinearLayout.HORIZONTAL
             gravity = Gravity.CENTER_VERTICAL
             binding.toggle.setOnCheckedChangeListener { _, isChecked ->
-                onToggleChanged?.invoke(isChecked)
+                if (isChecked != currentToggleValue) {
+                    onToggle?.invoke(isChecked)
+                }
             }
             binding.dropdown.setOnClickListener { showDropdownMenu() }
         }
@@ -53,6 +57,7 @@ class HookView
         var toggle: Boolean
             get() = binding.toggle.isChecked
             set(value) {
+                currentToggleValue = value
                 binding.toggle.isChecked = value
             }
 
@@ -62,7 +67,11 @@ class HookView
                 binding.toggle.isEnabled = value
             }
 
-        var onToggleChanged: ((Boolean) -> Unit)? = null
+        var onToggleChanged: ((Boolean) -> Unit)?
+            get() = onToggle
+            set(value) {
+                onToggle = value
+            }
 
         var type: HookViewType
             get() = viewType
