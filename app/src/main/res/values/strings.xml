@@ -35,4 +35,12 @@
     <string name="FeatTelegami">Telegami</string>
     <string name="FeatTelegamiHideFromLauncher">Hide from launcher</string>
     <string name="FeatTelegamiHideFromLauncherDesc">Hide module icon from launcher</string>
+
+    <string name="TitleFeatures">Features</string>
+    <string name="TitleSettings">Settings</string>
+    <string name="TitleAbout">About</string>
+
+    <!-- Home -->
+    <string name="HomeXposedActivated">Module Activated [%s]</string>
+    <string name="HomeXposedNotActivated">Module Not Activated</string>
 </resources>

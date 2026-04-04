@@ -4,7 +4,7 @@ import android.content.ComponentName
 import android.content.Context
 import android.content.pm.PackageManager
 import android.util.Log
-import com.aoya.telegami.core.AppConfig
+import com.aoya.telegami.service.PrefManager
 
 object AppIconManager {
     private const val TAG = "AppIconManager"
@@ -48,10 +48,10 @@ object AppIconManager {
         } catch (e: Exception) {
             Log.e(TAG, "Error setting component state", e)
         }
-        AppConfig.setHideFromLauncher(context, hidden)
+        PrefManager.setHideFromLauncher(context, hidden)
     }
 
     fun applyState(context: Context) {
-        setHidden(context, AppConfig.isHideFromLauncher(context))
+        setHidden(context, PrefManager.isHideFromLauncher(context))
     }
 }

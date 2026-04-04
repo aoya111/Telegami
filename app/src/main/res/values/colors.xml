@@ -1,5 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <color name="gray">#607D8B</color>
+    <color name="invalid">#8F6B32</color>
+    <color name="debug">#000000</color>
+    <color name="info">#154A74</color>
+    <color name="warn">#375634</color>
+    <color name="error">#8F3232</color>
+
     <color name="purple_200">#FFBB86FC</color>
     <color name="purple_500">#FF6200EE</color>
     <color name="purple_700">#FF3700B3</color>

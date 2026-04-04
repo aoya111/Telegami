@@ -6,7 +6,7 @@ import android.view.Gravity
 import android.widget.LinearLayout
 import android.widget.PopupMenu
 import androidx.core.view.isVisible
-import com.aoya.telegami.databinding.HookViewBinding
+import com.aoya.telegami.databinding.ViewHookBinding
 import dev.androidbroadcast.vbpd.CreateMethod
 import dev.androidbroadcast.vbpd.viewBinding
 
@@ -22,7 +22,7 @@ class HookView
         attrs: AttributeSet? = null,
         defStyleAttr: Int = 0,
     ) : LinearLayout(context, attrs, defStyleAttr) {
-        val binding: HookViewBinding by viewBinding(createMethod = CreateMethod.INFLATE)
+        val binding: ViewHookBinding by viewBinding(createMethod = CreateMethod.INFLATE)
 
         private var viewType = HookViewType.TOGGLE
         private var options: List<String> = emptyList()
