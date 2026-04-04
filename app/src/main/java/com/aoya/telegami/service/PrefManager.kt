@@ -1,20 +1,28 @@
 package com.aoya.telegami.service
 
+import android.content.ComponentName
 import android.content.Context
+import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.edit
+import com.aoya.telegami.core.Constants.COMPONENT_NAME_DEFAULT
 import com.aoya.telegami.telegamiApp
+import com.aoya.telegami.utils.PackageHelper.findEnabledAppComponent
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.runBlocking
 
 object PrefManager {
-    private val appPref = telegamiApp.getSharedPreferences("app_settings", Context.MODE_PRIVATE)
-    private val featPref = telegamiApp.getSharedPreferences("features", Context.MODE_WORLD_READABLE)
-
     private const val PREF_SYSTEM_WALLPAPER = "system_wallpaper"
     private const val PREF_SYSTEM_WALLPAPER_ALPHA = "system_wallpaper_alpha"
     private const val PREF_DARK_THEME = "dark_theme"
     private const val PREF_BLACK_DARK_THEME = "black_dark_theme"
     private const val PREF_FOLLOW_SYSTEM_ACCENT = "follow_system_accent"
     private const val PREF_THEME_COLOR = "theme_color"
+
+    private val appPref = telegamiApp.getSharedPreferences("app_settings", Context.MODE_PRIVATE)
+    private val featPref = telegamiApp.getSharedPreferences("features", Context.MODE_WORLD_READABLE)
+
+    val isLauncherIconInvisible = MutableSharedFlow<Boolean>(replay = 1)
 
     fun setFeatureEnabled(
         context: Context,
@@ -43,15 +51,6 @@ object PrefManager {
         defaultValue: Int = 0,
     ): Int = featPref.getInt(featureKey, defaultValue)
 
-    fun setHideFromLauncher(
-        context: Context,
-        hide: Boolean,
-    ) {
-        appPref.edit().putBoolean("hide_from_launcher", hide).apply()
-    }
-
-    fun isHideFromLauncher(context: Context): Boolean = appPref.getBoolean("hide_from_launcher", false)
-
     fun getActiveVersion() = -1
 
     var darkTheme: Int
@@ -77,4 +76,25 @@ object PrefManager {
     var themeColor: String
         get() = appPref.getString(PREF_THEME_COLOR, "MATERIAL_BLUE")!!
         set(value) = appPref.edit { putString(PREF_THEME_COLOR, value) }
+
+    var hideIcon: Boolean
+        get() = runCatching { isLauncherIconInvisible.replayCache.first() }.getOrElse { false }
+        set(value) {
+            val enabled = findEnabledAppComponent(telegamiApp)
+            if (value && enabled != null) {
+                telegamiApp.packageManager.setComponentEnabledSetting(
+                    enabled,
+                    PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
+                    PackageManager.DONT_KILL_APP,
+                )
+            } else if (!value && enabled == null) {
+                telegamiApp.packageManager.setComponentEnabledSetting(
+                    ComponentName(telegamiApp, COMPONENT_NAME_DEFAULT),
+                    PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
+                    PackageManager.DONT_KILL_APP,
+                )
+            }
+
+            runBlocking { isLauncherIconInvisible.emit(value) }
+        }
 }

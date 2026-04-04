@@ -1,8 +1,6 @@
 package com.aoya.telegami.ui.fragment
 
-import android.content.SharedPreferences
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -15,13 +13,10 @@ import com.aoya.telegami.ui.util.navController
 import com.aoya.telegami.ui.util.setEdge2EdgeFlags
 import com.aoya.telegami.ui.util.setupToolbar
 import com.aoya.telegami.ui.view.HookViewType
-import com.aoya.telegami.utils.AppIconManager
 import dev.androidbroadcast.vbpd.viewBinding
 
 class FeaturesFragment : Fragment(R.layout.fragment_features) {
     private val binding by viewBinding(FragmentFeaturesBinding::bind)
-
-    private lateinit var prefs: SharedPreferences
 
     private val featureDependencies =
         mapOf(
@@ -57,33 +52,12 @@ class FeaturesFragment : Fragment(R.layout.fragment_features) {
                 HookAdapter(
                     loadHooks(),
                     onToggleChanged = { hookKey, enabled ->
-                        if (isModuleFeature(hookKey)) {
-                            setModuleFeatureEnabled(hookKey, enabled)
-                        } else {
-                            PrefManager.setFeatureEnabled(requireContext(), hookKey, enabled)
-                        }
+                        PrefManager.setFeatureEnabled(requireContext(), hookKey, enabled)
                     },
                     onSelectionChanged = { hookKey, index ->
                         PrefManager.setFeatureValue(requireContext(), hookKey, index)
                     },
                 )
-        }
-    }
-
-    private fun isModuleFeature(hookKey: String): Boolean = hookKey.startsWith("Telegami")
-
-    private fun isModuleFeatureEnabled(hookKey: String): Boolean =
-        when (hookKey) {
-            "TelegamiHideFromLauncher" -> AppIconManager.isHidden(requireContext())
-            else -> false
-        }
-
-    private fun setModuleFeatureEnabled(
-        hookKey: String,
-        enabled: Boolean,
-    ) {
-        when (hookKey) {
-            "TelegamiHideFromLauncher" -> AppIconManager.setHidden(requireContext(), enabled)
         }
     }
 
@@ -119,12 +93,7 @@ class FeaturesFragment : Fragment(R.layout.fragment_features) {
                 val descResId = resources.getIdentifier("Feat${hookKey}Desc", "string", requireContext().packageName)
                 val description = if (descResId != 0) getString(descResId) else ""
 
-                val enabled =
-                    if (isModuleFeature(hookKey)) {
-                        isModuleFeatureEnabled(hookKey)
-                    } else {
-                        PrefManager.isFeatureEnabled(requireContext(), hookKey)
-                    }
+                val enabled = PrefManager.isFeatureEnabled(requireContext(), hookKey)
 
                 hooks.add(
                     HookInfo(
@@ -166,12 +135,7 @@ class FeaturesFragment : Fragment(R.layout.fragment_features) {
                 val descResId = resources.getIdentifier("Feat${hookKey}Desc", "string", requireContext().packageName)
                 val description = if (descResId != 0) getString(descResId) else ""
 
-                val enabled =
-                    if (isModuleFeature(hookKey)) {
-                        isModuleFeatureEnabled(hookKey)
-                    } else {
-                        PrefManager.isFeatureEnabled(requireContext(), hookKey)
-                    }
+                val enabled = PrefManager.isFeatureEnabled(requireContext(), hookKey)
 
                 hooks.add(
                     HookInfo(

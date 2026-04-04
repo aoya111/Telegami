@@ -31,7 +31,5 @@
         <item>BoostDownload</item>
         <item>DisableAds</item>
         <item>FakePremium</item>
-        <item>HeaderTelegami</item>
-        <item>TelegamiHideFromLauncher</item>
     </string-array>
 </resources>

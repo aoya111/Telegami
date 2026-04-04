@@ -43,4 +43,9 @@
     <!-- Home -->
     <string name="HomeXposedActivated">Module Activated [%s]</string>
     <string name="HomeXposedNotActivated">Module Not Activated</string>
+
+    <!-- Settings -->
+    <string name="settings_module">Module</string>
+    <string name="settings_hide_icon">Hide module icon in launcher</string>
+    <string name="settings_hide_icon_summary">You can still open the app in Xposed manager</string>
 </resources>

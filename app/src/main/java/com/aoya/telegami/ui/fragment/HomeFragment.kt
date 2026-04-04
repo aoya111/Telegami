@@ -73,5 +73,13 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                 navigate(R.id.nav_features)
             }
         }
+
+        with(binding.navSettings) {
+            text1.text = getString(R.string.TitleSettings)
+            icon.setImageResource(R.drawable.outline_settings_24)
+            root.setOnClickListener {
+                navigate(R.id.nav_settings)
+            }
+        }
     }
 }

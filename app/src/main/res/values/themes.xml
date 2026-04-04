@@ -33,6 +33,11 @@
 
     <style name="Theme" parent="Base.AppTheme" />
 
+    <style name="Preference.SwitchPreferenceCompat" parent="@style/Preference.SwitchPreferenceCompat.Material"
+        tools:ignore="ResourceCycle">
+        <item name="widgetLayout">@layout/switch_compat</item>
+    </style>
+
     <style name="AppTheme.AlertDialog" parent="ThemeOverlay.Material3.MaterialAlertDialog">
         <item name="android:background">?colorPrimarySurface</item>
     </style>
