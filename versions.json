@@ -33,21 +33,21 @@
     "name": "Forkgram",
     "package_name": "org.forkgram.messenger",
     "current_version": "12.5.1.0",
-    "latest_version": "12.5.1.0",
+    "latest_version": "12.5.2.0",
     "latest_version_url": "https://www.apkmirror.com/apk/forkgram/forkgram-f-droid-version/",
     "source": "apkmirror",
-    "update_available": false,
-    "last_checked": "2026-03-19T02:49:00.713495+00:00"
+    "update_available": true,
+    "last_checked": "2026-04-04T02:44:04.858645+00:00"
   },
   "org.telegram.messenger": {
     "name": "Telegram (Official)",
     "package_name": "org.telegram.messenger",
     "current_version": "12.5.2",
-    "latest_version": "12.6.2",
+    "latest_version": "12.6.3",
     "latest_version_url": "https://www.apkmirror.com/apk/telegram-fz-llc/telegram/",
     "source": "apkmirror",
     "update_available": true,
-    "last_checked": "2026-04-02T02:50:53.748442+00:00"
+    "last_checked": "2026-04-04T02:44:05.496401+00:00"
   },
   "org.telegram.messenger.beta": {
     "name": "Telegram Beta",
@@ -63,11 +63,11 @@
     "name": "Telegram Web",
     "package_name": "org.telegram.messenger.web",
     "current_version": "12.5.2",
-    "latest_version": "12.5.2",
+    "latest_version": "12.6.3",
     "latest_version_url": "https://www.apkmirror.com/apk/telegram-fz-llc/telegram-web-version/",
     "source": "apkmirror",
-    "update_available": false,
-    "last_checked": "2026-03-24T02:41:21.701044+00:00"
+    "update_available": true,
+    "last_checked": "2026-04-04T02:44:06.303120+00:00"
   },
   "org.telegram.plus": {
     "name": "Plus Messenger",
