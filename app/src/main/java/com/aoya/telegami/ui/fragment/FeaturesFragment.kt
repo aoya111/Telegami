@@ -3,160 +3,171 @@ package com.aoya.telegami.ui.fragment
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.preference.PreferenceDataStore
+import androidx.preference.PreferenceFragmentCompat
 import com.aoya.telegami.R
-import com.aoya.telegami.databinding.FragmentFeaturesBinding
+import com.aoya.telegami.databinding.FragmentSettingsBinding
 import com.aoya.telegami.service.PrefManager
-import com.aoya.telegami.ui.adapter.HookAdapter
-import com.aoya.telegami.ui.adapter.HookInfo
 import com.aoya.telegami.ui.util.navController
 import com.aoya.telegami.ui.util.setEdge2EdgeFlags
 import com.aoya.telegami.ui.util.setupToolbar
-import com.aoya.telegami.ui.view.HookViewType
+import com.aoya.telegami.utils.toPascalCase
 import dev.androidbroadcast.vbpd.viewBinding
 
-class FeaturesFragment : Fragment(R.layout.fragment_features) {
-    private val binding by viewBinding(FragmentFeaturesBinding::bind)
-
-    private var hookAdapter: HookAdapter? = null
-
-    private val featureDependencies =
-        mapOf(
-            "mark_messages_deleted" to "show_deleted_messages",
-        )
-
-    private val dropdownFeatures =
-        mapOf(
-            "boost_download" to listOf("boost_download_off", "boost_download_on", "boost_download_extreme"),
-        )
+class FeaturesFragment :
+    Fragment(R.layout.fragment_settings),
+    PreferenceFragmentCompat.OnPreferenceStartFragmentCallback {
+    private val binding by viewBinding(FragmentSettingsBinding::bind)
 
     override fun onViewCreated(
         view: View,
         savedInstanceState: Bundle?,
     ) {
-        with(binding.toolbar) {
-            setupToolbar(
-                toolbar = binding.toolbar,
-                title = getString(R.string.title_features),
-                navigationIcon = R.drawable.baseline_arrow_back_24,
-                navigationOnClick = { navController.navigateUp() },
-            )
-        }
+        setupToolbar(
+            toolbar = binding.toolbar,
+            title = getString(R.string.title_features),
+            navigationIcon = R.drawable.baseline_arrow_back_24,
+            navigationOnClick = { navController.navigateUp() },
+        )
 
         setEdge2EdgeFlags(binding.root)
-    }
 
-    override fun onStart() {
-        super.onStart()
-        with(binding.list) {
-            layoutManager = LinearLayoutManager(context)
-            hookAdapter =
-                HookAdapter(
-                    loadHooks(),
-                    onToggleChanged = { hookKey, enabled ->
-                        PrefManager.setFeatureEnabled(hookKey, enabled)
-                    },
-                    onSelectionChanged = { hookKey, index ->
-                        PrefManager.setFeatureValue(hookKey, index)
-                    },
-                )
-            adapter = hookAdapter
+        if (childFragmentManager.findFragmentById(R.id.settings_container) == null) {
+            childFragmentManager
+                .beginTransaction()
+                .replace(R.id.settings_container, SettingsPreferenceFragment())
+                .commit()
         }
     }
 
-    override fun onResume() {
-        super.onResume()
-        hookAdapter?.notifyDataSetChanged()
+    override fun onPreferenceStartFragment(
+        caller: PreferenceFragmentCompat,
+        pref: androidx.preference.Preference,
+    ): Boolean {
+        val fragment =
+            childFragmentManager.fragmentFactory.instantiate(
+                requireContext().classLoader,
+                pref.fragment!!,
+            )
+        fragment.arguments = pref.extras
+        childFragmentManager
+            .beginTransaction()
+            .replace(R.id.settings_container, fragment)
+            .addToBackStack(null)
+            .commit()
+        return true
     }
 
-    private fun loadHooks(): List<HookInfo> {
-        val featureKeys = resources.getStringArray(R.array.features).toList()
-        val hooks = mutableListOf<HookInfo>()
+    class SettingsPreferenceDataStore : PreferenceDataStore() {
+        private val booleanKeys =
+            setOf(
+                "hideOnlineStatus",
+                "hideTyping",
+                "hideStoryViewStatus",
+                "showDeletedMessages",
+                "preventSecretMediaDeletion",
+                "allowSaveVideos",
+                "unlockChannelFeatures",
+                "fakePremium",
+                "disableAds",
+            )
 
-        val headers = featureKeys.filter { it.startsWith("header_") }.map { it.removePrefix("header_") }.toSet()
+        private val stringKeys = setOf("boostDownload")
 
-        for (hookKey in featureKeys) {
-            if (hookKey.startsWith("header_")) {
-                val name = hookKey.removePrefix("header_")
-                val nameResId = resources.getIdentifier("feat_$name", "string", requireContext().packageName)
-                hooks.add(
-                    HookInfo(
-                        key = name,
-                        name = if (nameResId != 0) getString(nameResId) else name,
-                        desc = "",
-                        enabled = true,
-                        isHeader = true,
-                    ),
-                )
-                continue
-            }
+        private val multiSelectKeys = setOf("hideSeen", "markMessages")
 
-            val groupId = headers.find { hookKey.startsWith(it) }
-            val options = dropdownFeatures[hookKey]
-
-            if (groupId != null) {
-                val nameResId = resources.getIdentifier("feat_${hookKey.lowercase()}", "string", requireContext().packageName)
-                val name = if (nameResId != 0) getString(nameResId) else hookKey
-
-                val descResId = resources.getIdentifier("feat_${hookKey.lowercase()}_desc", "string", requireContext().packageName)
-                val description = if (descResId != 0) getString(descResId) else ""
-
-                val enabled = PrefManager.isFeatureEnabled(hookKey)
-
-                hooks.add(
-                    HookInfo(
-                        key = hookKey,
-                        name = name,
-                        desc = description,
-                        enabled = enabled,
-                        isHeader = false,
-                        groupId = groupId,
-                        dependsOn = featureDependencies[hookKey],
-                    ),
-                )
-            } else if (options != null) {
-                val nameResId = resources.getIdentifier("feat_${hookKey.lowercase()}", "string", requireContext().packageName)
-                val name = if (nameResId != 0) getString(nameResId) else hookKey
-
-                val descResId = resources.getIdentifier("feat_${hookKey.lowercase()}_desc", "string", requireContext().packageName)
-                val description = if (descResId != 0) getString(descResId) else ""
-
-                val optionLabels =
-                    options.map { getString(resources.getIdentifier(it, "string", requireContext().packageName)) }
-                val selectedIndex = PrefManager.getFeatureValue(hookKey, 0)
-
-                hooks.add(
-                    HookInfo(
-                        key = hookKey,
-                        name = name,
-                        desc = description,
-                        enabled = true,
-                        type = HookViewType.DROPDOWN,
-                        options = optionLabels,
-                        selectedIndex = selectedIndex,
-                    ),
-                )
+        override fun getBoolean(
+            key: String,
+            defValue: Boolean,
+        ): Boolean =
+            if (key in booleanKeys) {
+                PrefManager.isFeatureEnabled(key.toPascalCase())
             } else {
-                val nameResId = resources.getIdentifier("feat_${hookKey.lowercase()}", "string", requireContext().packageName)
-                val name = if (nameResId != 0) getString(nameResId) else hookKey
+                throw IllegalArgumentException("Invalid key: $key")
+            }
 
-                val descResId = resources.getIdentifier("feat_${hookKey.lowercase()}_desc", "string", requireContext().packageName)
-                val description = if (descResId != 0) getString(descResId) else ""
+        override fun getString(
+            key: String,
+            defValue: String?,
+        ): String =
+            if (key in stringKeys) {
+                PrefManager.getFeatureValue(key.toPascalCase(), 0).toString()
+            } else {
+                throw IllegalArgumentException("Invalid key: $key")
+            }
 
-                val enabled = PrefManager.isFeatureEnabled(hookKey)
+        override fun getStringSet(
+            key: String,
+            defValues: MutableSet<String>?,
+        ): MutableSet<String> =
+            if (key in multiSelectKeys) {
+                val pascalKey = key.toPascalCase()
+                val enabledOptions = mutableSetOf<String>()
+                when (key) {
+                    "hideSeen" -> {
+                        if (PrefManager.isFeatureEnabled("HideSeenPrivateChat")) enabledOptions.add("private_chat")
+                        if (PrefManager.isFeatureEnabled("HideSeenChannel")) enabledOptions.add("channel")
+                    }
+                    "markMessages" -> {
+                        if (PrefManager.isFeatureEnabled("MarkMessagesDeleted")) enabledOptions.add("deleted")
+                        if (PrefManager.isFeatureEnabled("MarkMessagesEdited")) enabledOptions.add("edited")
+                    }
+                }
+                enabledOptions
+            } else {
+                throw IllegalArgumentException("Invalid key: $key")
+            }
 
-                hooks.add(
-                    HookInfo(
-                        key = hookKey,
-                        name = name,
-                        desc = description,
-                        enabled = enabled,
-                        dependsOn = featureDependencies[hookKey],
-                    ),
-                )
+        override fun putBoolean(
+            key: String,
+            value: Boolean,
+        ) {
+            if (key in booleanKeys) {
+                PrefManager.setFeatureEnabled(key.toPascalCase(), value)
+            } else {
+                throw IllegalArgumentException("Invalid key: $key")
             }
         }
 
-        return hooks
+        override fun putString(
+            key: String,
+            value: String?,
+        ) {
+            if (key in stringKeys) {
+                PrefManager.setFeatureValue(key.toPascalCase(), value!!.toInt())
+            } else {
+                throw IllegalArgumentException("Invalid key: $key")
+            }
+        }
+
+        override fun putStringSet(
+            key: String,
+            values: MutableSet<String>?,
+        ) {
+            if (key in multiSelectKeys) {
+                when (key) {
+                    "hideSeen" -> {
+                        PrefManager.setFeatureEnabled("HideSeenPrivateChat", values?.contains("private_chat") == true)
+                        PrefManager.setFeatureEnabled("HideSeenChannel", values?.contains("channel") == true)
+                    }
+                    "markMessages" -> {
+                        PrefManager.setFeatureEnabled("MarkMessagesDeleted", values?.contains("deleted") == true)
+                        PrefManager.setFeatureEnabled("MarkMessagesEdited", values?.contains("edited") == true)
+                    }
+                }
+            } else {
+                throw IllegalArgumentException("Invalid key: $key")
+            }
+        }
+    }
+
+    class SettingsPreferenceFragment : PreferenceFragmentCompat() {
+        override fun onCreatePreferences(
+            savedInstanceState: Bundle?,
+            rootKey: String?,
+        ) {
+            preferenceManager.preferenceDataStore = SettingsPreferenceDataStore()
+            setPreferencesFromResource(R.xml.features, rootKey)
+        }
     }
 }

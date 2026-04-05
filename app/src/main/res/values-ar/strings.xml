@@ -3,9 +3,7 @@
 
     <string name="feat_hide_seen">اخفاء علامة الاستلام</string>
     <string name="feat_hide_seen_private_chat">محادثة خاصة</string>
-    <string name="feat_hide_seen_private_chat_desc">اخفاء علامة استلام الرسائل في المحادثات الخاصة</string>
     <string name="feat_hide_seen_channel">قناة</string>
-    <string name="feat_hide_seen_channel_desc">اخفاء علامة استلام الرسائل في القنوات</string>
     <string name="feat_hide_story_view_status">اخفاء مشاهدة قصة</string>
     <string name="feat_hide_story_view_status_desc">اخفاء حالة مشاهدة القصة</string>
     <string name="feat_hide_online_status">إخفاء حالة الاتصال بالإنترنت</string>
@@ -15,9 +13,7 @@
     <string name="feat_show_deleted_messages">اضهار الرسائل المحذوفة</string>
     <string name="feat_show_deleted_messages_desc">اضهار الرسائل المحذوفة</string>
     <string name="feat_mark_messages_deleted">وضع علامة على الرسائل المحذوفة</string>
-    <string name="feat_mark_messages_deleted_desc">وضع علامة على الرسائل المحذوفة في المحادثة</string>
     <string name="feat_mark_messages_edited">وضع علامة على الرسائل المعدلة</string>
-    <string name="feat_mark_messages_edited_desc">وضع علامة على الرسائل المعدلة في المحادثة</string>
     <string name="feat_prevent_secret_media_deletion">تعطيل حذف الوسائط السرية</string>
     <string name="feat_prevent_secret_media_deletion_desc">تعطيل حذف الوسائط السرية</string>
     <string name="feat_unlock_channel_features">فتح جميع الخصائص المشفره والمغلقه</string>

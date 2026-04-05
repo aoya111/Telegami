@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <!-- Privacy -->
+    <PreferenceCategory app:title="@string/feat_category_privacy">
+        <SwitchPreferenceCompat
+            app:key="hideOnlineStatus"
+            app:title="@string/feat_hide_online_status"
+            app:summary="@string/feat_hide_online_status_desc" />
+        <SwitchPreferenceCompat
+            app:key="hideTyping"
+            app:title="@string/feat_hide_typing"
+            app:summary="@string/feat_hide_typing_desc" />
+        <SwitchPreferenceCompat
+            app:key="hideStoryViewStatus"
+            app:title="@string/feat_hide_story_view_status"
+            app:summary="@string/feat_hide_story_view_status_desc" />
+        <MultiSelectListPreference
+            app:key="hideSeen"
+            app:title="@string/feat_hide_seen"
+            app:summary="@string/feat_hide_seen_desc"
+            app:entries="@array/hide_seen_texts"
+            app:entryValues="@array/hide_seen_values"
+            app:defaultValue="@array/hide_seen_defaults" />
+    </PreferenceCategory>
+
+    <!-- Messages & Media -->
+    <PreferenceCategory app:title="@string/feat_category_messages">
+        <SwitchPreferenceCompat
+            app:key="showDeletedMessages"
+            app:title="@string/feat_show_deleted_messages"
+            app:summary="@string/feat_show_deleted_messages_desc" />
+        <MultiSelectListPreference
+            app:key="markMessages"
+            app:title="@string/feat_mark_messages"
+            app:summary="@string/feat_mark_messages_desc"
+            app:entries="@array/mark_messages_texts"
+            app:entryValues="@array/mark_messages_values"
+            app:defaultValue="@array/mark_messages_defaults" />
+        <SwitchPreferenceCompat
+            app:key="preventSecretMediaDeletion"
+            app:title="@string/feat_prevent_secret_media_deletion"
+            app:summary="@string/feat_prevent_secret_media_deletion_desc" />
+        <SwitchPreferenceCompat
+            app:key="allowSaveVideos"
+            app:title="@string/feat_allow_save_videos"
+            app:summary="@string/feat_allow_save_videos_desc" />
+    </PreferenceCategory>
+
+    <!-- Misc -->
+    <PreferenceCategory app:title="@string/feat_category_misc">
+        <SwitchPreferenceCompat
+            app:key="disableAds"
+            app:title="@string/feat_disable_ads"
+            app:summary="@string/feat_disable_ads_desc" />
+        <SwitchPreferenceCompat
+            app:key="unlockChannelFeatures"
+            app:title="@string/feat_unlock_channel_features"
+            app:summary="@string/feat_unlock_channel_features_desc" />
+        <ListPreference
+            app:key="boostDownload"
+            app:title="@string/feat_boost_download"
+            app:summary="@string/feat_boost_download_desc"
+            app:entries="@array/boost_download_texts"
+            app:entryValues="@array/boost_download_values"
+            app:defaultValue="0" />
+        <SwitchPreferenceCompat
+            app:key="fakePremium"
+            app:title="@string/feat_fake_premium"
+            app:summary="@string/feat_fake_premium_desc" />
+    </PreferenceCategory>
+
+</PreferenceScreen>
