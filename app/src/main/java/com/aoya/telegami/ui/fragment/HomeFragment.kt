@@ -157,9 +157,13 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         with(binding.navFeatures) {
             text1.text = getString(R.string.title_features)
             icon.setImageResource(R.drawable.outline_extension_24)
+            val isModuleActive = PrefManager.getActiveVersion() > 0
             root.setOnClickListener {
-                navigate(R.id.nav_features)
+                if (isModuleActive) {
+                    navigate(R.id.nav_features)
+                }
             }
+            root.alpha = if (isModuleActive) 1f else 0.5f
         }
 
         with(binding.navSettings) {

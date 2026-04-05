@@ -17,8 +17,14 @@ object PrefManager {
     private const val PREF_FOLLOW_SYSTEM_ACCENT = "follow_system_accent"
     private const val PREF_THEME_COLOR = "theme_color"
 
-    private val appPref = telegamiApp.getSharedPreferences("app_settings", Context.MODE_PRIVATE)
-    private val featPref = telegamiApp.getSharedPreferences("features", Context.MODE_WORLD_READABLE)
+    private val appPref by lazy { telegamiApp.getSharedPreferences("app_settings", Context.MODE_PRIVATE) }
+    private val featPref by lazy {
+        if (getActiveVersion() > 0) {
+            telegamiApp.getSharedPreferences("features", Context.MODE_WORLD_READABLE)
+        } else {
+            telegamiApp.getSharedPreferences("features", Context.MODE_PRIVATE)
+        }
+    }
 
     val isLauncherIconInvisible = MutableSharedFlow<Boolean>(replay = 1)
 

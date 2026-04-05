@@ -11,6 +11,8 @@ class TelegamiApp : Application() {
         super.onCreate()
         telegamiApp = this
 
-        AppCompatDelegate.setDefaultNightMode(PrefManager.darkTheme)
+        runCatching {
+            AppCompatDelegate.setDefaultNightMode(PrefManager.darkTheme)
+        }
     }
 }
