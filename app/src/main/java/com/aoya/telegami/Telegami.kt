@@ -33,10 +33,6 @@ object Telegami {
         TranslationManager.init(context, modulePath)
         ResolverManager.init(context.packageName, modulePath)
 
-        // TODO: This line can be removed in a future version once all users have updated.
-        // Legacy cleanup: remove the telegami.dex file that was unnecessarily copied on every launch.
-        context.filesDir.resolve("telegami.dex").delete()
-
         this.classLoader = context.classLoader
         this.hookManager = HookManager()
         this.packageName = context.packageName
