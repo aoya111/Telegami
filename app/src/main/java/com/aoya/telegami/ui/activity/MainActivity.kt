@@ -7,7 +7,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.graphics.drawable.toDrawable
 import com.aoya.telegami.R
 import com.aoya.telegami.databinding.ActivityMainBinding
-import com.aoya.telegami.service.PrefManager
 import com.aoya.telegami.ui.util.ThemeUtils
 import com.google.android.material.color.DynamicColors
 import com.google.android.material.color.DynamicColorsOptions
@@ -46,21 +45,5 @@ class MainActivity : AppCompatActivity() {
         }
 
         theme.applyStyle(ThemeUtils.getOverlayThemeStyleRes(this), true)
-
-        applyWallpaperBackgroundColor()
-    }
-
-    fun applyWallpaperBackgroundColor(value: Int = PrefManager.systemWallpaperAlpha) {
-        if (PrefManager.systemWallpaper) {
-            val color =
-                (value shl 24) +
-                    if (ThemeUtils.isNightMode(this)) {
-                        0x00000000
-                    } else {
-                        0x00FFFFFF
-                    }
-
-            window.setBackgroundDrawable(color.toDrawable())
-        }
     }
 }
