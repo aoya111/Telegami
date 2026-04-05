@@ -54,8 +54,6 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                 else -> themeColor(android.R.attr.colorPrimary)
             }
 
-        if (PrefManager.systemWallpaper) color -= 0x55000000
-
         with(binding.statusCard) {
             root.setCardBackgroundColor(color)
             root.outlineAmbientShadowColor = color

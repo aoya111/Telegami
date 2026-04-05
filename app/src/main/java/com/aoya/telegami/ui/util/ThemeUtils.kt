@@ -71,7 +71,6 @@ object ThemeUtils {
     @StyleRes
     fun getOverlayThemeStyleRes(context: Context): Int {
         if (isUsingBlackTheme(context)) return R.style.ThemeOverlay_Black
-        if (PrefManager.systemWallpaper) return R.style.ThemeOverlay_Wallpaper
 
         return R.style.ThemeOverlay
     }
@@ -130,7 +129,7 @@ object ThemeUtils {
                 themeColor(com.google.android.material.R.attr.colorSurfaceContainer)
             }
         ).let {
-            if (!forceNoTrans && PrefManager.systemWallpaper) return@let it - 0x55000000
+            if (!forceNoTrans) return@let it - 0x55000000
             return@let it
         }
 
