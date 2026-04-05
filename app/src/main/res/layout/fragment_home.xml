@@ -49,10 +49,6 @@
                     android:id="@+id/nav_settings"
                     layout="@layout/view_home_item" />
 
-                <include
-                    android:id="@+id/nav_about"
-                    layout="@layout/view_home_item" />
-
             </LinearLayout>
 
         </LinearLayout>
