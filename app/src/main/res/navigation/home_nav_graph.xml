@@ -19,4 +19,9 @@
         android:name="com.aoya.telegami.ui.fragment.SettingsFragment"
         android:label="@string/title_settings" />
 
+    <fragment
+        android:id="@+id/nav_about"
+        android:name="com.aoya.telegami.ui.fragment.AboutFragment"
+        android:label="@string/title_about" />
+
 </navigation>

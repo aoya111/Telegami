@@ -7,6 +7,7 @@ object Constants {
     const val COMPONENT_NAME_DEFAULT = "com.aoya.telegami.MainActivityLauncher"
 
     const val GITHUB_REPO = "https://github.com/aoya111/Telegami"
+    const val TELEGRAM_CHANNEL = "https://t.me/TGamiApp"
 
     val SUPPORTED_TELEGRAM_PACKAGES =
         mapOf(

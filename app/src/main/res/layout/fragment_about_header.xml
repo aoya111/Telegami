@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:paddingHorizontal="@dimen/item_padding_vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:layout_marginTop="16dp"
+            android:layout_width="match_parent"
+            android:layout_height="96dp">
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="96dp">
+
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp" />
+
+                <View
+                    android:id="@+id/app_info_top"
+                    android:background="@drawable/about_header_bg_top"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+            </LinearLayout>
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_centerInParent="true"
+                android:id="@+id/app_icon"
+                android:layout_width="96dp"
+                android:layout_height="96dp" />
+
+        </RelativeLayout>
+
+        <androidx.cardview.widget.CardView
+            app:cardCornerRadius="24dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginStart="8dp"
+            app:cardElevation="0dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentStart="true"
+            android:layout_width="48dp"
+            android:layout_height="48dp">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/back_button"
+                android:src="@drawable/baseline_arrow_back_24"
+                android:background="?attr/selectableItemBackground"
+                android:padding="8dp"
+                android:tint="?attr/colorOnBackground"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+        </androidx.cardview.widget.CardView>
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:background="@drawable/about_header_bg_bottom"
+        android:orientation="vertical"
+        android:padding="16dp"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/app_name"
+            android:gravity="center"
+            android:textAppearance="@style/TextAppearance.Material3.BodyLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/app_version"
+            android:gravity="center"
+            android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_marginTop="@dimen/item_padding_vertical"
+            android:text="@string/about_support"
+            android:gravity="center"
+            android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <com.google.android.material.button.MaterialButtonGroup
+            style="@style/Widget.Material3.MaterialButtonGroup.Connected"
+            android:layout_marginTop="@dimen/item_padding_mini"
+            android:id="@+id/link_buttons"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/link_github"
+                android:text="GitHub"
+                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/link_telegram"
+                android:text="Telegram"
+                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+        </com.google.android.material.button.MaterialButtonGroup>
+
+    </LinearLayout>
+
+</LinearLayout>
