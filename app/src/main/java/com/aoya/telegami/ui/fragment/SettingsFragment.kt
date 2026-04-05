@@ -2,17 +2,22 @@ package com.aoya.telegami.ui.fragment
 
 import android.os.Bundle
 import android.view.View
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.Fragment
+import androidx.preference.ListPreference
 import androidx.preference.PreferenceDataStore
 import androidx.preference.PreferenceFragmentCompat
+import androidx.preference.SwitchPreferenceCompat
 import com.aoya.telegami.R
 import com.aoya.telegami.databinding.FragmentSettingsBinding
 import com.aoya.telegami.service.PrefManager
 import com.aoya.telegami.telegamiApp
 import com.aoya.telegami.ui.util.navController
+import com.aoya.telegami.ui.util.recreateMainActivity
 import com.aoya.telegami.ui.util.setEdge2EdgeFlags
 import com.aoya.telegami.ui.util.setupToolbar
 import com.aoya.telegami.utils.PackageHelper.findEnabledAppComponent
+import com.google.android.material.color.DynamicColors
 import dev.androidbroadcast.vbpd.viewBinding
 import kotlinx.coroutines.runBlocking
 
@@ -70,7 +75,19 @@ class SettingsFragment :
             defValue: Boolean,
         ): Boolean =
             when (key) {
+                "followSystemAccent" -> PrefManager.followSystemAccent
+                "blackDarkTheme" -> PrefManager.blackDarkTheme
                 "hideIcon" -> PrefManager.hideIcon
+                else -> throw IllegalArgumentException("Invalid key: $key")
+            }
+
+        override fun getString(
+            key: String,
+            defValue: String?,
+        ): String =
+            when (key) {
+                "themeColor" -> PrefManager.themeColor
+                "darkTheme" -> PrefManager.darkTheme.toString()
                 else -> throw IllegalArgumentException("Invalid key: $key")
             }
 
@@ -79,7 +96,20 @@ class SettingsFragment :
             value: Boolean,
         ) {
             when (key) {
+                "followSystemAccent" -> PrefManager.followSystemAccent = value
+                "blackDarkTheme" -> PrefManager.blackDarkTheme = value
                 "hideIcon" -> PrefManager.hideIcon = value
+                else -> throw IllegalArgumentException("Invalid key: $key")
+            }
+        }
+
+        override fun putString(
+            key: String,
+            value: String?,
+        ) {
+            when (key) {
+                "themeColor" -> PrefManager.themeColor = value!!
+                "darkTheme" -> PrefManager.darkTheme = value!!.toInt()
                 else -> throw IllegalArgumentException("Invalid key: $key")
             }
         }
@@ -92,6 +122,41 @@ class SettingsFragment :
         ) {
             preferenceManager.preferenceDataStore = SettingsPreferenceDataStore()
             setPreferencesFromResource(R.xml.settings, rootKey)
+
+            findPreference<SwitchPreferenceCompat>("followSystemAccent")?.also {
+                it.isVisible = DynamicColors.isDynamicColorAvailable()
+
+                it.setOnPreferenceChangeListener { _, _ ->
+                    recreateMainActivity()
+                    true
+                }
+            }
+
+            findPreference<ListPreference>("themeColor")?.also {
+                if (!DynamicColors.isDynamicColorAvailable()) it.dependency = null
+
+                it.setOnPreferenceChangeListener { _, _ ->
+                    recreateMainActivity()
+                    true
+                }
+            }
+
+            findPreference<ListPreference>("darkTheme")?.setOnPreferenceChangeListener { _, newValue ->
+                val newMode = (newValue as String).toInt()
+                if (PrefManager.darkTheme != newMode) {
+                    AppCompatDelegate.setDefaultNightMode(newMode)
+                    recreateMainActivity()
+                }
+                true
+            }
+
+            findPreference<SwitchPreferenceCompat>("blackDarkTheme")?.apply {
+                isEnabled = findPreference<SwitchPreferenceCompat>("systemWallpaper")?.isChecked != true
+                setOnPreferenceChangeListener { _, _ ->
+                    recreateMainActivity()
+                    true
+                }
+            }
         }
     }
 }
