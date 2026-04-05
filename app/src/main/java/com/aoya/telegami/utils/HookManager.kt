@@ -15,6 +15,7 @@ import com.aoya.telegami.hooks.HideStoryViewStatus
 import com.aoya.telegami.hooks.HideTyping
 import com.aoya.telegami.hooks.LocaleController
 import com.aoya.telegami.hooks.MarkMessages
+import com.aoya.telegami.hooks.NekoBlock
 import com.aoya.telegami.hooks.PreventSecretMediaDeletion
 import com.aoya.telegami.hooks.ProfileDetails
 import com.aoya.telegami.hooks.Settings
@@ -34,6 +35,7 @@ class HookManager {
             ApplyColor(),
             BoostDownload(),
             ProfileDetails(),
+            NekoBlock(),
             HideBetaUpdate(),
         )
 
