@@ -2,8 +2,8 @@ package com.aoya.telegami.hooks
 
 import com.aoya.telegami.Telegami
 import com.aoya.telegami.data.DeletedMessage
-import com.aoya.telegami.utils.logd
-import com.aoya.telegami.utils.logw
+import com.aoya.telegami.util.logd
+import com.aoya.telegami.util.logw
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob

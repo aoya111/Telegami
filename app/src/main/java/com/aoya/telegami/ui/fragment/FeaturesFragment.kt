@@ -11,7 +11,7 @@ import com.aoya.telegami.service.PrefManager
 import com.aoya.telegami.ui.util.navController
 import com.aoya.telegami.ui.util.setEdge2EdgeFlags
 import com.aoya.telegami.ui.util.setupToolbar
-import com.aoya.telegami.utils.toPascalCase
+import com.aoya.telegami.util.toPascalCase
 import dev.androidbroadcast.vbpd.viewBinding
 
 class FeaturesFragment :

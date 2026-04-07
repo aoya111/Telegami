@@ -1,8 +1,8 @@
 package com.aoya.telegami.hooks
 
-import com.aoya.telegami.utils.Hook
-import com.aoya.telegami.utils.HookStage
-import com.aoya.telegami.utils.logd
+import com.aoya.telegami.util.Hook
+import com.aoya.telegami.util.HookStage
+import com.aoya.telegami.util.logd
 import com.aoya.telegami.virt.tgnet.tl.TLAccount
 import com.aoya.telegami.virt.ui.ProfileActivity
 import com.aoya.telegami.core.i18n.TranslationManager as i18n

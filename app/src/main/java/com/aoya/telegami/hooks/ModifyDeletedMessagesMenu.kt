@@ -1,8 +1,8 @@
 package com.aoya.telegami.hooks
 
 import com.aoya.telegami.core.Config
-import com.aoya.telegami.utils.Hook
-import com.aoya.telegami.utils.HookStage
+import com.aoya.telegami.util.Hook
+import com.aoya.telegami.util.HookStage
 import com.aoya.telegami.virt.messenger.LocaleController
 import com.aoya.telegami.virt.messenger.MessageObject
 

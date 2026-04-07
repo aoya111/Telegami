@@ -1,9 +1,9 @@
 package com.aoya.telegami.hooks
 
 import com.aoya.telegami.core.Config
-import com.aoya.telegami.utils.Hook
-import com.aoya.telegami.utils.HookStage
-import com.aoya.telegami.utils.MessageHelper
+import com.aoya.telegami.util.Hook
+import com.aoya.telegami.util.HookStage
+import com.aoya.telegami.util.MessageHelper
 import com.aoya.telegami.virt.messenger.AndroidUtilities
 import com.aoya.telegami.virt.messenger.MessageObject
 import com.aoya.telegami.virt.ui.ChatActivity

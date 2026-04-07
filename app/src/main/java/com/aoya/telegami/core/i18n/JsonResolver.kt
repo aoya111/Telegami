@@ -1,7 +1,7 @@
 package com.aoya.telegami.core.i18n
 
 import android.content.res.XModuleResources
-import com.aoya.telegami.utils.logd
+import com.aoya.telegami.util.logd
 import kotlinx.serialization.json.Json
 
 class JsonResolver(

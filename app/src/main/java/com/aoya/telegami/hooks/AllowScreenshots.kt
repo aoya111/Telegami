@@ -2,8 +2,8 @@ package com.aoya.telegami.hooks
 
 import android.view.WindowManager.LayoutParams
 import android.view.WindowManager.LayoutParams.FLAG_SECURE
-import com.aoya.telegami.utils.Hook
-import com.aoya.telegami.utils.HookStage
+import com.aoya.telegami.util.Hook
+import com.aoya.telegami.util.HookStage
 
 class AllowScreenshots : Hook("AllowScreenshots") {
     override fun init() {

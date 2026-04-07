@@ -2,8 +2,8 @@ package com.aoya.telegami.hooks
 
 import android.text.TextUtils
 import com.aoya.telegami.Telegami
-import com.aoya.telegami.utils.Hook
-import com.aoya.telegami.utils.HookStage
+import com.aoya.telegami.util.Hook
+import com.aoya.telegami.util.HookStage
 import com.aoya.telegami.virt.messenger.MessagesStorage
 import com.aoya.telegami.virt.messenger.NotificationCenter
 

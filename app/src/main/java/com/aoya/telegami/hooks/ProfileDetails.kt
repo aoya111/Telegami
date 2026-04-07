@@ -5,8 +5,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import com.aoya.telegami.Telegami
-import com.aoya.telegami.utils.Hook
-import com.aoya.telegami.utils.HookStage
+import com.aoya.telegami.util.Hook
+import com.aoya.telegami.util.HookStage
 import com.aoya.telegami.virt.messenger.AndroidUtilities
 import com.aoya.telegami.virt.messenger.ChatObject
 import com.aoya.telegami.virt.messenger.UserObject

@@ -7,7 +7,7 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.edit
 import com.aoya.telegami.core.Constants.COMPONENT_NAME_DEFAULT
 import com.aoya.telegami.telegamiApp
-import com.aoya.telegami.utils.PackageHelper.findEnabledAppComponent
+import com.aoya.telegami.util.PackageHelper.findEnabledAppComponent
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.runBlocking
 

@@ -16,7 +16,7 @@ import com.aoya.telegami.ui.util.navController
 import com.aoya.telegami.ui.util.recreateMainActivity
 import com.aoya.telegami.ui.util.setEdge2EdgeFlags
 import com.aoya.telegami.ui.util.setupToolbar
-import com.aoya.telegami.utils.PackageHelper.findEnabledAppComponent
+import com.aoya.telegami.util.PackageHelper.findEnabledAppComponent
 import com.google.android.material.color.DynamicColors
 import dev.androidbroadcast.vbpd.viewBinding
 import kotlinx.coroutines.runBlocking

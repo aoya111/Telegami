@@ -1,7 +1,7 @@
 package com.aoya.telegami.core.obfuscate
 
 import android.content.res.XModuleResources
-import com.aoya.telegami.utils.logd
+import com.aoya.telegami.util.logd
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json

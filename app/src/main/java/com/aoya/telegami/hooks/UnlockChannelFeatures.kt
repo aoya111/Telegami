@@ -1,7 +1,7 @@
 package com.aoya.telegami.hooks
 
-import com.aoya.telegami.utils.Hook
-import com.aoya.telegami.utils.HookStage
+import com.aoya.telegami.util.Hook
+import com.aoya.telegami.util.HookStage
 
 class UnlockChannelFeatures : Hook("UnlockChannelFeatures") {
     override fun init() {

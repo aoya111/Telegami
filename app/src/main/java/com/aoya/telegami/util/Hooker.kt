@@ -1,4 +1,4 @@
-package com.aoya.telegami.utils
+package com.aoya.telegami.util
 
 import de.robv.android.xposed.XC_MethodHook
 import de.robv.android.xposed.XposedBridge

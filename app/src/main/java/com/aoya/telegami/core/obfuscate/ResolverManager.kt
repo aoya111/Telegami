@@ -1,7 +1,7 @@
 package com.aoya.telegami.core.obfuscate
 
-import com.aoya.telegami.utils.loge
-import com.aoya.telegami.utils.logw
+import com.aoya.telegami.util.loge
+import com.aoya.telegami.util.logw
 
 object ResolverManager {
     private lateinit var resolver: Resolver

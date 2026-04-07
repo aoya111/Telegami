@@ -1,4 +1,4 @@
-package com.aoya.telegami.utils
+package com.aoya.telegami.util
 
 import com.aoya.telegami.Telegami
 import com.aoya.telegami.core.Config

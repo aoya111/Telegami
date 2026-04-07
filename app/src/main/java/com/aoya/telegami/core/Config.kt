@@ -3,8 +3,8 @@ package com.aoya.telegami.core
 import android.content.Context
 import com.aoya.telegami.BuildConfig
 import com.aoya.telegami.Telegami
-import com.aoya.telegami.utils.logd
-import com.aoya.telegami.utils.loge
+import com.aoya.telegami.util.logd
+import com.aoya.telegami.util.loge
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import de.robv.android.xposed.XSharedPreferences

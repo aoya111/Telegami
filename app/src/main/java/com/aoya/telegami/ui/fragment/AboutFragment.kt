@@ -21,7 +21,7 @@ import com.aoya.telegami.databinding.FragmentAboutListItemBinding
 import com.aoya.telegami.ui.util.ThemeUtils.homeItemBackgroundColor
 import com.aoya.telegami.ui.util.navController
 import com.aoya.telegami.ui.util.setEdge2EdgeFlags
-import com.aoya.telegami.utils.PackageHelper.findEnabledAppComponent
+import com.aoya.telegami.util.PackageHelper.findEnabledAppComponent
 import com.bumptech.glide.Glide
 import dev.androidbroadcast.vbpd.viewBinding
 

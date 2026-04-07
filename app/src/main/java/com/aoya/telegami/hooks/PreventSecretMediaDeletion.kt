@@ -5,9 +5,9 @@ import android.view.View
 import android.widget.FrameLayout
 import android.widget.Toast
 import com.aoya.telegami.Telegami
-import com.aoya.telegami.utils.Hook
-import com.aoya.telegami.utils.HookStage
-import com.aoya.telegami.utils.SecretMedia
+import com.aoya.telegami.util.Hook
+import com.aoya.telegami.util.HookStage
+import com.aoya.telegami.util.SecretMedia
 import com.aoya.telegami.virt.messenger.FileLoader
 import com.aoya.telegami.virt.messenger.MediaController
 import com.aoya.telegami.virt.messenger.MessageObject

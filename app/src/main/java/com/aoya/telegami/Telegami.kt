@@ -8,7 +8,7 @@ import com.aoya.telegami.core.Config
 import com.aoya.telegami.core.i18n.TranslationManager
 import com.aoya.telegami.core.obfuscate.ResolverManager
 import com.aoya.telegami.data.AppDatabase
-import com.aoya.telegami.utils.HookManager
+import com.aoya.telegami.util.HookManager
 import kotlin.system.measureTimeMillis
 
 object Telegami {

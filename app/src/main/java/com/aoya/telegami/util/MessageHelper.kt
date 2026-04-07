@@ -1,4 +1,4 @@
-package com.aoya.telegami.utils
+package com.aoya.telegami.util
 
 import android.text.SpannableStringBuilder
 import android.text.Spanned

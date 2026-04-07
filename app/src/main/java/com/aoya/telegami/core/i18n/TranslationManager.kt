@@ -2,7 +2,7 @@ package com.aoya.telegami.core.i18n
 
 import android.content.Context
 import android.os.Build
-import com.aoya.telegami.utils.logd
+import com.aoya.telegami.util.logd
 
 object TranslationManager {
     private lateinit var translation: Translation
