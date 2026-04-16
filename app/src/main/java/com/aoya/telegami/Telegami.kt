@@ -8,7 +8,6 @@ import com.aoya.telegami.core.Config
 import com.aoya.telegami.core.i18n.TranslationManager
 import com.aoya.telegami.core.obfuscate.ResolverManager
 import com.aoya.telegami.data.AppDatabase
-import com.aoya.telegami.util.HookManager
 import kotlin.system.measureTimeMillis
 
 object Telegami {
@@ -18,8 +17,6 @@ object Telegami {
         private set
     lateinit var packageName: String
         private set
-
-    lateinit var hookManager: HookManager
 
     lateinit var db: AppDatabase
 
@@ -34,20 +31,8 @@ object Telegami {
         ResolverManager.init(context.packageName, modulePath)
 
         this.classLoader = context.classLoader
-        this.hookManager = HookManager()
         this.packageName = context.packageName
         this.db = AppDatabase.getDatabase(context)
-
-        try {
-            val initTime = measureTimeMillis { init() }
-        } catch (t: Throwable) {
-            showToast(Toast.LENGTH_LONG, "Failed to initialize: ${t.message}")
-            return
-        }
-    }
-
-    private fun init() {
-        hookManager.init()
     }
 
     fun runOnMainThread(

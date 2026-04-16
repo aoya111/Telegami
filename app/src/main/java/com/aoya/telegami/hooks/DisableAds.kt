@@ -1,20 +1,45 @@
 package com.aoya.telegami.hooks
 
-import com.aoya.telegami.util.Hook
-import com.aoya.telegami.util.HookStage
+import com.aoya.telegami.core.Config
+import com.highcapable.kavaref.KavaRef.Companion.resolve
+import com.highcapable.yukihookapi.hook.entity.YukiBaseHooker
+import com.aoya.telegami.core.obfuscate.ResolverManager as resolver
 
-class DisableAds : Hook("DisableAds") {
-    override fun init() {
-        findAndHook("org.telegram.ui.ChatActivity", "addSponsoredMessages", HookStage.BEFORE) { param ->
-            param.setResult(null)
-        }
+object DisableAds : YukiBaseHooker() {
+    const val CHAT_ACTIVITY_CN = "org.telegram.ui.ChatActivity"
+    const val MESSAGES_CONTROLLER_CN = "org.telegram.messenger.MessagesController"
 
-        findAndHook("org.telegram.ui.ChatActivity", "getSponsoredMessagesCount", HookStage.BEFORE) { param ->
-            param.setResult(0)
-        }
+    val chatActivityClass by lazyClass(resolver.get(CHAT_ACTIVITY_CN))
+    val messagesControllerClass by lazyClass(resolver.get(MESSAGES_CONTROLLER_CN))
 
-        findAndHook("org.telegram.messenger.MessagesController", "getSponsoredMessages", HookStage.BEFORE) { param ->
-            param.setResult(null)
-        }
+    override fun onHook() {
+        if (!Config.isFeatureEnabled("DisableAds")) return
+        chatActivityClass
+            .resolve()
+            .firstMethod {
+                name = resolver.getMethod(CHAT_ACTIVITY_CN, "addSponsoredMessages")
+            }.hook {
+                before {
+                    resultNull()
+                }
+            }
+        chatActivityClass
+            .resolve()
+            .firstMethod {
+                name = resolver.getMethod(CHAT_ACTIVITY_CN, "getSponsoredMessagesCount")
+            }.hook {
+                before {
+                    result = 0
+                }
+            }
+        messagesControllerClass
+            .resolve()
+            .firstMethod {
+                name = resolver.getMethod(MESSAGES_CONTROLLER_CN, "getSponsoredMessages")
+            }.hook {
+                before {
+                    resultNull()
+                }
+            }
     }
 }

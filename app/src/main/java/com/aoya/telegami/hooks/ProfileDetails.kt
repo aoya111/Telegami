@@ -5,83 +5,86 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import com.aoya.telegami.Telegami
-import com.aoya.telegami.util.Hook
-import com.aoya.telegami.util.HookStage
 import com.aoya.telegami.virt.messenger.AndroidUtilities
 import com.aoya.telegami.virt.messenger.ChatObject
 import com.aoya.telegami.virt.messenger.UserObject
 import com.aoya.telegami.virt.ui.ProfileActivity
 import com.aoya.telegami.virt.ui.components.ItemOptions
+import com.highcapable.kavaref.KavaRef.Companion.resolve
+import com.highcapable.yukihookapi.hook.entity.YukiBaseHooker
 import com.aoya.telegami.core.i18n.TranslationManager as i18n
+import com.aoya.telegami.core.obfuscate.ResolverManager as resolver
 
-class ProfileDetails : Hook("ProfileDetails") {
-    override fun init() {
-        findAndHook("org.telegram.ui.ProfileActivity", "editRow", HookStage.BEFORE, filter = { true }) { param ->
-            val o = ProfileActivity(param.thisObject())
-            val view = param.arg<Any>(0) as? View ?: return@findAndHook
-            if (!o.myProfile) return@findAndHook
-            if (param.arg<Int>(1) != o.usernameRow) return@findAndHook
+object ProfileDetails : YukiBaseHooker() {
+    const val PROFILE_ACTIVITY_CN = "org.telegram.ui.ProfileActivity"
+    val profileActivityClass by lazyClass(resolver.get(PROFILE_ACTIVITY_CN))
 
-            param.setResult(true)
-        }
+    override fun onHook() {
+        profileActivityClass
+            .resolve()
+            .firstMethod {
+                name = resolver.getMethod(PROFILE_ACTIVITY_CN, "processOnClickOrPress")
+            }.hook {
+                before {
+                    val o = ProfileActivity(instance)
 
-        findAndHook("org.telegram.ui.ProfileActivity", "processOnClickOrPress", HookStage.BEFORE, filter = { true }) { param ->
-            val prof = ProfileActivity(param.thisObject())
+                    val rowIdx = args[0] as Int
+                    if (rowIdx != o.usernameRow) return@before
 
-            val usernameRow = prof.usernameRow
+                    val chatId = o.chatId
+                    val userId = o.userId
 
-            if (param.arg<Int>(0) != usernameRow) return@findAndHook
-            val view = param.arg<Any>(1) as? View ?: return@findAndHook
+                    val msgCtrl = o.getMessagesController()
+                    val (username, id, idLabel) =
+                        when {
+                            userId != 0L -> {
+                                val user = msgCtrl?.getUser(userId) ?: return@before
+                                val username = UserObject.getPublicUsername(user) ?: return@before
+                                Triple(username, userId, i18n.get("ProfileCopyUserId"))
+                            }
 
-            val chatId = prof.chatId
-            val userId = prof.userId
+                            chatId != 0L -> {
+                                val chat = msgCtrl?.getChat(chatId) ?: return@before
+                                val topicId = o.topicId
+                                if (topicId == 0L && !ChatObject.isPublic(chat)) return@before
+                                val username = ChatObject.getPublicUsername(chat) ?: return@before
+                                Triple(username, chatId, i18n.get("ProfileCopyChatId"))
+                            }
 
-            val contentView = prof.contentView as? ViewGroup ?: return@findAndHook
-            val resourcesProvider = prof.resourcesProvider
+                            else -> {
+                                return@before
+                            }
+                        }
 
-            val itemOptions = ItemOptions.makeOptions(contentView, resourcesProvider, view, false)
-            itemOptions.setGravity(Gravity.LEFT)
+                    val contentView = o.contentView as? ViewGroup ?: return@before
+                    val resourcesProvider = o.resourcesProvider
+                    val view = args[1] as View
+                    val msgCopyId = appResources?.getIdentifier("msg_copy", "drawable", packageName) ?: 0
 
-            val msgCtrl = prof.getMessagesController()
-            val (username, id, idLabel) =
-                when {
-                    userId != 0L -> {
-                        val user = msgCtrl.getUser(userId) ?: return@findAndHook
-                        val username = UserObject.getPublicUsername(user) ?: return@findAndHook
-                        Triple(username, userId, i18n.get("ProfileCopyUserId"))
-                    }
-
-                    chatId != 0L -> {
-                        val chat = msgCtrl.getChat(chatId) ?: return@findAndHook
-                        val topicId = prof.topicId
-                        if (topicId == 0L && !ChatObject.isPublic(chat)) return@findAndHook
-                        val username = ChatObject.getPublicUsername(chat) ?: return@findAndHook
-                        Triple(username, chatId, i18n.get("ProfileCopyChatId"))
-                    }
-
-                    else -> {
-                        return@findAndHook
-                    }
+                    val itemOptions = ItemOptions.makeOptions(contentView, resourcesProvider, view, false)
+                    itemOptions.setGravity(Gravity.LEFT)
+                    itemOptions
+                        .add(
+                            msgCopyId,
+                            appResources?.getIdentifier("ProfileCopyUsername", "string", packageName)?.let { appContext?.getString(it) }
+                                ?: "Copy",
+                            Runnable {
+                                AndroidUtilities.addToClipboard(username)
+                                val msg = i18n.get("CopiedToClipboardHint").replace("{item}", "username")
+                                Telegami.showToast(Toast.LENGTH_SHORT, msg)
+                            },
+                        ).add(
+                            msgCopyId,
+                            idLabel,
+                            Runnable {
+                                AndroidUtilities.addToClipboard(id.toString())
+                                val msg = i18n.get("CopiedToClipboardHint").replace("{item}", "ID")
+                                Telegami.showToast(Toast.LENGTH_SHORT, msg)
+                            },
+                        )
+                    itemOptions.show()
+                    resultFalse()
                 }
-            itemOptions
-                .add(
-                    getResource("msg_copy", "drawable"),
-                    getStringResource("ProfileCopyUsername"),
-                    Runnable {
-                        AndroidUtilities.addToClipboard(username)
-                        val msg = i18n.get("CopiedToClipboardHint").replace("{item}", "username")
-                        Telegami.showToast(Toast.LENGTH_SHORT, msg)
-                    },
-                ).add(
-                    getResource("msg_copy", "drawable"),
-                    idLabel,
-                    Runnable {
-                        AndroidUtilities.addToClipboard(id.toString())
-                        val msg = i18n.get("CopiedToClipboardHint").replace("{item}", "ID")
-                        Telegami.showToast(Toast.LENGTH_SHORT, msg)
-                    },
-                )
-            itemOptions.show()
-        }
+            }
     }
 }

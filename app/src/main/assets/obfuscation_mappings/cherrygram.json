@@ -2,7 +2,7 @@
   "variant": "cherrygram",
   "package_name": "uz.unnarsx.cherrygram",
   "version": "10.5.0",
-  "updated": "2026-03-29",
+  "updated": "2026-04-11",
   "mappings": {
     "org.telegram.messenger.browser.Browser": {
       "fields": {},
@@ -253,6 +253,10 @@
         "add": {
           "hint": "public <ItemOptions> \\w*(int \\w*, CharSequence \\w*, Runnable ",
           "obfuscated": "X"
+        },
+        "makeOptions": {
+          "hint": "static \\w* \\w*(ViewGroup \\w*,",
+          "obfuscated": "v1"
         },
         "setGravity": {
           "hint": "swipeBackGravityRight = true",

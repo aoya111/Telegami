@@ -2,7 +2,7 @@
   "variant": "octogram",
   "package_name": "it.octogram.android",
   "version": "3.5.1",
-  "updated": "2026-03-29",
+  "updated": "2026-04-12",
   "mappings": {
     "org.telegram.SQLite.SQLiteCursor": {
       "fields": {},
@@ -237,12 +237,7 @@
       "obfuscated": "org.telegram.messenger.m0"
     },
     "org.telegram.messenger.NotificationCenter": {
-      "fields": {
-        "messagesDeleted": {
-          "hint": null,
-          "obfuscated": "z"
-        }
-      },
+      "fields": {},
       "hint": "VoIPService.ID_INCOMING_CALL_PRENOTIFICATION;",
       "methods": {
         "postNotificationName": {
@@ -328,7 +323,12 @@
     "org.telegram.messenger.time.FastDateFormat": {
       "fields": {},
       "hint": "extends Format",
-      "methods": {},
+      "methods": {
+        "format": {
+          "hint": null,
+          "obfuscated": "a"
+        }
+      },
       "obfuscated": "el6"
     },
     "org.telegram.tgnet.TLRPC$Message": {
@@ -670,6 +670,10 @@
         "add": {
           "hint": "public <ItemOptions> \\w*(int \\w*, CharSequence \\w*, Runnable ",
           "obfuscated": "Q"
+        },
+        "makeOptions": {
+          "hint": "static \\w* \\w*(ViewGroup \\w*,",
+          "obfuscated": "X0"
         },
         "setGravity": {
           "hint": "swipeBackGravityRight = true",
