@@ -1,12 +1,22 @@
 package com.aoya.telegami.hooks
 
-import com.aoya.telegami.util.Hook
-import com.aoya.telegami.util.HookStage
+import com.aoya.telegami.core.Config
+import com.highcapable.kavaref.KavaRef.Companion.resolve
+import com.highcapable.yukihookapi.hook.entity.YukiBaseHooker
+import com.aoya.telegami.core.obfuscate.ResolverManager as resolver
 
-class FakePremium : Hook("FakePremium") {
-    override fun init() {
-        findAndHook("org.telegram.messenger.UserConfig", "isPremium", HookStage.BEFORE) { param ->
-            param.setResult(true)
-        }
+object FakePremium : YukiBaseHooker() {
+    const val USER_CONFIG_CN = "org.telegram.messenger.UserConfig"
+    val userConfigClass by lazyClass(resolver.get(USER_CONFIG_CN))
+
+    override fun onHook() {
+        if (!Config.isFeatureEnabled("FakePremium")) return
+        userConfigClass
+            .resolve()
+            .firstMethod {
+                name = resolver.getMethod(USER_CONFIG_CN, "isPremium")
+            }.hook {
+                replaceToTrue()
+            }
     }
 }

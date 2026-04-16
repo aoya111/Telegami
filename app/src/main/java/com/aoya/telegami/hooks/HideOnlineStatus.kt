@@ -1,41 +1,52 @@
 package com.aoya.telegami.hooks
 
-import com.aoya.telegami.util.Hook
-import com.aoya.telegami.util.HookStage
-import com.aoya.telegami.util.logd
+import com.aoya.telegami.core.Config
 import com.aoya.telegami.virt.tgnet.tl.TLAccount
 import com.aoya.telegami.virt.ui.ProfileActivity
+import com.highcapable.kavaref.KavaRef.Companion.resolve
+import com.highcapable.yukihookapi.hook.entity.YukiBaseHooker
 import com.aoya.telegami.core.i18n.TranslationManager as i18n
+import com.aoya.telegami.core.obfuscate.ResolverManager as resolver
 
-class HideOnlineStatus : Hook("HideOnlineStatus") {
-    private val updateStatusClass: Class<*> by lazy {
-        findClass("org.telegram.tgnet.tl.TL_account\$updateStatus")
-    }
+object HideOnlineStatus : YukiBaseHooker() {
+    const val CONNECTIONS_MANAGER_CN = "org.telegram.tgnet.ConnectionsManager"
+    const val PROFILE_ACTIVITY_CN = "org.telegram.ui.ProfileActivity"
+    val connectionsManagerClass by lazyClass(resolver.get(CONNECTIONS_MANAGER_CN))
+    val profileActivityClass by lazyClass(resolver.get(PROFILE_ACTIVITY_CN))
 
-    override fun init() {
-        findAndHook("org.telegram.tgnet.ConnectionsManager", "sendRequestInternal", HookStage.BEFORE) { param ->
-            val req = param.arg<Any>(0)
-            if (updateStatusClass.isInstance(req)) {
-                TLAccount.UpdateStatus(param.arg<Any>(0)).offline = true
+    override fun onHook() {
+        if (!Config.isFeatureEnabled("HideOnlineStatus")) return
+
+        val tLAccountUpdateStatusClass = resolver.get("org.telegram.tgnet.tl.TL_account\$updateStatus").toClass()
+
+        connectionsManagerClass
+            .resolve()
+            .firstMethod {
+                name = resolver.getMethod(CONNECTIONS_MANAGER_CN, "sendRequestInternal")
+            }.hook {
+                before {
+                    val req = args[0]
+                    if (tLAccountUpdateStatusClass.isInstance(req)) {
+                        TLAccount.UpdateStatus(req!!).offline = true
+                    }
+                }
             }
-        }
 
-        findAndHook("org.telegram.tgnet.ConnectionsManager", "sendRequestInternal", HookStage.AFTER) { param ->
-            val req = param.arg<Any>(0)
-            if (updateStatusClass.isInstance(req)) {
-                logd("[HideOnlineStatus] isOffline = ${TLAccount.UpdateStatus(param.arg<Any>(0)).offline}")
+        profileActivityClass
+            .resolve()
+            .firstMethod {
+                name = resolver.getMethod(PROFILE_ACTIVITY_CN, "updateProfileData")
+            }.hook {
+                after {
+                    val o = ProfileActivity(instance)
+
+                    val clientUserId = o.getUserConfig()?.getClientUserId() ?: 0L
+                    val userId = o.userId
+
+                    if (clientUserId != 0L && userId != 0L && userId == clientUserId) {
+                        o.onlineTextView.getOrNull(1)?.setText(i18n.get("ProfileStatusOffline"))
+                    }
+                }
             }
-        }
-
-        findAndHook("org.telegram.ui.ProfileActivity", "updateProfileData", HookStage.AFTER) { param ->
-            val o = ProfileActivity(param.thisObject())
-
-            val clientUserId = o.getUserConfig().clientUserId
-            val userId = o.userId
-
-            if (clientUserId != 0L && userId != 0L && userId == clientUserId) {
-                o.onlineTextView.getOrNull(1)?.setText(i18n.get("ProfileStatusOffline"))
-            }
-        }
     }
 }

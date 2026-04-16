@@ -12,6 +12,7 @@ import com.aoya.telegami.ui.util.navController
 import com.aoya.telegami.ui.util.setEdge2EdgeFlags
 import com.aoya.telegami.ui.util.setupToolbar
 import com.aoya.telegami.util.toPascalCase
+import com.highcapable.yukihookapi.hook.xposed.prefs.ui.ModulePreferenceFragment
 import dev.androidbroadcast.vbpd.viewBinding
 
 class FeaturesFragment :
@@ -108,6 +109,7 @@ class FeaturesFragment :
                         if (PrefManager.isFeatureEnabled("HideSeenPrivateChat")) enabledOptions.add("private_chat")
                         if (PrefManager.isFeatureEnabled("HideSeenChannel")) enabledOptions.add("channel")
                     }
+
                     "markMessages" -> {
                         if (PrefManager.isFeatureEnabled("MarkMessagesDeleted")) enabledOptions.add("deleted")
                         if (PrefManager.isFeatureEnabled("MarkMessagesEdited")) enabledOptions.add("edited")
@@ -150,6 +152,7 @@ class FeaturesFragment :
                         PrefManager.setFeatureEnabled("HideSeenPrivateChat", values?.contains("private_chat") == true)
                         PrefManager.setFeatureEnabled("HideSeenChannel", values?.contains("channel") == true)
                     }
+
                     "markMessages" -> {
                         PrefManager.setFeatureEnabled("MarkMessagesDeleted", values?.contains("deleted") == true)
                         PrefManager.setFeatureEnabled("MarkMessagesEdited", values?.contains("edited") == true)
@@ -161,8 +164,8 @@ class FeaturesFragment :
         }
     }
 
-    class SettingsPreferenceFragment : PreferenceFragmentCompat() {
-        override fun onCreatePreferences(
+    class SettingsPreferenceFragment : ModulePreferenceFragment() {
+        override fun onCreatePreferencesInModuleApp(
             savedInstanceState: Bundle?,
             rootKey: String?,
         ) {

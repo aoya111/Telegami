@@ -56,7 +56,7 @@ val keystoreProps =
 
 android {
     namespace = "com.aoya.telegami"
-    compileSdk = 35
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "com.aoya.telegami"
@@ -136,7 +136,11 @@ dependencies {
     implementation(libs.dev.androidbroadcast.vbpd.reflection)
     implementation(libs.me.zhanghai.android.appiconloader)
 
+    implementation(libs.yukihookapi.api)
+    implementation(libs.kavaref.core)
+    implementation(libs.kavaref.extension)
     compileOnly(libs.xposed.api)
+    ksp(libs.yukihookapi.ksp.xposed)
 
     ksp(libs.room.compiler)
     implementation(libs.room.ktx)

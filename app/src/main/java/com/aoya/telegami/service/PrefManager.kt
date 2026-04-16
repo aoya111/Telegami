@@ -4,10 +4,10 @@ import android.content.ComponentName
 import android.content.Context
 import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.core.content.edit
 import com.aoya.telegami.core.Constants.COMPONENT_NAME_DEFAULT
 import com.aoya.telegami.telegamiApp
 import com.aoya.telegami.util.PackageHelper.findEnabledAppComponent
+import com.highcapable.yukihookapi.hook.factory.prefs
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.runBlocking
 
@@ -17,14 +17,8 @@ object PrefManager {
     private const val PREF_FOLLOW_SYSTEM_ACCENT = "follow_system_accent"
     private const val PREF_THEME_COLOR = "theme_color"
 
-    private val appPref by lazy { telegamiApp.getSharedPreferences("app_settings", Context.MODE_PRIVATE) }
-    private val featPref by lazy {
-        if (getActiveVersion() > 0) {
-            telegamiApp.getSharedPreferences("features", Context.MODE_WORLD_READABLE)
-        } else {
-            telegamiApp.getSharedPreferences("features", Context.MODE_PRIVATE)
-        }
-    }
+    private val appPref by lazy { telegamiApp.prefs("app_settings") }
+    private val featPref by lazy { telegamiApp.prefs("features") }
 
     val isLauncherIconInvisible = MutableSharedFlow<Boolean>(replay = 1)
 

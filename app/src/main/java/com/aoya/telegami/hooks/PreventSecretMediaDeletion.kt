@@ -5,85 +5,128 @@ import android.view.View
 import android.widget.FrameLayout
 import android.widget.Toast
 import com.aoya.telegami.Telegami
-import com.aoya.telegami.util.Hook
-import com.aoya.telegami.util.HookStage
+import com.aoya.telegami.core.Config
 import com.aoya.telegami.util.SecretMedia
 import com.aoya.telegami.virt.messenger.FileLoader
 import com.aoya.telegami.virt.messenger.MediaController
 import com.aoya.telegami.virt.messenger.MessageObject
 import com.aoya.telegami.virt.ui.SecretMediaViewer
 import com.aoya.telegami.virt.ui.components.BulletinFactory
-import de.robv.android.xposed.XposedHelpers.getLongField
-import de.robv.android.xposed.XposedHelpers.getObjectField
+import com.highcapable.kavaref.KavaRef.Companion.asResolver
+import com.highcapable.kavaref.KavaRef.Companion.resolve
+import com.highcapable.yukihookapi.hook.entity.YukiBaseHooker
 import java.io.File
+import com.aoya.telegami.core.obfuscate.ResolverManager as resolver
 
-class PreventSecretMediaDeletion : Hook("PreventSecretMediaDeletion") {
-    private var galleryDrawable: Drawable? = null
+object PreventSecretMediaDeletion : YukiBaseHooker() {
+    const val CHAT_ACTIVITY_CN = "org.telegram.ui.ChatActivity"
+    const val MESSAGES_STORAGE_CN = "org.telegram.messenger.MessagesStorage"
+    const val SECRET_MEDIA_VIEWER_CN = "org.telegram.ui.SecretMediaViewer"
+    val chatActivityClass by lazyClass(resolver.get(CHAT_ACTIVITY_CN))
+    val messagesStorageClass by lazyClass(resolver.get(MESSAGES_STORAGE_CN))
+    val secretMediaViewerClass by lazyClass(resolver.get(SECRET_MEDIA_VIEWER_CN))
 
-    override fun init() {
-        galleryDrawable = getDrawableResource("msg_gallery")
-
-        findAndHook("org.telegram.ui.ChatActivity", "sendSecretMediaDelete", HookStage.BEFORE) { param ->
-            param.setResult(null)
+    val galleryDrawable: Drawable? by lazy {
+        getResource("msg_gallery", "drawable")?.takeIf { it != 0 }?.let {
+            appContext?.getDrawable(it)
         }
+    }
 
+    fun getResource(
+        name: String,
+        type: String,
+    ): Int = appContext?.resources?.getIdentifier(name, type, packageName) ?: 0
+
+    override fun onHook() {
+        if (!Config.isFeatureEnabled("PreventSecretMediaDeletion")) return
+        chatActivityClass
+            .resolve()
+            .firstMethod {
+                name = resolver.getMethod(CHAT_ACTIVITY_CN, "sendSecretMediaDelete")
+            }.hook {
+                before {
+                    resultNull()
+                }
+            }
         if (Telegami.packageName == "xyz.nextalone.nagram") {
-            // markMessagesContentAsReadInternal
-            findAndHook(
-                "org.telegram.ui.Stories.StoriesStorage\$\$ExternalSyntheticLambda5",
-                "run",
-                HookStage.BEFORE,
-            ) { param ->
-                val dialogId = getLongField(param.thisObject(), "f\$1")
-                val mIds = getObjectField(param.thisObject(), "f\$2") as ArrayList<Int>
-                if (Globals.handleDeletedMessages(dialogId, mIds)) return@findAndHook
-                param.setResult(null)
-            }
+            val cName1 = "org.telegram.ui.Stories.StoriesStorage\$\$ExternalSyntheticLambda5"
+
+            cName1
+                .toClass()
+                .resolve()
+                .firstMethod {
+                    name = "run"
+                }.hook {
+                    before {
+                        val dialogId =
+                            instance
+                                .asResolver()
+                                .firstField {
+                                    name = "f\$1"
+                                }.get<Long>() ?: return@before
+                        val mIds =
+                            instance
+                                .asResolver()
+                                .firstField {
+                                    name = "f\$2"
+                                }.get() as ArrayList<Int> ?: return@before
+                        if (Globals.handleDeletedMessages(dialogId, mIds)) return@before
+                        resultNull()
+                    }
+                }
         } else {
-            findAndHook(
-                "org.telegram.messenger.MessagesStorage",
-                "emptyMessagesMedia",
-                HookStage.BEFORE,
-            ) { param ->
-                val dialogId = param.arg<Long>(0)
-                val mIds = param.arg<ArrayList<Int>>(1)
-                if (Globals.handleDeletedMessages(dialogId, mIds)) return@findAndHook
-                param.setResult(null)
-            }
+            messagesStorageClass
+                .resolve()
+                .firstMethod {
+                    name = resolver.getMethod(MESSAGES_STORAGE_CN, "emptyMessagesMedia")
+                }.hook {
+                    before {
+                        val dialogId = args[0] as Long
+                        val mIds = args[1] as ArrayList<Int>
+                        if (Globals.handleDeletedMessages(dialogId, mIds)) return@before
+                        resultNull()
+                    }
+                }
         }
+        secretMediaViewerClass
+            .resolve()
+            .firstMethod {
+                name = resolver.getMethod(SECRET_MEDIA_VIEWER_CN, "openMedia")
+            }.hook {
+                after {
+                    val o = instance?.let { SecretMediaViewer(it) } ?: return@after
+                    val msgObj = args[0]?.let { MessageObject(it) } ?: return@after
+                    val file =
+                        msgObj.messageOwner?.let { FileLoader.getInstance(o.currentAccount).getPathToMessage(it) } ?: return@after
+                    var menu = o.actionBar.menu
+                    var downloadItem: FrameLayout? = null
+                    if (menu == null) {
+                        menu = o.actionBar.createMenu()
+                        val resDownload = galleryDrawable ?: return@after
+                        downloadItem = menu.addItem(1, resDownload) as FrameLayout
+                    } else {
+                        downloadItem = menu.getItem(1) as FrameLayout
+                    }
+                    downloadItem
+                        .setOnClickListener(
+                            View.OnClickListener { view ->
+                                val f = SecretMedia.decrypt(file, o.isVideo)
+                                MediaController.saveFile(
+                                    f.toString(),
+                                    o.parentActivity,
+                                    0,
+                                    null,
+                                    null,
+                                ) { uri ->
+                                    f?.delete()
+                                    BulletinFactory.createSaveToGalleryBulletin(o.containerView, o.isVideo, null).show()
+                                }
+                            },
+                        )
 
-        findAndHook("org.telegram.ui.SecretMediaViewer", "openMedia", HookStage.AFTER) { param ->
-            val o = SecretMediaViewer(param.thisObject())
-            val msgObj = MessageObject(param.arg<Any>(0))
-            val file = FileLoader.getInstance(o.currentAccount).getPathToMessage(msgObj.messageOwner)
-            var menu = o.actionBar.menu
-            var downloadItem: FrameLayout? = null
-            if (menu == null) {
-                menu = o.actionBar.createMenu()
-                val resDownload = galleryDrawable ?: return@findAndHook
-                downloadItem = menu.addItem(1, resDownload) as FrameLayout
-            } else {
-                downloadItem = menu.getItem(1) as FrameLayout
+                    val secretDeleteTimer = o.secretDeleteTimer as FrameLayout
+                    secretDeleteTimer.visibility = View.GONE
+                }
             }
-            downloadItem
-                .setOnClickListener(
-                    View.OnClickListener { view ->
-                        val f = SecretMedia.decrypt(file, o.isVideo)
-                        MediaController.saveFile(
-                            f.toString(),
-                            o.parentActivity,
-                            0,
-                            null,
-                            null,
-                        ) { uri ->
-                            f?.delete()
-                            BulletinFactory.createSaveToGalleryBulletin(o.containerView, o.isVideo, null).show()
-                        }
-                    },
-                )
-
-            val secretDeleteTimer = o.secretDeleteTimer as FrameLayout
-            secretDeleteTimer.visibility = View.GONE
-        }
     }
 }

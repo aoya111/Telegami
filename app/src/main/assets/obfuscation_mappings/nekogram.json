@@ -2,7 +2,7 @@
   "variant": "nekogram",
   "package_name": "tw.nekomimi.nekogram",
   "version": "12.5.2",
-  "updated": "2026-03-29",
+  "updated": "2026-04-12",
   "mappings": {
     "org.telegram.SQLite.SQLiteCursor": {
       "fields": {},
@@ -237,12 +237,7 @@
       "obfuscated": "org.telegram.messenger.n0"
     },
     "org.telegram.messenger.NotificationCenter": {
-      "fields": {
-        "messagesDeleted": {
-          "hint": null,
-          "obfuscated": "z"
-        }
-      },
+      "fields": {},
       "hint": "VoIPService.ID_INCOMING_CALL_PRENOTIFICATION;",
       "methods": {
         "postNotificationName": {
@@ -328,7 +323,12 @@
     "org.telegram.messenger.time.FastDateFormat": {
       "fields": {},
       "hint": "extends Format",
-      "methods": {},
+      "methods": {
+        "format": {
+          "hint": null,
+          "obfuscated": "a"
+        }
+      },
       "obfuscated": "gq5"
     },
     "org.telegram.tgnet.TLRPC$Message": {
@@ -680,6 +680,10 @@
         "add": {
           "hint": "public <ItemOptions> \\w*(int \\w*, CharSequence \\w*, Runnable \\w*)",
           "obfuscated": "U"
+        },
+        "makeOptions": {
+          "hint": "static \\w* \\w*(ViewGroup \\w*,",
+          "obfuscated": "i1"
         },
         "setGravity": {
           "hint": "swipeBackGravityRight = true",

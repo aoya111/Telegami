@@ -20,11 +20,9 @@ class MessageObject(
     val messageOwner: TLRPC.Message
         get() = TLRPC.Message(getObjectField(instance, fieldMessageOwner))
 
-    val id: Int
-        get() = callMethod(instance, methodGetId) as Int
+    fun getId(): Int = callMethod(instance, methodGetId) as Int
 
-    val dialogId: Long
-        get() = callMethod(instance, methodGetDialogId) as Long
+    fun getDialogId(): Long = callMethod(instance, methodGetDialogId) as Long
 
     fun isSecretMedia(): Boolean = callMethod(instance, methodIsSecretMedia) as Boolean
 

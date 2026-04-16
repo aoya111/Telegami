@@ -39,11 +39,13 @@ object MessageHelper {
         SpannableStringBuilder().apply {
             append(icons["edit"])
             append(' ')
-            append(
-                LocaleController.getInstance().getFormatterDay().format(
-                    msgObj.messageOwner.date.toLong() * 1000,
-                ),
-            )
+            msgObj.messageOwner?.let {
+                append(
+                    LocaleController.getInstance().getFormatterDay().format(
+                        it.date.toLong() * 1000,
+                    ),
+                )
+            }
         }
 
     fun replaceWithIcon(text: CharSequence): CharSequence {
