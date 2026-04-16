@@ -45,7 +45,6 @@ object Entry : IYukiHookXposedInit {
                         loadHooker(ApplyColor)
                         loadHooker(ApplyColor)
                         loadHooker(ProfileDetails)
-                        loadHooker(NekoBlock)
                         loadHooker(HideBetaUpdate)
 
                         loadHooker(HideSeenStatus)
