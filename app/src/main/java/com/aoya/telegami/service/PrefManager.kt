@@ -43,8 +43,6 @@ object PrefManager {
         defaultValue: Int = 0,
     ): Int = featPref.getInt(featureKey, defaultValue)
 
-    fun getActiveVersion() = -1
-
     var darkTheme: Int
         get() = appPref.getInt(PREF_DARK_THEME, AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
         set(value) = appPref.edit { putInt(PREF_DARK_THEME, value) }
