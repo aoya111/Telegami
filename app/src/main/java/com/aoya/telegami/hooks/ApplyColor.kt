@@ -1,7 +1,7 @@
 package com.aoya.telegami.hooks
 
 import com.aoya.telegami.Telegami
-import com.aoya.telegami.core.Config
+import com.aoya.telegami.service.UserConfig
 import com.aoya.telegami.virt.tgnet.TLRPC
 import com.aoya.telegami.virt.ui.PeerColorActivity
 import com.highcapable.kavaref.KavaRef.Companion.resolve
@@ -22,21 +22,20 @@ object ApplyColor : YukiBaseHooker() {
                 name = resolver.getMethod(PEER_COLOR_ACTIVITY_CN, "apply")
             }.hook {
                 after {
-                    Config.reload()
                     val o = instance?.let { PeerColorActivity(it) } ?: return@after
 
                     o.profilePage.selectedColor
                         .takeIf { it != 0 }
-                        ?.let(Config::setProfileColor)
+                        ?.let(UserConfig::setProfileColor)
                     o.profilePage.selectedEmoji
                         .takeIf { it != 0L }
-                        ?.let(Config::setProfileEmoji)
+                        ?.let(UserConfig::setProfileEmoji)
                     o.namePage.selectedColor
                         .takeIf { it != 0 }
-                        ?.let(Config::setNameColor)
+                        ?.let(UserConfig::setNameColor)
                     o.namePage.selectedEmoji
                         .takeIf { it != 0L }
-                        ?.let(Config::setNameEmoji)
+                        ?.let(UserConfig::setNameEmoji)
                 }
             }
         userConfigClass
@@ -45,16 +44,15 @@ object ApplyColor : YukiBaseHooker() {
                 name = resolver.getMethod(USER_CONFIG_CN, "getCurrentUser")
             }.hook {
                 after {
-                    Config.reload()
                     val user = result?.let { TLRPC.User(it) } ?: return@after
 
                     val profileColor = user.profileColor ?: TLRPC.TLPeerColor()
-                    Config.getProfileColor()?.let {
+                    UserConfig.getProfileColor()?.let {
                         profileColor.color = it
                         profileColor.flags = profileColor.flags or 1
                         user.flags2 = user.flags2 or 512
                     }
-                    Config.getProfileEmoji()?.let {
+                    UserConfig.getProfileEmoji()?.let {
                         profileColor.backgroundEmojiId = it
                         profileColor.flags = profileColor.flags or 2
                         user.flags2 = user.flags2 or 512
@@ -63,12 +61,12 @@ object ApplyColor : YukiBaseHooker() {
                     val color = user.color ?: TLRPC.TLPeerColor()
                     val color2 = user.id % 7
                     color.color = color2.toInt()
-                    Config.getNameColor()?.let {
+                    UserConfig.getNameColor()?.let {
                         color.color = it
                         color.flags = color.flags or 1
                         user.flags2 = user.flags2 or 256
                     }
-                    Config.getNameEmoji()?.let {
+                    UserConfig.getNameEmoji()?.let {
                         color.backgroundEmojiId = it
                         color.flags = color.flags or 2
                         user.flags2 = user.flags2 or 256

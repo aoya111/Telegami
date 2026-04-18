@@ -4,10 +4,11 @@ import android.app.Application
 import android.content.Context
 import android.os.Handler
 import android.widget.Toast
-import com.aoya.telegami.core.Config
 import com.aoya.telegami.core.i18n.TranslationManager
 import com.aoya.telegami.core.obfuscate.ResolverManager
 import com.aoya.telegami.data.AppDatabase
+import com.aoya.telegami.service.Config
+import com.aoya.telegami.service.UserConfig
 import kotlin.system.measureTimeMillis
 
 object Telegami {
@@ -26,7 +27,8 @@ object Telegami {
     ) {
         this.context = app
 
-        Config.init(context.packageName)
+        Config.init(context)
+        UserConfig.init(context)
         TranslationManager.init(context, modulePath)
         ResolverManager.init(context.packageName, modulePath)
 

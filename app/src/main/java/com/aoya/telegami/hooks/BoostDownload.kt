@@ -1,7 +1,7 @@
 package com.aoya.telegami.hooks
 
 import com.aoya.telegami.Telegami
-import com.aoya.telegami.core.Config
+import com.aoya.telegami.service.Config
 import com.aoya.telegami.virt.messenger.FileLoadOperation
 import com.aoya.telegami.virt.messenger.FileLoader
 import com.highcapable.kavaref.KavaRef.Companion.resolve

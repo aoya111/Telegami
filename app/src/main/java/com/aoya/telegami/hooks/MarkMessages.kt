@@ -1,6 +1,6 @@
 package com.aoya.telegami.hooks
 
-import com.aoya.telegami.core.Config
+import com.aoya.telegami.service.Config
 import com.aoya.telegami.util.MessageHelper
 import com.aoya.telegami.virt.messenger.AndroidUtilities
 import com.aoya.telegami.virt.messenger.MessageObject

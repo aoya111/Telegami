@@ -1,6 +1,7 @@
 package com.aoya.telegami.hooks
 
-import com.aoya.telegami.core.Config
+import com.aoya.telegami.service.Config
+import com.aoya.telegami.service.UserConfig
 import com.aoya.telegami.virt.messenger.MessagesController.ReadTask
 import com.highcapable.kavaref.KavaRef.Companion.resolve
 import com.highcapable.yukihookapi.hook.entity.YukiBaseHooker
@@ -18,7 +19,7 @@ object HideSeenStatus : YukiBaseHooker() {
             }.hook {
                 before {
                     val dialogId = args[0]?.let { ReadTask(it).dialogId } ?: return@before
-                    val currentUserId = Config.getCurrentUser().id
+                    val currentUserId = UserConfig.getCurrentUser().id
 
                     val shouldHide =
                         when {

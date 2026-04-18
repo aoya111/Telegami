@@ -1,6 +1,6 @@
 package com.aoya.telegami.hooks
 
-import com.aoya.telegami.core.Config
+import com.aoya.telegami.service.Config
 import com.highcapable.kavaref.KavaRef.Companion.resolve
 import com.highcapable.yukihookapi.hook.entity.YukiBaseHooker
 import com.aoya.telegami.core.obfuscate.ResolverManager as resolver

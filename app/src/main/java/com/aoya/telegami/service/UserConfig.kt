@@ -1,13 +1,12 @@
-package com.aoya.telegami.core
+package com.aoya.telegami.service
 
 import android.content.Context
-import com.aoya.telegami.BuildConfig
-import com.aoya.telegami.Telegami
 import com.aoya.telegami.util.logd
 import com.aoya.telegami.util.loge
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import de.robv.android.xposed.XSharedPreferences
+import com.highcapable.yukihookapi.hook.factory.prefs
+import com.highcapable.yukihookapi.hook.xposed.prefs.YukiHookPrefsBridge
 
 typealias UserId = Long
 
@@ -23,37 +22,21 @@ data class ThemePrefs(
     var nameEmoji: Long? = null,
 )
 
-data class UserConfig(
+data class UserPref(
     var user: User = User(),
     var theme: ThemePrefs = ThemePrefs(),
 )
 
-object Config {
-    private var localConfig: UserConfig = UserConfig()
-    private val packageName = BuildConfig.APPLICATION_ID
-    private var hookedPackageName = ""
-    private var xPrefs: XSharedPreferences? = null
-
-    private val featureCache = mutableMapOf<String, Boolean>()
+object UserConfig {
+    private var localConfig: UserPref = UserPref()
+    private var userPref: YukiHookPrefsBridge? = null
 
     private var user: User = User()
 
-    fun init(pkgName: String) {
+    fun init(context: Context) {
         logd("Initializing Config")
-        this.hookedPackageName = pkgName
-        xPrefs = XSharedPreferences(pkgName, "telegami")
-        logd("XSharedPreferences initialized for package: $pkgName")
+        userPref = context.prefs("telegami")
         localConfig = readConfig()
-        loadFeatureCache()
-    }
-
-    private fun loadFeatureCache() {
-        val prefs = XSharedPreferences(packageName, "features")
-        prefs.all.forEach { (key, value) ->
-            if (value is Boolean) {
-                featureCache[key] = value
-            }
-        }
     }
 
     fun setUser(user: User) {
@@ -68,19 +51,12 @@ object Config {
     }
 
     @Synchronized
-    fun reload() {
-        xPrefs?.reload()
-    }
-
-    @Synchronized
-    fun readConfig(): UserConfig {
+    fun readConfig(): UserPref {
         try {
-            reload()
-
             if (user.id != 0L) {
-                val configStr = xPrefs?.getString(user.id.toString(), "{}") ?: "{}"
-                val type = object : TypeToken<UserConfig>() {}.type
-                val conf = Gson().fromJson(configStr, type) ?: UserConfig()
+                val configStr = userPref?.getString(user.id.toString(), "{}") ?: "{}"
+                val type = object : TypeToken<UserPref>() {}.type
+                val conf = Gson().fromJson(configStr, type) ?: UserPref()
                 localConfig = conf
                 localConfig.user = user
                 logd("User config read successfully for user ${user.id}")
@@ -89,36 +65,20 @@ object Config {
             return localConfig
         } catch (e: Exception) {
             loge("Error reading config", e)
-            return UserConfig().apply { this.user = user }
+            return UserPref().apply { this.user = user }
         }
     }
 
     @Synchronized
     fun writeConfig() {
         try {
-            val pref = Telegami.context.getSharedPreferences("telegami", Context.MODE_PRIVATE)
-            val editor = pref.edit()
-
             if (user.id != 0L) {
-                editor.putString(user.id.toString(), Gson().toJson(localConfig))
+                userPref?.edit { putString(user.id.toString(), Gson().toJson(localConfig)) }
             }
-
-            editor.apply()
-            reload()
             logd("Config written successfully")
         } catch (e: Exception) {
             loge("Error writing config", e)
         }
-    }
-
-    fun isFeatureEnabled(featureKey: String): Boolean = featureCache[featureKey] ?: false
-
-    fun getFeatureValue(
-        featureKey: String,
-        defaultValue: Int = 0,
-    ): Int {
-        val prefs = XSharedPreferences(packageName, "features")
-        return prefs.getInt(featureKey, defaultValue)
     }
 
     fun getCurrentUser(): User = user

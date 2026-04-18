@@ -1,7 +1,7 @@
 package com.aoya.telegami.hooks
 
-import com.aoya.telegami.core.Config
-import com.aoya.telegami.core.User
+import com.aoya.telegami.service.User
+import com.aoya.telegami.service.UserConfig
 import com.aoya.telegami.virt.tgnet.TLRPC
 import com.highcapable.kavaref.KavaRef.Companion.resolve
 import com.highcapable.yukihookapi.hook.entity.YukiBaseHooker
@@ -20,7 +20,7 @@ object Settings : YukiBaseHooker() {
                 after {
                     val tgUser = TLRPC.User(args[0]!!)
                     val user = User(tgUser.id, tgUser.username)
-                    Config.setUser(user)
+                    UserConfig.setUser(user)
                 }
             }
     }

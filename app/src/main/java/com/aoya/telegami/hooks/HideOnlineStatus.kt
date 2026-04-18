@@ -1,6 +1,6 @@
 package com.aoya.telegami.hooks
 
-import com.aoya.telegami.core.Config
+import com.aoya.telegami.service.Config
 import com.aoya.telegami.virt.tgnet.tl.TLAccount
 import com.aoya.telegami.virt.ui.ProfileActivity
 import com.highcapable.kavaref.KavaRef.Companion.resolve

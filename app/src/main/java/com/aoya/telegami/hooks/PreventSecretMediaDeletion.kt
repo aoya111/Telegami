@@ -5,7 +5,7 @@ import android.view.View
 import android.widget.FrameLayout
 import android.widget.Toast
 import com.aoya.telegami.Telegami
-import com.aoya.telegami.core.Config
+import com.aoya.telegami.service.Config
 import com.aoya.telegami.util.SecretMedia
 import com.aoya.telegami.virt.messenger.FileLoader
 import com.aoya.telegami.virt.messenger.MediaController
