@@ -20,10 +20,12 @@ import com.aoya.telegami.ui.util.ThemeUtils.themeColor
 import com.aoya.telegami.ui.util.navigate
 import com.aoya.telegami.ui.util.setEdge2EdgeFlags
 import com.aoya.telegami.ui.util.setupToolbar
+import com.highcapable.yukihookapi.YukiHookAPI
 import dev.androidbroadcast.vbpd.viewBinding
 
 class HomeFragment : Fragment(R.layout.fragment_home) {
     private val binding by viewBinding(FragmentHomeBinding::bind)
+    private val moduleIsActive by lazy { YukiHookAPI.Status.isXposedModuleActive }
 
     override fun onViewCreated(
         view: View,
@@ -47,11 +49,11 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     }
 
     fun setupStatusCard() {
-        val version = PrefManager.getActiveVersion()
         var color =
-            when {
-                version == 0 -> getColor(R.color.invalid)
-                else -> themeColor(android.R.attr.colorPrimary)
+            if (moduleIsActive) {
+                getColor(R.color.invalid)
+            } else {
+                themeColor(android.R.attr.colorPrimary)
             }
 
         with(binding.statusCard) {
@@ -59,7 +61,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             root.outlineAmbientShadowColor = color
             root.outlineSpotShadowColor = color
 
-            if (version > 0) {
+            if (moduleIsActive) {
                 moduleStatusIcon.setImageResource(R.drawable.sentiment_calm_24px)
                 val versionNameSimple = BuildConfig.VERSION_NAME.substringBefore(".r")
                 moduleStatus.text =
@@ -157,13 +159,12 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         with(binding.navFeatures) {
             text1.text = getString(R.string.title_features)
             icon.setImageResource(R.drawable.outline_extension_24)
-            val isModuleActive = PrefManager.getActiveVersion() > 0
             root.setOnClickListener {
-                if (isModuleActive) {
+                if (moduleIsActive) {
                     navigate(R.id.nav_features)
                 }
             }
-            root.alpha = if (isModuleActive) 1f else 0.5f
+            root.alpha = if (moduleIsActive) 1f else 0.5f
         }
 
         with(binding.navSettings) {

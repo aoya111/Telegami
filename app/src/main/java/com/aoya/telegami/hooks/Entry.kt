@@ -23,13 +23,6 @@ object Entry : IYukiHookXposedInit {
 
     override fun onHook() =
         encase {
-            if (arrayOf(Constants.APP_ID, Constants.APP_DEBUG_ID).contains(packageName)) {
-                loadApp(name = packageName) {
-                    "${Constants.APP_ID}.service.PrefManager".toClass().resolve().firstMethod { name = "getActiveVersion" }.hook {
-                        replaceTo(BuildConfig.VERSION_CODE)
-                    }
-                }
-            }
             if (!Constants.SUPPORTED_TELEGRAM_PACKAGES.contains(packageName)) return@encase
             loadApp {
                 KavaRef.logLevel = KavaRefRuntime.LogLevel.OFF
