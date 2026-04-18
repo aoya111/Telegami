@@ -2,7 +2,7 @@
   "variant": "nekogram",
   "package_name": "tw.nekomimi.nekogram",
   "version": "12.6.4",
-  "updated": "2026-04-16",
+  "updated": "2026-04-18",
   "mappings": {
     "org.telegram.SQLite.SQLiteCursor": {
       "fields": {},
@@ -691,7 +691,7 @@
         },
         "show": {
           "hint": null,
-          "obfuscated": "w1"
+          "obfuscated": "W1"
         }
       },
       "obfuscated": "org.telegram.ui.Components.y1"
