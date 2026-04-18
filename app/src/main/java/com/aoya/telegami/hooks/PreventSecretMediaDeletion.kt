@@ -27,15 +27,8 @@ object PreventSecretMediaDeletion : YukiBaseHooker() {
     val secretMediaViewerClass by lazyClass(resolver.get(SECRET_MEDIA_VIEWER_CN))
 
     val galleryDrawable: Drawable? by lazy {
-        getResource("msg_gallery", "drawable")?.takeIf { it != 0 }?.let {
-            appContext?.getDrawable(it)
-        }
+        Telegami.getDrawableResource("msg_gallery")
     }
-
-    fun getResource(
-        name: String,
-        type: String,
-    ): Int = appContext?.resources?.getIdentifier(name, type, packageName) ?: 0
 
     override fun onHook() {
         if (!Config.isFeatureEnabled("PreventSecretMediaDeletion")) return
