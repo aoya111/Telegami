@@ -2,6 +2,7 @@ package com.aoya.telegami.virt.messenger
 
 import com.aoya.telegami.virt.tgnet.TLRPC
 import com.highcapable.kavaref.KavaRef.Companion.asResolver
+import com.highcapable.kavaref.extension.JLong
 import com.aoya.telegami.core.obfuscate.ResolverManager as resolver
 
 class MessagesController(
@@ -9,23 +10,34 @@ class MessagesController(
 ) {
     private val objPath = "org.telegram.messenger.MessagesController"
 
-    fun getUser(id: Long) =
+    private val getUserMethod by lazy {
         instance
             .asResolver()
             .firstMethod {
                 name = resolver.getMethod(objPath, "getUser")
-                parameters(Long::class)
-            }.of(instance)
-            .invoke(id)
-            ?.let { TLRPC.User(it) }
-
-    fun getChat(id: Long) =
+                parameters(JLong::class)
+            }
+    }
+    private val getChatMethod by lazy {
         instance
             .asResolver()
             .firstMethod {
                 name = resolver.getMethod(objPath, "getChat")
-                parameters(Long::class)
-            }.of(instance)
+                parameters(JLong::class)
+            }
+    }
+
+    fun getUser(id: Long) =
+        getUserMethod
+            .copy()
+            .of(instance)
+            .invoke(id)
+            ?.let { TLRPC.User(it) }
+
+    fun getChat(id: Long) =
+        getChatMethod
+            .copy()
+            .of(instance)
             .invoke(id)
             ?.let { TLRPC.Chat(it) }
 
@@ -34,13 +46,16 @@ class MessagesController(
     ) {
         private val objPath = "org.telegram.messenger.MessagesController\$ReadTask"
 
-        val dialogId
-            get() =
-                instance
-                    .asResolver()
-                    .firstField {
-                        name = resolver.getField(objPath, "dialogId")
-                        type = Long::class
-                    }.get<Long>() ?: 0L
+        private val dialogIdField by lazy {
+            instance
+                .asResolver()
+                .firstField {
+                    name = resolver.getField(objPath, "dialogId")
+                    type = Long::class
+                }
+        }
+
+        val dialogId: Long
+            get() = dialogIdField.get<Long>() ?: 0L
     }
 }
