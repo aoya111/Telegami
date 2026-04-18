@@ -1,5 +1,6 @@
 package com.aoya.telegami.hooks
 
+import com.aoya.telegami.Telegami
 import com.aoya.telegami.service.Config
 import com.aoya.telegami.util.MessageHelper
 import com.aoya.telegami.virt.messenger.AndroidUtilities
@@ -30,20 +31,15 @@ object MarkMessages : YukiBaseHooker() {
     }
 
     val deleteDrawableWidth: Int by lazy {
-        getResource("msg_delete", "drawable")?.takeIf { it != 0 }?.let {
-            appContext?.getDrawable(it)?.getIntrinsicWidth()
+        Telegami.getDrawableResource("msg_delete")?.let {
+            it?.getIntrinsicWidth()
         } ?: 0
     }
     val editDrawableWidth: Int by lazy {
-        getResource("msg_edit", "drawable")?.takeIf { it != 0 }?.let {
-            appContext?.getDrawable(it)?.getIntrinsicWidth()
+        Telegami.getDrawableResource("msg_edit")?.let {
+            it?.getIntrinsicWidth()
         } ?: 0
     }
-
-    fun getResource(
-        name: String,
-        type: String,
-    ): Int = appContext?.resources?.getIdentifier(name, type, packageName) ?: 0
 
     override fun onHook() {
         chatActivityClass

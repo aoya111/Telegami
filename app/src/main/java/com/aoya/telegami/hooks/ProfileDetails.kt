@@ -7,6 +7,7 @@ import android.widget.Toast
 import com.aoya.telegami.Telegami
 import com.aoya.telegami.virt.messenger.AndroidUtilities
 import com.aoya.telegami.virt.messenger.ChatObject
+import com.aoya.telegami.virt.messenger.LocaleController
 import com.aoya.telegami.virt.messenger.UserObject
 import com.aoya.telegami.virt.ui.ProfileActivity
 import com.aoya.telegami.virt.ui.components.ItemOptions
@@ -59,14 +60,19 @@ object ProfileDetails : YukiBaseHooker() {
                     val contentView = o.contentView as? ViewGroup ?: return@before
                     val resourcesProvider = o.resourcesProvider
                     val view = args[1] as View
-                    val msgCopyId = appResources?.getIdentifier("msg_copy", "drawable", packageName) ?: 0
+                    val msgCopyId = Telegami.getResource("msg_copy", "drawable") ?: 0
 
                     val itemOptions = ItemOptions.makeOptions(contentView, resourcesProvider, view, false)
                     itemOptions.setGravity(Gravity.LEFT)
                     itemOptions
                         .add(
                             msgCopyId,
-                            appResources?.getIdentifier("ProfileCopyUsername", "string", packageName)?.let { appContext?.getString(it) }
+                            Telegami
+                                .getResource(
+                                    "ProfileCopyUsername",
+                                    "string",
+                                )?.takeIf { it != 0 }
+                                ?.let { LocaleController.getString(it) }
                                 ?: "Copy",
                             Runnable {
                                 AndroidUtilities.addToClipboard(username)

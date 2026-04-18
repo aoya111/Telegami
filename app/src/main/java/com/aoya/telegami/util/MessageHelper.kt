@@ -66,11 +66,10 @@ object MessageHelper {
 
     private fun getResourceString(resourceName: String): String {
         val strResId =
-            Telegami.context.resources
-                .getIdentifier(
+            Telegami
+                .getResource(
                     resourceName,
                     "string",
-                    Telegami.context.packageName,
                 ).takeIf { it != 0 } ?: return ""
         return LocaleController.getString(strResId)
     }
@@ -80,11 +79,10 @@ object MessageHelper {
         color: Int? = null,
     ): CharSequence {
         val drawableResId =
-            Telegami.context.resources
-                .getIdentifier(
+            Telegami
+                .getResource(
                     resourceName,
                     "drawable",
-                    Telegami.context.packageName,
                 ).takeIf { it != 0 } ?: return ""
 
         val drawable = Telegami.context.getDrawable(drawableResId)?.mutate()

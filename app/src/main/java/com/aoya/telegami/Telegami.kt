@@ -2,6 +2,7 @@ package com.aoya.telegami
 
 import android.app.Application
 import android.content.Context
+import android.graphics.drawable.Drawable
 import android.os.Handler
 import android.widget.Toast
 import com.aoya.telegami.core.i18n.TranslationManager
@@ -59,4 +60,14 @@ object Telegami {
     }
 
     fun loadClass(name: String): Class<*> = classLoader.loadClass(name)
+
+    fun getResource(
+        name: String,
+        type: String,
+    ): Int = context?.resources?.getIdentifier(name, type, packageName) ?: 0
+
+    fun getDrawableResource(name: String): Drawable? =
+        getResource("msg_gallery", "drawable")?.takeIf { it != 0 }?.let {
+            context?.getDrawable(it)
+        }
 }
