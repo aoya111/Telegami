@@ -16,9 +16,11 @@ object Privacy : YukiBaseHooker() {
     val connectionsManagerClass by lazyClass(resolver.get(CONNECTIONS_MANAGER_CN))
     val profileActivityClass by lazyClass(resolver.get(PROFILE_ACTIVITY_CN))
 
-    override fun onHook() {
-        val tlAccountUpdateStatusClass = resolver.get("org.telegram.tgnet.tl.TL_account\$updateStatus").toClass()
+    val tlMessagesSetEncTypingClass = resolver.get("org.telegram.tgnet.TLRPC\$TL_messages_setEncryptedTyping").toClass()
+    val tlMessagesSetTypingClass = resolver.get("org.telegram.tgnet.TLRPC\$TL_messages_setTyping").toClass()
+    val tlAccountUpdateStatusClass = resolver.get("org.telegram.tgnet.tl.TL_account\$updateStatus").toClass()
 
+    override fun onHook() {
         connectionsManagerClass
             .resolve()
             .firstMethod {
@@ -26,9 +28,17 @@ object Privacy : YukiBaseHooker() {
             }.hook {
                 before {
                     val req = args[0]
+
+                    if ((tlMessagesSetTypingClass.isInstance(req) || tlMessagesSetEncTypingClass.isInstance(req)) &&
+                        Config.isFeatureEnabled("HideTyping")
+                    ) {
+                        logd("[PrivacyHook] should HideTyping")
+                        resultNull()
+                    }
+
                     if (tlAccountUpdateStatusClass.isInstance(req) && Config.isFeatureEnabled("HideOnlineStatus")) {
-                        logd("[PrivacyHook] should hide online status")
-                        TLAccount.UpdateStatus(req!!).offline = true
+                        logd("[PrivacyHook] should HideOnlineStatus")
+                        req?.let { TLAccount.UpdateStatus(it).offline = true }
                     }
                 }
             }
@@ -42,7 +52,7 @@ object Privacy : YukiBaseHooker() {
                     after {
                         val o = ProfileActivity(instance)
 
-                        val clientUserId = o.getUserConfig()?.getClientUserId() ?: 0L
+                        val clientUserId = o.getUserConfig().getClientUserId()
                         val userId = o.userId
 
                         if (clientUserId != 0L && userId != 0L && userId == clientUserId) {

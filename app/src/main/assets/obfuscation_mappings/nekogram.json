@@ -2,7 +2,7 @@
   "variant": "nekogram",
   "package_name": "tw.nekomimi.nekogram",
   "version": "12.6.4",
-  "updated": "2026-04-18",
+  "updated": "2026-04-21",
   "mappings": {
     "org.telegram.SQLite.SQLiteCursor": {
       "fields": {},
@@ -369,6 +369,18 @@
       "methods": {},
       "obfuscated": "org.telegram.tgnet.TLRPC$f3"
     },
+    "org.telegram.tgnet.TLRPC$TL_messages_setEncryptedTyping": {
+      "fields": {},
+      "hint": "see 'boolean In(final int, final int,...' method from messenger.m0",
+      "methods": {},
+      "obfuscated": "org.telegram.tgnet.TLRPC$so0"
+    },
+    "org.telegram.tgnet.TLRPC$TL_messages_setTyping": {
+      "fields": {},
+      "hint": "see 'boolean In(final int, final int,...' method from messenger.m0",
+      "methods": {},
+      "obfuscated": "org.telegram.tgnet.TLRPC$uo0"
+    },
     "org.telegram.tgnet.TLRPC$TL_peerColor": {
       "fields": {},
       "hint": "(-1253352753)",
@@ -624,17 +636,6 @@
         }
       },
       "obfuscated": "org.telegram.ui.ChatActivity"
-    },
-    "org.telegram.ui.ChatActivity$ChatActivityEnterViewDelegate": {
-      "fields": {},
-      "hint": "isEditTextItemVisibilitySuppressed;",
-      "methods": {
-        "needSendTyping": {
-          "hint": null,
-          "obfuscated": "M"
-        }
-      },
-      "obfuscated": "org.telegram.ui.ChatActivity$l4"
     },
     "org.telegram.ui.Components.Bulletin": {
       "fields": {},
