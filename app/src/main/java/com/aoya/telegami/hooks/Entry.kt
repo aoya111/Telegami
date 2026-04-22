@@ -39,9 +39,9 @@ object Entry : IYukiHookXposedInit {
                         loadHooker(ProfileDetails)
                         loadHooker(HideBetaUpdate)
 
+                        loadHooker(Privacy)
                         loadHooker(HideSeenStatus)
                         loadHooker(HideStoryViewStatus)
-                        loadHooker(HideOnlineStatus)
                         loadHooker(HideTyping)
                         loadHooker(ShowDeletedMessages)
                         loadHooker(PreventSecretMediaDeletion)
