@@ -2,7 +2,7 @@
   "variant": "cherrygram",
   "package_name": "uz.unnarsx.cherrygram",
   "version": "10.5.0",
-  "updated": "2026-04-11",
+  "updated": "2026-04-21",
   "mappings": {
     "org.telegram.messenger.browser.Browser": {
       "fields": {},
@@ -197,17 +197,6 @@
         }
       },
       "obfuscated": "org.telegram.ui.p"
-    },
-    "org.telegram.ui.ChatActivity$ChatActivityEnterViewDelegate": {
-      "fields": {},
-      "hint": "isEditTextItemVisibilitySuppressed;",
-      "methods": {
-        "needSendTyping": {
-          "hint": "chatMode != 5 &&",
-          "obfuscated": "M"
-        }
-      },
-      "obfuscated": "org.telegram.ui.p$K1"
     },
     "org.telegram.ui.Components.Bulletin": {
       "fields": {},

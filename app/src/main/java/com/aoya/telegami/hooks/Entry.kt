@@ -42,7 +42,6 @@ object Entry : IYukiHookXposedInit {
                         loadHooker(Privacy)
                         loadHooker(HideSeenStatus)
                         loadHooker(HideStoryViewStatus)
-                        loadHooker(HideTyping)
                         loadHooker(ShowDeletedMessages)
                         loadHooker(PreventSecretMediaDeletion)
                         loadHooker(UnlockChannelFeatures)

@@ -2,7 +2,7 @@
   "variant": "octogram",
   "package_name": "it.octogram.android",
   "version": "3.5.1",
-  "updated": "2026-04-12",
+  "updated": "2026-04-21",
   "mappings": {
     "org.telegram.SQLite.SQLiteCursor": {
       "fields": {},
@@ -614,17 +614,6 @@
         }
       },
       "obfuscated": "org.telegram.ui.o"
-    },
-    "org.telegram.ui.ChatActivity$ChatActivityEnterViewDelegate": {
-      "fields": {},
-      "hint": "isEditTextItemVisibilitySuppressed;",
-      "methods": {
-        "needSendTyping": {
-          "hint": "chatMode != 5 &&",
-          "obfuscated": "M"
-        }
-      },
-      "obfuscated": "org.telegram.ui.o$r4"
     },
     "org.telegram.ui.Components.Bulletin": {
       "fields": {},
