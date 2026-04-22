@@ -36,7 +36,6 @@ object Entry : IYukiHookXposedInit {
                         loadHooker(MarkMessages)
                         loadHooker(AllowScreenshots)
                         loadHooker(ApplyColor)
-                        loadHooker(ApplyColor)
                         loadHooker(ProfileDetails)
                         loadHooker(HideBetaUpdate)
 
