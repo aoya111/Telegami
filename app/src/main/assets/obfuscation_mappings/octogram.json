@@ -2,7 +2,7 @@
   "variant": "octogram",
   "package_name": "it.octogram.android",
   "version": "3.5.1",
-  "updated": "2026-04-21",
+  "updated": "2026-04-24",
   "mappings": {
     "org.telegram.SQLite.SQLiteCursor": {
       "fields": {},
@@ -166,10 +166,6 @@
       "fields": {},
       "hint": "SELECT data FROM app_config",
       "methods": {
-        "completeReadTask": {
-          "hint": null,
-          "obfuscated": "b9"
-        },
         "deleteMessages": {
           "hint": "(arrayList, arrayList2,",
           "obfuscated": "n9"
@@ -196,17 +192,6 @@
         }
       },
       "obfuscated": "org.telegram.messenger.l0"
-    },
-    "org.telegram.messenger.MessagesController$ReadTask": {
-      "fields": {
-        "dialogId": {
-          "hint": null,
-          "obfuscated": "a"
-        }
-      },
-      "hint": "see completeReadTask",
-      "methods": {},
-      "obfuscated": "org.telegram.messenger.l0$t"
     },
     "org.telegram.messenger.MessagesStorage": {
       "fields": {
