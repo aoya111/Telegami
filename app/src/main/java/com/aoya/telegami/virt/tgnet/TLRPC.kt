@@ -135,4 +135,29 @@ class TLRPC {
 
         constructor(instance: Any) : super(instance)
     }
+
+    class TLMessagesAffectedMessages(
+        private val instance: Any,
+    ) {
+        private val objPath = OBJ_PATH
+
+        private val ptsField by lazy { resolver.getField(objPath, "pts") }
+        private val ptsCountField by lazy { resolver.getField(objPath, "pts_count") }
+
+        constructor() : this(newInstance(Telegami.loadClass(resolver.get(OBJ_PATH))))
+
+        var pts: Int
+            get() = getIntField(instance, ptsField)
+            set(value) = setIntField(instance, ptsField, value)
+
+        var ptsCount: Int
+            get() = getIntField(instance, ptsCountField)
+            set(value) = setIntField(instance, ptsCountField, value)
+
+        fun getNativeInstance() = instance
+
+        companion object {
+            const val OBJ_PATH = "org.telegram.tgnet.TLRPC\$TL_messages_affectedMessages"
+        }
+    }
 }

@@ -2,6 +2,8 @@ package com.aoya.telegami.hooks
 
 import com.aoya.telegami.service.Config
 import com.aoya.telegami.util.logd
+import com.aoya.telegami.virt.tgnet.RequestDelegate
+import com.aoya.telegami.virt.tgnet.TLRPC
 import com.aoya.telegami.virt.tgnet.tl.TLAccount
 import com.aoya.telegami.virt.ui.ProfileActivity
 import com.highcapable.kavaref.KavaRef.Companion.resolve
@@ -20,6 +22,13 @@ object Privacy : YukiBaseHooker() {
     val tlMessagesSetTypingClass = resolver.get("org.telegram.tgnet.TLRPC\$TL_messages_setTyping").toClass()
     val tlAccountUpdateStatusClass = resolver.get("org.telegram.tgnet.tl.TL_account\$updateStatus").toClass()
 
+    val tlMessagesReadHistoryClass = resolver.get("org.telegram.tgnet.TLRPC\$TL_messages_readHistory").toClass()
+    val tlMessagesReadEncHistoryClass = resolver.get("org.telegram.tgnet.TLRPC\$TL_messages_readEncryptedHistory").toClass()
+    val tlMessagesReadDiscussionClass = resolver.get("org.telegram.tgnet.TLRPC\$TL_messages_readDiscussion").toClass()
+    val tlMessagesReadMessageContentsClass = resolver.get("org.telegram.tgnet.TLRPC\$TL_messages_readMessageContents").toClass()
+    val tlChannelsReadHistoryClass = resolver.get("org.telegram.tgnet.TLRPC\$TL_channels_readHistory").toClass()
+    val tlChannelsReadMessageContentsClass = resolver.get("org.telegram.tgnet.TLRPC\$TL_channels_readMessageContents").toClass()
+
     override fun onHook() {
         connectionsManagerClass
             .resolve()
@@ -27,18 +36,43 @@ object Privacy : YukiBaseHooker() {
                 name = resolver.getMethod(CONNECTIONS_MANAGER_CN, "sendRequestInternal")
             }.hook {
                 before {
-                    val req = args[0]
+                    val o = args[0] ?: return@before
 
-                    if ((tlMessagesSetTypingClass.isInstance(req) || tlMessagesSetEncTypingClass.isInstance(req)) &&
+                    if ((tlMessagesSetTypingClass.isInstance(o) || tlMessagesSetEncTypingClass.isInstance(o)) &&
                         Config.isFeatureEnabled("HideTyping")
                     ) {
                         logd("[PrivacyHook] should HideTyping")
                         resultNull()
                     }
 
-                    if (tlAccountUpdateStatusClass.isInstance(req) && Config.isFeatureEnabled("HideOnlineStatus")) {
+                    if (tlAccountUpdateStatusClass.isInstance(o) && Config.isFeatureEnabled("HideOnlineStatus")) {
                         logd("[PrivacyHook] should HideOnlineStatus")
-                        req?.let { TLAccount.UpdateStatus(it).offline = true }
+                        TLAccount.UpdateStatus(o).offline = true
+                    }
+
+                    if ((
+                            (
+                                tlMessagesReadHistoryClass.isInstance(o) || tlMessagesReadEncHistoryClass.isInstance(o) ||
+                                    tlMessagesReadDiscussionClass.isInstance(o) ||
+                                    tlMessagesReadMessageContentsClass.isInstance(o)
+                            ) && Config.isFeatureEnabled("HideSeenPrivateChat")
+                        ) ||
+                        (
+                            (
+                                tlChannelsReadHistoryClass.isInstance(o) ||
+                                    tlChannelsReadMessageContentsClass.isInstance(o)
+                            ) && Config.isFeatureEnabled("HideSeenChannel")
+                        )
+                    ) {
+                        logd("[PrivacyHook] should HideSeen")
+                        val fakeRes = TLRPC.TLMessagesAffectedMessages()
+                        fakeRes.pts = -1
+                        fakeRes.ptsCount = 0
+                        val onComplete = args[1]
+                        onComplete?.let {
+                            RequestDelegate(it).run(fakeRes.getNativeInstance(), null)
+                        }
+                        resultNull()
                     }
                 }
             }

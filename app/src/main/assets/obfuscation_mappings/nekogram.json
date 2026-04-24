@@ -2,7 +2,7 @@
   "variant": "nekogram",
   "package_name": "tw.nekomimi.nekogram",
   "version": "12.6.4",
-  "updated": "2026-04-21",
+  "updated": "2026-04-24",
   "mappings": {
     "org.telegram.SQLite.SQLiteCursor": {
       "fields": {},
@@ -166,10 +166,6 @@
       "fields": {},
       "hint": "SELECT data FROM app_config",
       "methods": {
-        "completeReadTask": {
-          "hint": "public final void \\w*(\\w* \\w*)",
-          "obfuscated": "t9"
-        },
         "deleteMessages": {
           "hint": "public void \\w*(ArrayList \\w*, ArrayList \\w*",
           "obfuscated": "F9"
@@ -196,17 +192,6 @@
         }
       },
       "obfuscated": "org.telegram.messenger.m0"
-    },
-    "org.telegram.messenger.MessagesController$ReadTask": {
-      "fields": {
-        "dialogId": {
-          "hint": null,
-          "obfuscated": "a"
-        }
-      },
-      "hint": "see completeReadTask",
-      "methods": {},
-      "obfuscated": "org.telegram.messenger.m0$t"
     },
     "org.telegram.messenger.MessagesStorage": {
       "fields": {
@@ -368,6 +353,57 @@
       "hint": null,
       "methods": {},
       "obfuscated": "org.telegram.tgnet.TLRPC$f3"
+    },
+    "org.telegram.tgnet.TLRPC$TL_channels_readHistory": {
+      "fields": {},
+      "hint": "see 'void t9(' method from messenger.m0",
+      "methods": {},
+      "obfuscated": "org.telegram.tgnet.TLRPC$qf"
+    },
+    "org.telegram.tgnet.TLRPC$TL_channels_readMessageContents": {
+      "fields": {},
+      "hint": "see 'void Xl(k0 k0Var)' method from messenger.m0",
+      "methods": {},
+      "obfuscated": "org.telegram.tgnet.TLRPC$rf"
+    },
+    "org.telegram.tgnet.TLRPC$TL_messages_affectedMessages": {
+      "fields": {
+        "pts": {
+          "hint": null,
+          "obfuscated": "a"
+        },
+        "pts_count": {
+          "hint": null,
+          "obfuscated": "b"
+        }
+      },
+      "hint": "see 'void t9(' method from messenger.m0",
+      "methods": {},
+      "obfuscated": "org.telegram.tgnet.TLRPC$pe0"
+    },
+    "org.telegram.tgnet.TLRPC$TL_messages_readDiscussion": {
+      "fields": {},
+      "hint": "see 'void t9(' method from messenger.m0",
+      "methods": {},
+      "obfuscated": "org.telegram.tgnet.TLRPC$zl0"
+    },
+    "org.telegram.tgnet.TLRPC$TL_messages_readEncryptedHistory": {
+      "fields": {},
+      "hint": "see 'void t9(' method from messenger.m0",
+      "methods": {},
+      "obfuscated": "org.telegram.tgnet.TLRPC$am0"
+    },
+    "org.telegram.tgnet.TLRPC$TL_messages_readHistory": {
+      "fields": {},
+      "hint": "see 'void t9(' method from messenger.m0",
+      "methods": {},
+      "obfuscated": "org.telegram.tgnet.TLRPC$cm0"
+    },
+    "org.telegram.tgnet.TLRPC$TL_messages_readMessageContents": {
+      "fields": {},
+      "hint": "see 'void Xl(k0 k0Var)' method from messenger.m0",
+      "methods": {},
+      "obfuscated": "org.telegram.tgnet.TLRPC$em0"
     },
     "org.telegram.tgnet.TLRPC$TL_messages_setEncryptedTyping": {
       "fields": {},
