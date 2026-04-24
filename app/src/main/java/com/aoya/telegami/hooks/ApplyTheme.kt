@@ -1,6 +1,7 @@
 package com.aoya.telegami.hooks
 
 import com.aoya.telegami.Telegami
+import com.aoya.telegami.service.Config
 import com.aoya.telegami.service.UserConfig
 import com.aoya.telegami.virt.tgnet.TLRPC
 import com.aoya.telegami.virt.ui.PeerColorActivity
@@ -8,7 +9,7 @@ import com.highcapable.kavaref.KavaRef.Companion.resolve
 import com.highcapable.yukihookapi.hook.entity.YukiBaseHooker
 import com.aoya.telegami.core.obfuscate.ResolverManager as resolver
 
-object ApplyColor : YukiBaseHooker() {
+object ApplyTheme : YukiBaseHooker() {
     const val PEER_COLOR_ACTIVITY_CN = "org.telegram.ui.PeerColorActivity"
     const val USER_CONFIG_CN = "org.telegram.messenger.UserConfig"
     val peerColorActivityClass by lazyClass(resolver.get(PEER_COLOR_ACTIVITY_CN))
@@ -16,6 +17,7 @@ object ApplyColor : YukiBaseHooker() {
 
     override fun onHook() {
         if (Telegami.packageName in listOf("uz.unnarsx.cherrygram", "xyz.nextalone.nagram")) return
+        if (!Config.isFeatureEnabled("UnlockChannelFeatures")) return
         peerColorActivityClass
             .resolve()
             .firstMethod {

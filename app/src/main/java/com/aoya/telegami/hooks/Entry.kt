@@ -35,7 +35,6 @@ object Entry : IYukiHookXposedInit {
                         loadHooker(LocaleController)
                         loadHooker(MarkMessages)
                         loadHooker(AllowScreenshots)
-                        loadHooker(ApplyColor)
                         loadHooker(ProfileDetails)
                         loadHooker(HideBetaUpdate)
 
@@ -47,6 +46,8 @@ object Entry : IYukiHookXposedInit {
                         loadHooker(AllowSaveVideos)
                         loadHooker(DisableAds)
                         loadHooker(FakePremium)
+
+                        loadHooker(ApplyTheme)
                     }
                 }
             }
