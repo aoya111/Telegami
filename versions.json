@@ -53,11 +53,11 @@
     "name": "Telegram Beta",
     "package_name": "org.telegram.messenger.beta",
     "current_version": "12.6.5",
-    "latest_version": "12.6.5",
+    "latest_version": "12.7.0",
     "latest_version_url": "https://www.apkmirror.com/apk/telegram-fz-llc/telegram-beta/",
     "source": "apkmirror",
-    "update_available": false,
-    "last_checked": "2026-04-10T03:23:57.860062+00:00"
+    "update_available": true,
+    "last_checked": "2026-04-27T03:41:25.056799+00:00"
   },
   "org.telegram.messenger.web": {
     "name": "Telegram Web",
@@ -93,11 +93,11 @@
     "name": "Cherrygram",
     "package_name": "uz.unnarsx.cherrygram",
     "current_version": "10.5.0",
-    "latest_version": "10.6.0",
-    "latest_version_url": "https://github.com/arsLan4k1390/Cherrygram/releases/tag/10.6.0",
+    "latest_version": "10.7.0",
+    "latest_version_url": "https://github.com/arsLan4k1390/Cherrygram/releases/tag/10.7.0",
     "source": "github",
     "update_available": true,
-    "last_checked": "2026-04-13T03:34:19.840939+00:00"
+    "last_checked": "2026-04-27T03:41:26.532504+00:00"
   },
   "xyz.nextalone.nagram": {
     "name": "Nagram",
