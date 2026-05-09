@@ -33,31 +33,31 @@
     "name": "Forkgram",
     "package_name": "org.forkgram.messenger",
     "current_version": "12.6.5.0",
-    "latest_version": "12.6.6.0",
+    "latest_version": "12.6.7.0",
     "latest_version_url": "https://www.apkmirror.com/apk/forkgram/forkgram-f-droid-version/",
     "source": "apkmirror",
     "update_available": true,
-    "last_checked": "2026-04-29T03:43:50.759200+00:00"
+    "last_checked": "2026-05-09T03:37:47.013267+00:00"
   },
   "org.telegram.messenger": {
     "name": "Telegram (Official)",
     "package_name": "org.telegram.messenger",
     "current_version": "12.6.4",
-    "latest_version": "12.7.1",
+    "latest_version": "12.7.2",
     "latest_version_url": "https://www.apkmirror.com/apk/telegram-fz-llc/telegram/",
     "source": "apkmirror",
     "update_available": true,
-    "last_checked": "2026-05-08T03:37:05.446669+00:00"
+    "last_checked": "2026-05-09T03:37:47.525076+00:00"
   },
   "org.telegram.messenger.beta": {
     "name": "Telegram Beta",
     "package_name": "org.telegram.messenger.beta",
     "current_version": "12.6.5",
-    "latest_version": "12.7.0",
+    "latest_version": "12.7.3",
     "latest_version_url": "https://www.apkmirror.com/apk/telegram-fz-llc/telegram-beta/",
     "source": "apkmirror",
     "update_available": true,
-    "last_checked": "2026-04-27T03:41:25.056799+00:00"
+    "last_checked": "2026-05-09T03:37:47.960685+00:00"
   },
   "org.telegram.messenger.web": {
     "name": "Telegram Web",
