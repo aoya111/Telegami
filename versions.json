@@ -73,11 +73,11 @@
     "name": "Plus Messenger",
     "package_name": "org.telegram.plus",
     "current_version": "12.6.4.0",
-    "latest_version": "12.6.4.1",
+    "latest_version": "12.7.3.0",
     "latest_version_url": "https://www.apkmirror.com/apk/rafalense/plus-messenger/",
     "source": "apkmirror",
     "update_available": true,
-    "last_checked": "2026-04-26T03:37:29.605484+00:00"
+    "last_checked": "2026-05-26T04:08:21.251758+00:00"
   },
   "tw.nekomimi.nekogram": {
     "name": "Nekogram",
