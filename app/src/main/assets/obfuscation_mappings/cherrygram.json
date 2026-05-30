@@ -2,19 +2,8 @@
   "variant": "cherrygram",
   "package_name": "uz.unnarsx.cherrygram",
   "version": "10.5.0",
-  "updated": "2026-04-21",
+  "updated": "2026-05-30",
   "mappings": {
-    "org.telegram.messenger.browser.Browser": {
-      "fields": {},
-      "hint": "\"graph\\.org\"",
-      "methods": {
-        "openUrl": {
-          "hint": "public static void \\w*(Context \\w*, String \\w*)",
-          "obfuscated": "J"
-        }
-      },
-      "obfuscated": "nF"
-    },
     "org.telegram.tgnet.tl.TL_account$updateStatus": {
       "fields": {},
       "hint": "boolean offline;",
