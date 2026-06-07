@@ -13,11 +13,11 @@
     "name": "NagramX",
     "package_name": "nu.gpu.nagram",
     "current_version": "Unknown",
-    "latest_version": "1246",
-    "latest_version_url": "https://github.com/risin42/NagramX/releases/tag/1246",
+    "latest_version": "1250",
+    "latest_version_url": "https://github.com/risin42/NagramX/releases/tag/1250",
     "source": "github",
     "update_available": false,
-    "last_checked": "2026-04-26T03:37:26.998436+00:00"
+    "last_checked": "2026-06-07T04:40:01.101617+00:00"
   },
   "org.forkclient.messenger.beta": {
     "name": "Forkgram (github)",
