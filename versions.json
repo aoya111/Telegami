@@ -103,10 +103,10 @@
     "name": "Nagram",
     "package_name": "xyz.nextalone.nagram",
     "current_version": "1233",
-    "latest_version": "1236",
-    "latest_version_url": "https://github.com/NextAlone/Nagram/releases/tag/1236",
+    "latest_version": "1238",
+    "latest_version_url": "https://github.com/NextAlone/Nagram/releases/tag/1238",
     "source": "github",
     "update_available": true,
-    "last_checked": "2026-05-22T04:13:16.163836+00:00"
+    "last_checked": "2026-06-18T04:42:28.033778+00:00"
   }
 }
