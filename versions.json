@@ -23,11 +23,11 @@
     "name": "Forkgram (github)",
     "package_name": "org.forkclient.messenger.beta",
     "current_version": "Unknown",
-    "latest_version": "12.8.3.0",
-    "latest_version_url": "https://github.com/forkgram/TelegramAndroid/releases/tag/12.8.3.0",
+    "latest_version": "12.8.4.0",
+    "latest_version_url": "https://github.com/forkgram/TelegramAndroid/releases/tag/12.8.4.0",
     "source": "github",
     "update_available": false,
-    "last_checked": "2026-06-27T04:00:38.108407+00:00"
+    "last_checked": "2026-07-02T04:04:27.109750+00:00"
   },
   "org.forkgram.messenger": {
     "name": "Forkgram",
