@@ -43,31 +43,31 @@
     "name": "Telegram (Official)",
     "package_name": "org.telegram.messenger",
     "current_version": "12.8.3",
-    "latest_version": "12.8.3",
-    "latest_version_url": "https://www.apkmirror.com/apk/telegram-fz-llc/telegram/",
-    "source": "apkmirror",
+    "latest_version": "Unknown",
+    "latest_version_url": "",
+    "source": "none",
     "update_available": false,
-    "last_checked": "2026-07-05T22:50:43.103292+08:00"
+    "last_checked": "2026-07-06T04:08:01.782259+00:00"
   },
   "org.telegram.messenger.beta": {
     "name": "Telegram Beta",
     "package_name": "org.telegram.messenger.beta",
     "current_version": "12.9.0",
-    "latest_version": "12.9.0",
-    "latest_version_url": "https://www.apkmirror.com/apk/telegram-fz-llc/telegram-beta/",
-    "source": "apkmirror",
+    "latest_version": "Unknown",
+    "latest_version_url": "",
+    "source": "none",
     "update_available": false,
-    "last_checked": "2026-07-05T22:50:43.942969+08:00"
+    "last_checked": "2026-07-06T04:08:01.870766+00:00"
   },
   "org.telegram.messenger.web": {
     "name": "Telegram Web",
     "package_name": "org.telegram.messenger.web",
     "current_version": "12.8.3",
-    "latest_version": "12.8.3",
-    "latest_version_url": "https://www.apkmirror.com/apk/telegram-fz-llc/telegram-web-version/",
-    "source": "apkmirror",
+    "latest_version": "Unknown",
+    "latest_version_url": "",
+    "source": "none",
     "update_available": false,
-    "last_checked": "2026-07-05T22:50:44.390860+08:00"
+    "last_checked": "2026-07-06T04:08:01.943494+00:00"
   },
   "org.telegram.plus": {
     "name": "Plus Messenger",
