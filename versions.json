@@ -23,11 +23,11 @@
     "name": "Forkgram (github)",
     "package_name": "org.forkclient.messenger.beta",
     "current_version": "Unknown",
-    "latest_version": "12.8.5.0",
-    "latest_version_url": "https://github.com/forkgram/TelegramAndroid/releases/tag/12.8.5.0",
+    "latest_version": "12.9.0.0",
+    "latest_version_url": "https://github.com/forkgram/TelegramAndroid/releases/tag/12.9.0.0",
     "source": "github",
     "update_available": false,
-    "last_checked": "2026-07-15T02:54:06.108190+00:00"
+    "last_checked": "2026-07-17T03:18:50.952604+00:00"
   },
   "org.forkgram.messenger": {
     "name": "Forkgram",
@@ -103,10 +103,10 @@
     "name": "Nagram",
     "package_name": "xyz.nextalone.nagram",
     "current_version": "1238",
-    "latest_version": "1238",
-    "latest_version_url": "https://github.com/NextAlone/Nagram/releases/tag/1238",
+    "latest_version": "1240",
+    "latest_version_url": "https://github.com/NextAlone/Nagram/releases/tag/1240",
     "source": "github",
-    "update_available": false,
-    "last_checked": "2026-06-18T04:42:28.033778+00:00"
+    "update_available": true,
+    "last_checked": "2026-07-17T03:18:52.850982+00:00"
   }
 }
