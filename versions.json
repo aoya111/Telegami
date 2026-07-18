@@ -33,11 +33,11 @@
     "name": "Forkgram",
     "package_name": "org.forkgram.messenger",
     "current_version": "12.8.4.0",
-    "latest_version": "12.8.4.0",
+    "latest_version": "12.8.5.0",
     "latest_version_url": "https://www.apkmirror.com/apk/forkgram/forkgram-f-droid-version/",
     "source": "apkmirror",
-    "update_available": false,
-    "last_checked": "2026-07-05T04:01:50.075222+00:00"
+    "update_available": true,
+    "last_checked": "2026-07-18T02:55:24.388160+00:00"
   },
   "org.telegram.messenger": {
     "name": "Telegram (Official)",
