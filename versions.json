@@ -83,11 +83,11 @@
     "name": "Nekogram",
     "package_name": "tw.nekomimi.nekogram",
     "current_version": "12.8.1",
-    "latest_version": "12.8.1",
-    "latest_version_url": "https://github.com/Nekogram/Nekogram/releases/tag/v12.8.1",
+    "latest_version": "12.9.0",
+    "latest_version_url": "https://github.com/Nekogram/Nekogram/releases/tag/v12.9.0",
     "source": "github",
-    "update_available": false,
-    "last_checked": "2026-06-19T05:01:31.952797+00:00"
+    "update_available": true,
+    "last_checked": "2026-07-19T03:28:05.061261+00:00"
   },
   "uz.unnarsx.cherrygram": {
     "name": "Cherrygram",
