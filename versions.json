@@ -63,11 +63,11 @@
     "name": "Telegram Web",
     "package_name": "org.telegram.messenger.web",
     "current_version": "12.8.3",
-    "latest_version": "12.8.3",
+    "latest_version": "12.9.1",
     "latest_version_url": "https://www.apkmirror.com/apk/telegram-fz-llc/telegram-web-version/",
     "source": "apkmirror",
-    "update_available": false,
-    "last_checked": "2026-07-28T03:12:51.418580+00:00"
+    "update_available": true,
+    "last_checked": "2026-07-29T03:16:13.074954+00:00"
   },
   "org.telegram.plus": {
     "name": "Plus Messenger",
