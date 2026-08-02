@@ -5,7 +5,7 @@ plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
     id("com.google.devtools.ksp")
-    id("org.jetbrains.kotlin.plugin.serialization") version "2.3.0"
+    id("org.jetbrains.kotlin.plugin.serialization")
     alias(libs.plugins.materialthemebuilder)
 }
 
@@ -56,7 +56,7 @@ val keystoreProps =
 
 android {
     namespace = "com.aoya.telegami"
-    compileSdk = 36
+    compileSdk = 37
 
     defaultConfig {
         applicationId = "com.aoya.telegami"
@@ -138,6 +138,7 @@ dependencies {
 
     implementation(libs.yukihookapi.api)
     implementation(libs.kavaref.core)
+    implementation(libs.kavaref.android)
     implementation(libs.kavaref.extension)
     compileOnly(libs.xposed.api)
     ksp(libs.yukihookapi.ksp.xposed)

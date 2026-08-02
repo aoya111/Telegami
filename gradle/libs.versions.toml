@@ -13,8 +13,7 @@ navigation = "2.8.5"
 constraintlayout = "2.2.0"
 
 yukihookapi = "1.3.1"
-kavaref-core = "1.0.2"
-kavaref-extension = "1.0.2"
+kavaref = "1.1.0"
 
 # Testing
 junit = "4.13.2"
@@ -45,8 +44,9 @@ me-zhanghai-android-appiconloader = { module = "me.zhanghai.android.appiconloade
 
 yukihookapi-api = { module = "com.highcapable.yukihookapi:api", version.ref = "yukihookapi" }
 yukihookapi-ksp-xposed = { module = "com.highcapable.yukihookapi:ksp-xposed", version.ref = "yukihookapi" }
-kavaref-core = { module = "com.highcapable.kavaref:kavaref-core", version.ref = "kavaref-core" }
-kavaref-extension = { module = "com.highcapable.kavaref:kavaref-extension", version.ref = "kavaref-extension" }
+kavaref-core = { module = "com.highcapable.kavaref:kavaref-core", version.ref = "kavaref" }
+kavaref-android = { module = "com.highcapable.kavaref:kavaref-android", version.ref = "kavaref" }
+kavaref-extension = { module = "com.highcapable.kavaref:kavaref-extension", version.ref = "kavaref" }
 xposed-api = { module = "de.robv.android.xposed:api", version = "82" }
 
 junit = { group = "junit", name = "junit", version.ref = "junit" }
