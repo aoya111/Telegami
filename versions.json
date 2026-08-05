@@ -33,11 +33,11 @@
     "name": "Forkgram",
     "package_name": "org.forkgram.messenger",
     "current_version": "12.8.4.0",
-    "latest_version": "12.9.1.0",
+    "latest_version": "12.9.2.0",
     "latest_version_url": "https://www.apkmirror.com/apk/forkgram/forkgram-f-droid-version/",
     "source": "apkmirror",
     "update_available": true,
-    "last_checked": "2026-08-03T03:33:15.982884+00:00"
+    "last_checked": "2026-08-05T02:57:05.969353+00:00"
   },
   "org.telegram.messenger": {
     "name": "Telegram (Official)",
@@ -83,21 +83,21 @@
     "name": "Nekogram",
     "package_name": "tw.nekomimi.nekogram",
     "current_version": "12.8.1",
-    "latest_version": "12.9.0.1",
-    "latest_version_url": "https://github.com/Nekogram/Nekogram/releases/tag/v12.9.0.1",
+    "latest_version": "12.9.2",
+    "latest_version_url": "https://github.com/Nekogram/Nekogram/releases/tag/v12.9.2",
     "source": "github",
     "update_available": true,
-    "last_checked": "2026-07-21T03:21:31.139844+00:00"
+    "last_checked": "2026-08-05T02:57:07.193425+00:00"
   },
   "uz.unnarsx.cherrygram": {
     "name": "Cherrygram",
     "package_name": "uz.unnarsx.cherrygram",
     "current_version": "10.5.0",
-    "latest_version": "10.9.0",
-    "latest_version_url": "https://github.com/arsLan4k1390/Cherrygram/releases/tag/10.9.0",
+    "latest_version": "11.0.0",
+    "latest_version_url": "https://github.com/arsLan4k1390/Cherrygram/releases/tag/11.0.0",
     "source": "github",
     "update_available": true,
-    "last_checked": "2026-07-15T02:54:08.062682+00:00"
+    "last_checked": "2026-08-05T02:57:07.273399+00:00"
   },
   "xyz.nextalone.nagram": {
     "name": "Nagram",
