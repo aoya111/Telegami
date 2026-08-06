@@ -1,8 +1,8 @@
 {
   "variant": "nekogram",
   "package_name": "tw.nekomimi.nekogram",
-  "version": "12.8.1",
-  "updated": "2026-07-05",
+  "version": "12.9.2",
+  "updated": "2026-08-06",
   "mappings": {
     "org.telegram.SQLite.SQLiteCursor": {
       "fields": {},
@@ -48,7 +48,7 @@
         },
         "dp": {
           "hint": "public static int \\w*(float; return Math.ceil",
-          "obfuscated": "B0"
+          "obfuscated": "D0"
         }
       },
       "obfuscated": "org.telegram.messenger.b"
@@ -59,11 +59,11 @@
       "methods": {
         "getPublicUsername": {
           "hint": "public static String \\w*(",
-          "obfuscated": "Z"
+          "obfuscated": "c0"
         },
         "isPublic": {
           "hint": "return !TextUtils.isEmpty(",
-          "obfuscated": "O0"
+          "obfuscated": "c1"
         }
       },
       "obfuscated": "org.telegram.messenger.k"
@@ -112,15 +112,15 @@
         },
         "getFormatterDay": {
           "hint": "\"formatterDay24H\"",
-          "obfuscated": "n1"
+          "obfuscated": "o1"
         },
         "getInstance": {
           "hint": "catch (Throwable",
-          "obfuscated": "D1"
+          "obfuscated": "E1"
         },
         "getString": {
           "hint": "public static String \\w*(int \\w*)",
-          "obfuscated": "N1"
+          "obfuscated": "O1"
         }
       },
       "obfuscated": "org.telegram.messenger.h0"
@@ -153,11 +153,11 @@
       "methods": {
         "getDialogId": {
           "hint": "return \\w*(this.messageOwner); (long); \"sensitive\"",
-          "obfuscated": "i1"
+          "obfuscated": "l1"
         },
         "getId": {
           "hint": "return this.messageOwner.\\w*; (int)",
-          "obfuscated": "U1"
+          "obfuscated": "a2"
         }
       },
       "obfuscated": "org.telegram.messenger.l0"
@@ -168,27 +168,27 @@
       "methods": {
         "deleteMessages": {
           "hint": "public void \\w*(ArrayList \\w*, ArrayList \\w*",
-          "obfuscated": "Z9"
+          "obfuscated": "va"
         },
         "getChat": {
           "hint": "return (TLRPC\\.\\w*) this\\.\\w*\\.get(\\w*); Long param",
-          "obfuscated": "Va"
+          "obfuscated": "wb"
         },
         "getSponsoredMessages": {
           "hint": "public \\w* \\w*(final long \\w*)",
-          "obfuscated": "rc"
+          "obfuscated": "Wc"
         },
         "getUser": {
           "hint": "return (TLRPC\\.\\w*) this\\.\\w*\\.get(\\w*); (with if)",
-          "obfuscated": "Gc"
+          "obfuscated": "ld"
         },
         "isChatNoForwards": {
           "hint": "if (\\w*\\.\\w* || \\w* == null)",
-          "obfuscated": "fd"
+          "obfuscated": "Kd"
         },
         "markDialogMessageAsDeleted": {
           "hint": "public void \\w*(long \\w*, ArrayList arrayList)",
-          "obfuscated": "Lm"
+          "obfuscated": "Fn"
         }
       },
       "obfuscated": "org.telegram.messenger.n0"
@@ -204,19 +204,19 @@
       "methods": {
         "emptyMessagesMedia": {
           "hint": "public void \\w*(final long \\w*, final ArrayList arrayList)",
-          "obfuscated": "b5"
+          "obfuscated": "g5"
         },
         "markMessagesAsDeletedInternal": {
           "hint": "public final java.util.ArrayList \\w*(long",
-          "obfuscated": "Kb"
+          "obfuscated": "Vb"
         },
         "markMessagesContentAsReadInternal": {
           "hint": "public final void \\w*(long \\w*, ArrayList arrayList, int \\w*)",
-          "obfuscated": "Ob"
+          "obfuscated": "Zb"
         },
         "updateDialogsWithDeletedMessagesInternal": {
           "hint": "UPDATE dialogs SET (last_mid, last_mid_group)",
-          "obfuscated": "Bd"
+          "obfuscated": "Od"
         }
       },
       "obfuscated": "org.telegram.messenger.o0"
@@ -227,7 +227,7 @@
       "methods": {
         "postNotificationName": {
           "hint": "SystemClock.elapsedRealtime();",
-          "obfuscated": "G"
+          "obfuscated": "C"
         }
       },
       "obfuscated": "org.telegram.messenger.p0"
@@ -292,7 +292,7 @@
       "fields": {},
       "hint": "extends FileInputStream",
       "methods": {},
-      "obfuscated": "wy5"
+      "obfuscated": "a56"
     },
     "org.telegram.messenger.time.FastDateFormat": {
       "fields": {},
@@ -303,7 +303,7 @@
           "obfuscated": "a"
         }
       },
-      "obfuscated": "u76"
+      "obfuscated": "ae6"
     },
     "org.telegram.tgnet.TLRPC$Message": {
       "fields": {
@@ -322,7 +322,7 @@
       },
       "hint": "-2082087340:",
       "methods": {},
-      "obfuscated": "org.telegram.tgnet.TLRPC$k2"
+      "obfuscated": "org.telegram.tgnet.TLRPC$m2"
     },
     "org.telegram.tgnet.TLRPC$PeerColor": {
       "fields": {
@@ -339,21 +339,21 @@
           "obfuscated": "a"
         }
       },
-      "hint": null,
+      "hint": "!= -1253352753",
       "methods": {},
       "obfuscated": "org.telegram.tgnet.TLRPC$d3"
     },
     "org.telegram.tgnet.TLRPC$TL_channels_readHistory": {
       "fields": {},
-      "hint": "see 'void completeReadTask' method from <messenger.MessagesController>",
+      "hint": "messenger/n0.java;public final void ga(u uVar)",
       "methods": {},
-      "obfuscated": "org.telegram.tgnet.TLRPC$pf"
+      "obfuscated": "org.telegram.tgnet.TLRPC$qf"
     },
     "org.telegram.tgnet.TLRPC$TL_channels_readMessageContents": {
       "fields": {},
-      "hint": "see 'void markMessageContentAsRead' method from <messenger.MessagesController>",
+      "hint": "messenger/n0.java;public void Mn(l0 l0Var)",
       "methods": {},
-      "obfuscated": "org.telegram.tgnet.TLRPC$qf"
+      "obfuscated": "org.telegram.tgnet.TLRPC$rf"
     },
     "org.telegram.tgnet.TLRPC$TL_messages_affectedMessages": {
       "fields": {
@@ -366,51 +366,51 @@
           "obfuscated": "b"
         }
       },
-      "hint": "see 'void completeReadTask' method from <messenger.MessagesController>",
+      "hint": "/* synthetic */ void ag",
       "methods": {},
-      "obfuscated": "org.telegram.tgnet.TLRPC$fe0"
+      "obfuscated": "org.telegram.tgnet.TLRPC$se0"
     },
     "org.telegram.tgnet.TLRPC$TL_messages_readDiscussion": {
       "fields": {},
-      "hint": "see 'void completeReadTask' method from <messenger.MessagesController>",
+      "hint": "messenger/n0.java;public final void ga(u uVar)",
       "methods": {},
-      "obfuscated": "org.telegram.tgnet.TLRPC$rl0"
+      "obfuscated": "org.telegram.tgnet.TLRPC$fm0"
     },
     "org.telegram.tgnet.TLRPC$TL_messages_readEncryptedHistory": {
       "fields": {},
-      "hint": "see 'void completeReadTask' method from <messenger.MessagesController>",
+      "hint": "messenger/n0.java;public final void ga(u uVar)",
       "methods": {},
-      "obfuscated": "org.telegram.tgnet.TLRPC$sl0"
+      "obfuscated": "org.telegram.tgnet.TLRPC$gm0"
     },
     "org.telegram.tgnet.TLRPC$TL_messages_readHistory": {
       "fields": {},
-      "hint": "see 'void completeReadTask' method from <messenger.MessagesController>",
+      "hint": "messenger/n0.java;public final void ga(u uVar)",
       "methods": {},
-      "obfuscated": "org.telegram.tgnet.TLRPC$ul0"
+      "obfuscated": "org.telegram.tgnet.TLRPC$im0"
     },
     "org.telegram.tgnet.TLRPC$TL_messages_readMessageContents": {
       "fields": {},
-      "hint": "see 'void markMessageContentAsRead' method from <messenger.MessagesController>",
+      "hint": "messenger/n0.java;public void Mn(l0 l0Var)",
       "methods": {},
-      "obfuscated": "org.telegram.tgnet.TLRPC$wl0"
+      "obfuscated": "org.telegram.tgnet.TLRPC$km0"
     },
     "org.telegram.tgnet.TLRPC$TL_messages_setEncryptedTyping": {
       "fields": {},
-      "hint": "see 'sendTyping' method from <messenger.MessagesController>",
+      "hint": "messenger/n0.java;public boolean Ep(final long j2,",
       "methods": {},
-      "obfuscated": "org.telegram.tgnet.TLRPC$ko0"
+      "obfuscated": "org.telegram.tgnet.TLRPC$zo0"
     },
     "org.telegram.tgnet.TLRPC$TL_messages_setTyping": {
       "fields": {},
-      "hint": "see 'sendTyping' method from <messenger.MessagesController>",
+      "hint": "messenger/n0.java;public boolean Ep(final long j2,",
       "methods": {},
-      "obfuscated": "org.telegram.tgnet.TLRPC$mo0"
+      "obfuscated": "org.telegram.tgnet.TLRPC$bp0"
     },
     "org.telegram.tgnet.TLRPC$TL_peerColor": {
       "fields": {},
       "hint": "(-1253352753)",
       "methods": {},
-      "obfuscated": "org.telegram.tgnet.TLRPC$bs0"
+      "obfuscated": "org.telegram.tgnet.TLRPC$ts0"
     },
     "org.telegram.tgnet.TLRPC$User": {
       "fields": {
@@ -437,7 +437,7 @@
       },
       "hint": "-2093920310",
       "methods": {},
-      "obfuscated": "org.telegram.tgnet.TLRPC$y81"
+      "obfuscated": "org.telegram.tgnet.TLRPC$n91"
     },
     "org.telegram.tgnet.tl.TL_account$updateStatus": {
       "fields": {
@@ -448,14 +448,14 @@
       },
       "hint": ">= 55000",
       "methods": {},
-      "obfuscated": "fvh"
+      "obfuscated": "rci"
     },
     "org.telegram.ui.ActionBar.ActionBar": {
       "fields": {},
       "hint": null,
       "methods": {
         "createMenu": {
-          "hint": null,
+          "hint": "-2, -1",
           "obfuscated": "Q"
         }
       },
@@ -553,15 +553,15 @@
       "methods": {
         "getContext": {
           "hint": "public Context \\w*",
-          "obfuscated": "T0"
+          "obfuscated": "U0"
         },
         "getMessagesController": {
           "hint": "public <MessagesController> \\w*()",
-          "obfuscated": "i1"
+          "obfuscated": "k1"
         },
         "getUserConfig": {
           "hint": "public <UserConfig> \\w*()",
-          "obfuscated": "z1"
+          "obfuscated": "B1"
         }
       },
       "obfuscated": "org.telegram.ui.ActionBar.h"
@@ -575,7 +575,7 @@
           "obfuscated": "n0"
         }
       },
-      "obfuscated": "ttf"
+      "obfuscated": "wag"
     },
     "org.telegram.ui.ActionBar.Theme": {
       "fields": {
@@ -588,7 +588,7 @@
       "methods": {
         "getActiveTheme": {
           "hint": "public static <Theme$ThemeInfo> \\w*()",
-          "obfuscated": "H1"
+          "obfuscated": "I1"
         }
       },
       "obfuscated": "org.telegram.ui.ActionBar.r"
@@ -614,22 +614,22 @@
         },
         "measureTime": {
           "hint": "final void \\w*(<MessageObject>",
-          "obfuscated": "x8"
+          "obfuscated": "C8"
         },
         "setMessageContent": {
           "hint": "final void \\w*(<MessageObject> \\w*, <MessageObject.GroupedMessages>",
-          "obfuscated": "s9"
+          "obfuscated": "x9"
         }
       },
-      "obfuscated": "nk3"
+      "obfuscated": "om3"
     },
     "org.telegram.ui.ChatActivity": {
       "fields": {},
       "hint": "headerItem;",
       "methods": {
         "addSponsoredMessages": {
-          "hint": "sponsoredUrlPattern ==",
-          "obfuscated": "Is"
+          "hint": "= this.sponsoredUrlPattern",
+          "obfuscated": "Ss"
         },
         "createView": {
           "hint": "View \\w*(Context context)",
@@ -637,27 +637,27 @@
         },
         "fillMessageMenu": {
           "hint": "public void \\w*(<MessageObject> \\w*, ArrayList ",
-          "obfuscated": "vv"
+          "obfuscated": "Gv"
         },
         "getContext": {
           "hint": "\\ \\w*().getResources().getDrawable",
-          "obfuscated": "T0"
+          "obfuscated": "U0"
         },
         "getResourceProvider": {
           "hint": "AlertDialog.Builder(<getContext>(), \\w*())",
-          "obfuscated": "s1"
+          "obfuscated": "u1"
         },
         "getSponsoredMessagesCount": {
           "hint": "public final int \\w*()",
-          "obfuscated": "Iw"
+          "obfuscated": "Uw"
         },
         "sendSecretMediaDelete": {
           "hint": "Runnable \\w*(final ",
-          "obfuscated": "JI"
+          "obfuscated": "ZI"
         },
         "sendSecretMessageRead": {
           "hint": "Runnable \\w*(final ",
-          "obfuscated": "KI"
+          "obfuscated": "aJ"
         }
       },
       "obfuscated": "org.telegram.ui.ChatActivity"
@@ -697,7 +697,7 @@
           "obfuscated": "h"
         }
       },
-      "obfuscated": "u14"
+      "obfuscated": "d44"
     },
     "org.telegram.ui.Components.ItemOptions": {
       "fields": {},
@@ -705,11 +705,11 @@
       "methods": {
         "add": {
           "hint": "public <ItemOptions> \\w*(int \\w*, CharSequence \\w*, Runnable \\w*)",
-          "obfuscated": "X"
+          "obfuscated": "b0"
         },
         "makeOptions": {
           "hint": "static <ItemOptions> \\w*(ViewGroup \\w*,",
-          "obfuscated": "t1"
+          "obfuscated": "H1"
         },
         "setGravity": {
           "hint": "swipeBackGravityRight = true",
@@ -717,7 +717,7 @@
         },
         "show": {
           "hint": "public <ItemOptions> \\w*()",
-          "obfuscated": "d2"
+          "obfuscated": "g2"
         }
       },
       "obfuscated": "org.telegram.ui.Components.z1"
@@ -738,8 +738,8 @@
       "hint": null,
       "methods": {
         "apply": {
-          "hint": "private void \\w*()",
-          "obfuscated": "R4"
+          "hint": "below \\w*(this.isDark, true);",
+          "obfuscated": "V4"
         }
       },
       "obfuscated": "org.telegram.ui.PeerColorActivity"
@@ -756,19 +756,19 @@
       "methods": {
         "editRow": {
           "hint": "public final boolean \\w*(View \\w*, final int \\w*)",
-          "obfuscated": "cf"
+          "obfuscated": "lf"
         },
         "getParentActivity": {
           "hint": "\\w*().getWindowManager()",
-          "obfuscated": "Jf"
+          "obfuscated": "Rf"
         },
         "processOnClickOrPress": {
           "hint": "if (\\w* != this.usernameRow && \\w* != this.setUsernameRow) {",
-          "obfuscated": "gj"
+          "obfuscated": "oj"
         },
         "updateProfileData": {
           "hint": "\"avatar\",",
-          "obfuscated": "Xj"
+          "obfuscated": "gk"
         }
       },
       "obfuscated": "org.telegram.ui.ProfileActivity"
