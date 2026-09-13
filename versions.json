@@ -22,71 +22,71 @@
   "org.forkclient.messenger.beta": {
     "name": "Forkgram (github)",
     "package_name": "org.forkclient.messenger.beta",
-    "current_version": "12.9.2.0",
+    "current_version": "12.10.1.0",
     "latest_version": "12.10.1.0",
     "latest_version_url": "https://github.com/forkgram/TelegramAndroid/releases/tag/12.10.1.0",
     "source": "github",
-    "update_available": true,
+    "update_available": false,
     "last_checked": "2026-08-26T01:42:39.646078+00:00"
   },
   "org.forkgram.messenger": {
     "name": "Forkgram",
     "package_name": "org.forkgram.messenger",
-    "current_version": "12.9.2.0",
+    "current_version": "12.10.2.0",
     "latest_version": "12.10.2.0",
     "latest_version_url": "https://www.apkmirror.com/apk/forkgram/forkgram-f-droid-version/",
     "source": "apkmirror",
-    "update_available": true,
+    "update_available": false,
     "last_checked": "2026-09-04T03:59:27.279863+00:00"
   },
   "org.telegram.messenger": {
     "name": "Telegram (Official)",
     "package_name": "org.telegram.messenger",
-    "current_version": "12.9.2",
-    "latest_version": "Unknown",
-    "latest_version_url": "",
-    "source": "none",
+    "current_version": "12.10.1",
+    "latest_version": "12.10.1",
+    "latest_version_url": "https://www.apkmirror.com/apk/telegram-fz-llc/telegram/",
+    "source": "apkmirror",
     "update_available": false,
-    "last_checked": "2026-08-07T02:54:45.796966+00:00"
+    "last_checked": "2026-09-14T02:26:08.900701+08:00"
   },
   "org.telegram.messenger.beta": {
     "name": "Telegram Beta",
     "package_name": "org.telegram.messenger.beta",
-    "current_version": "12.9.2",
-    "latest_version": "Unknown",
-    "latest_version_url": "",
-    "source": "none",
+    "current_version": "12.10.2",
+    "latest_version": "12.10.2",
+    "latest_version_url": "https://www.apkmirror.com/apk/telegram-fz-llc/telegram-beta/",
+    "source": "apkmirror",
     "update_available": false,
-    "last_checked": "2026-08-07T02:54:45.849407+00:00"
+    "last_checked": "2026-09-14T02:26:09.486583+08:00"
   },
   "org.telegram.messenger.web": {
     "name": "Telegram Web",
     "package_name": "org.telegram.messenger.web",
-    "current_version": "12.9.2",
-    "latest_version": "Unknown",
-    "latest_version_url": "",
-    "source": "none",
+    "current_version": "12.10.1",
+    "latest_version": "12.10.1",
+    "latest_version_url": "https://www.apkmirror.com/apk/telegram-fz-llc/telegram-web-version/",
+    "source": "apkmirror",
     "update_available": false,
-    "last_checked": "2026-08-07T02:54:45.903535+00:00"
+    "last_checked": "2026-09-14T02:26:09.981503+08:00"
   },
   "org.telegram.plus": {
     "name": "Plus Messenger",
     "package_name": "org.telegram.plus",
-    "current_version": "12.9.2.0",
+    "current_version": "12.10.1.1",
     "latest_version": "12.10.1.1",
     "latest_version_url": "https://www.apkmirror.com/apk/rafalense/plus-messenger/",
     "source": "apkmirror",
-    "update_available": true,
+    "update_available": false,
     "last_checked": "2026-09-13T04:18:17.307072+00:00"
   },
   "tw.nekomimi.nekogram": {
     "name": "Nekogram",
     "package_name": "tw.nekomimi.nekogram",
-    "current_version": "12.9.2",
+    "current_version": "12.10.1",
     "latest_version": "12.10.1",
     "latest_version_url": "https://github.com/Nekogram/Nekogram/releases/tag/v12.10.1",
     "source": "github",
-    "update_available": true,
+    "update_available": false,
     "last_checked": "2026-09-02T03:58:33.256189+00:00"
   },
   "uz.unnarsx.cherrygram": {
@@ -102,11 +102,11 @@
   "xyz.nextalone.nagram": {
     "name": "Nagram",
     "package_name": "xyz.nextalone.nagram",
-    "current_version": "1240",
+    "current_version": "1244",
     "latest_version": "1244",
     "latest_version_url": "https://github.com/NextAlone/Nagram/releases/tag/1244",
     "source": "github",
-    "update_available": true,
+    "update_available": false,
     "last_checked": "2026-08-26T01:42:41.921386+00:00"
   }
 }
