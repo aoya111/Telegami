@@ -14,5 +14,6 @@ open class SimpleTextView(
             .firstMethod {
                 name = resolver.getMethod(objPath, "setText")
                 parameterCount = 1
+                superclass()
             }.invoke(text)!! as Boolean
 }

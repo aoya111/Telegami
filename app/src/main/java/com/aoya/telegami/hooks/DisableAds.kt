@@ -1,19 +1,21 @@
 package com.aoya.telegami.hooks
 
+import android.util.Log
 import com.aoya.telegami.service.Config
 import com.aoya.telegami.util.findMethod
 import io.github.libxposed.api.XposedInterface
-import android.util.Log
 
 object DisableAds {
     const val CHAT_ACTIVITY_CN = "org.telegram.ui.ChatActivity"
     const val MESSAGES_CONTROLLER_CN = "org.telegram.messenger.MessagesController"
 
-    fun install(xposed: XposedInterface, classLoader: ClassLoader) {
+    fun install(
+        xposed: XposedInterface,
+        classLoader: ClassLoader,
+    ) {
         if (!Config.isFeatureEnabled("DisableAds")) return
         listOf(
             classLoader.findMethod(CHAT_ACTIVITY_CN, "addSponsoredMessages") to null,
-            classLoader.findMethod(CHAT_ACTIVITY_CN, "getSponsoredMessagesCount") to 0,
             classLoader.findMethod(MESSAGES_CONTROLLER_CN, "getSponsoredMessages") to null,
         ).forEach { (method, value) ->
             xposed.hook(method).intercept { chain ->

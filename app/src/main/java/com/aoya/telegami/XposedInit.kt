@@ -9,8 +9,8 @@ import com.aoya.telegami.hooks.ApplyTheme
 import com.aoya.telegami.hooks.BoostDownload
 import com.aoya.telegami.hooks.DisableAds
 import com.aoya.telegami.hooks.FakePremium
-import com.aoya.telegami.hooks.HideUpdate
 import com.aoya.telegami.hooks.HideStoryViewStatus
+import com.aoya.telegami.hooks.HideUpdate
 import com.aoya.telegami.hooks.LocaleController
 import com.aoya.telegami.hooks.MarkMessages
 import com.aoya.telegami.hooks.PreventSecretMediaDeletion
@@ -48,21 +48,32 @@ class XposedInit : XposedModule() {
     }
 
     private fun installHooks(classLoader: ClassLoader) {
-        Settings.install(this, classLoader)
-        LocaleController.install(this, classLoader)
-        MarkMessages.install(this, classLoader)
-        AllowScreenshots.install(this, classLoader)
-        ProfileDetails.install(this, classLoader)
-        HideUpdate.install(this, classLoader)
-        Privacy.install(this, classLoader)
-        HideStoryViewStatus.install(this, classLoader)
-        ShowDeletedMessages.install(this, classLoader)
-        PreventSecretMediaDeletion.install(this, classLoader)
-        UnlockChannelFeatures.install(this, classLoader)
-        AllowSaveVideos.install(this, classLoader)
-        DisableAds.install(this, classLoader)
-        FakePremium.install(this, classLoader)
-        BoostDownload.install(this, classLoader)
-        ApplyTheme.install(this, classLoader)
+        fun install(
+            name: String,
+            hook: () -> Unit,
+        ) {
+            try {
+                hook()
+            } catch (throwable: Throwable) {
+                Logger.e("Failed to install $name", throwable)
+            }
+        }
+
+        install("Settings") { Settings.install(this, classLoader) }
+        install("LocaleController") { LocaleController.install(this, classLoader) }
+        install("MarkMessages") { MarkMessages.install(this, classLoader) }
+        install("AllowScreenshots") { AllowScreenshots.install(this, classLoader) }
+        install("ProfileDetails") { ProfileDetails.install(this, classLoader) }
+        install("HideUpdate") { HideUpdate.install(this, classLoader) }
+        install("Privacy") { Privacy.install(this, classLoader) }
+        install("HideStoryViewStatus") { HideStoryViewStatus.install(this, classLoader) }
+        install("ShowDeletedMessages") { ShowDeletedMessages.install(this, classLoader) }
+        install("PreventSecretMediaDeletion") { PreventSecretMediaDeletion.install(this, classLoader) }
+        install("UnlockChannelFeatures") { UnlockChannelFeatures.install(this, classLoader) }
+        install("AllowSaveVideos") { AllowSaveVideos.install(this, classLoader) }
+        install("DisableAds") { DisableAds.install(this, classLoader) }
+        install("FakePremium") { FakePremium.install(this, classLoader) }
+        install("BoostDownload") { BoostDownload.install(this, classLoader) }
+        install("ApplyTheme") { ApplyTheme.install(this, classLoader) }
     }
 }

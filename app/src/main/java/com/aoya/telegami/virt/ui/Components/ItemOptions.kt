@@ -15,12 +15,13 @@ class ItemOptions private constructor(
 
     fun setGravity(gravity: Int): ItemOptions =
         apply {
+            if (Telegami.packageName == "tw.nekomimi.nekogram") return@apply
             instance
                 .asResolver()
                 .firstMethod {
                     name = resolver.getMethod(objPath, "setGravity")
                     parameters(Int::class.javaPrimitiveType!!)
-                }.invoke(gravity)!!
+                }.invoke(gravity)
         }
 
     fun add(
@@ -29,16 +30,26 @@ class ItemOptions private constructor(
         onClickListener: Runnable,
     ): ItemOptions =
         apply {
-            instance
-                .asResolver()
-                .firstMethod {
-                    name = resolver.getMethod(objPath, "add")
-                    parameters(
-                        Int::class.javaPrimitiveType!!,
-                        CharSequence::class.java,
-                        Runnable::class.java,
-                    )
-                }.invoke(iconResId, text, onClickListener)!!
+            if (Telegami.packageName == "tw.nekomimi.nekogram") {
+                instance
+                    .asResolver()
+                    .firstMethod {
+                        name = resolver.getMethod(objPath, "add")
+                        parameters(
+                            Int::class.javaPrimitiveType!!,
+                            CharSequence::class.java,
+                            Runnable::class.java,
+                            Boolean::class.javaPrimitiveType!!,
+                        )
+                    }.invoke(iconResId, text, onClickListener, false)
+            } else {
+                instance
+                    .asResolver()
+                    .firstMethod {
+                        name = resolver.getMethod(objPath, "add")
+                        parameters(Int::class.javaPrimitiveType!!, CharSequence::class.java, Runnable::class.java)
+                    }.invoke(iconResId, text, onClickListener)
+            }
         }
 
     fun show(): ItemOptions =
@@ -47,8 +58,7 @@ class ItemOptions private constructor(
                 .asResolver()
                 .firstMethod {
                     name = resolver.getMethod(objPath, "show")
-                    parameters()
-                }.invoke()!!
+                }.invoke()
         }
 
     companion object {
@@ -91,8 +101,8 @@ class ItemOptions private constructor(
             (Telegami.loadClass(resolver.get(OBJ_PATH)) as Class<Any>)
                 .resolve()
                 .firstConstructor {
-                    parameters(VagueType, VagueType, VagueType, Boolean::class, Boolean::class)
-                }.create(container, resourcesProvider, scrimView, swipeback, shownFromBottom)
+                    parameters(VagueType, VagueType, VagueType, Boolean::class, Boolean::class, Boolean::class)
+                }.create(container, resourcesProvider, scrimView, swipeback, shownFromBottom, false)
                 ?.let { ItemOptions(it) }
                 ?: error("instantiation failed")
     }

@@ -9,6 +9,7 @@ object ResolverManager {
     private val packageToVariant =
         mapOf(
             "it.octogram.android" to "octogram",
+            "org.telegram.messenger" to "telegram",
             "tw.nekomimi.nekogram" to "nekogram",
             "uz.unnarsx.cherrygram" to "cherrygram",
         )

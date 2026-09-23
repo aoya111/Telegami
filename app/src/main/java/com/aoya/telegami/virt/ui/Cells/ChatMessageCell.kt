@@ -14,16 +14,16 @@ class ChatMessageCell(
     private val methodGetMessageObject by lazy { resolver.getMethod(objPath, "getMessageObject") }
 
     var timeWidth: Int
-        get() = instance.asResolver().firstField { this.name = "timeWidth" }.get<Int>()!!
-        set(value) = instance.asResolver().firstField { this.name = "timeWidth" }.set(value)
+        get() = instance.asResolver().firstField { name = resolver.getField(objPath, "timeWidth") }.get<Int>()!!
+        set(value) = instance.asResolver().firstField { name = resolver.getField(objPath, "timeWidth") }.set(value)
 
     var timeTextWidth: Int
-        get() = instance.asResolver().firstField { this.name = "timeTextWidth" }.get<Int>()!!
-        set(value) = instance.asResolver().firstField { this.name = "timeTextWidth" }.set(value)
+        get() = instance.asResolver().firstField { name = resolver.getField(objPath, "timeTextWidth") }.get<Int>()!!
+        set(value) = instance.asResolver().firstField { name = resolver.getField(objPath, "timeTextWidth") }.set(value)
 
     var backgroundWidth: Int
-        get() = instance.asResolver().firstField { this.name = "backgroundWidth" }.get<Int>()!!
-        set(value) = instance.asResolver().firstField { this.name = "backgroundWidth" }.set(value)
+        get() = instance.asResolver().firstField { name = "backgroundWidth" }.get<Int>()!!
+        set(value) = instance.asResolver().firstField { name = "backgroundWidth" }.set(value)
 
     var currentTimeString: CharSequence
         get() = instance.asResolver().firstField { this.name = fieldCurrentTimeString }.get()!! as CharSequence
