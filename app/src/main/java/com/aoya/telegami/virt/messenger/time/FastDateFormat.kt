@@ -1,7 +1,7 @@
 
 package com.aoya.telegami.virt.messenger.time
 
-import de.robv.android.xposed.XposedHelpers.callMethod
+import com.highcapable.kavaref.KavaRef.Companion.asResolver
 import com.aoya.telegami.core.obfuscate.ResolverManager as resolver
 
 class FastDateFormat(
@@ -9,5 +9,5 @@ class FastDateFormat(
 ) {
     private val objPath = "org.telegram.messenger.time.FastDateFormat"
 
-    fun format(millis: Long) = callMethod(instance, resolver.getMethod(objPath, "format"), millis) as String
+    fun format(millis: Long) = instance.asResolver().firstMethod { this.name = resolver.getMethod(objPath, "format"); parameters(*arrayOf(millis?.javaClass ?: Any::class.java)) }.invoke(millis)!! as String
 }

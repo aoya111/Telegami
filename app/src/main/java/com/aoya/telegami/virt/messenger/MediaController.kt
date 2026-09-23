@@ -3,7 +3,7 @@ package com.aoya.telegami.virt.messenger
 import android.content.Context
 import android.net.Uri
 import com.aoya.telegami.Telegami
-import de.robv.android.xposed.XposedHelpers.callStaticMethod
+import com.highcapable.kavaref.KavaRef.Companion.resolve
 import java.lang.reflect.Proxy.newProxyInstance
 import com.aoya.telegami.core.obfuscate.ResolverManager as resolver
 
@@ -15,10 +15,10 @@ class MediaController {
             fullPath: String,
             context: Context,
             type: Int,
-            name: String?,
+            filename: String?,
             mime: String?,
             onSaved: ((Uri?) -> Unit)? = null,
-        ): Any? {
+        ) {
             val callbackClass = Telegami.loadClass(resolver.get("org.telegram.messenger.Utilities\$Callback"))
             val callback =
                 onSaved?.let { lambda ->
@@ -33,29 +33,20 @@ class MediaController {
                     }
                 }
 
-            return if (Telegami.packageName in listOf("it.octogram.android", "tw.nekomimi.nekogram")) {
-                callStaticMethod(
-                    Telegami.loadClass(resolver.get(OBJ_PATH)),
-                    resolver.getMethod(OBJ_PATH, "saveFile"),
-                    fullPath,
-                    context,
-                    type,
-                    name,
-                    mime,
-                    callback,
-                    true,
-                )
+            if (Telegami.packageName in listOf("it.octogram.android", "tw.nekomimi.nekogram")) {
+                (Telegami.loadClass(resolver.get(OBJ_PATH)) as Class<Any>)
+                    .resolve()
+                    .firstMethod {
+                        name = resolver.getMethod(OBJ_PATH, "saveFile")
+                        parameterCount = 7
+                    }.invoke(fullPath, context, type, filename, mime, callback, true)
             } else {
-                callStaticMethod(
-                    Telegami.loadClass(resolver.get(OBJ_PATH)),
-                    resolver.getMethod(OBJ_PATH, "saveFile"),
-                    fullPath,
-                    context,
-                    type,
-                    name,
-                    mime,
-                    callback,
-                )
+                (Telegami.loadClass(resolver.get(OBJ_PATH)) as Class<Any>)
+                    .resolve()
+                    .firstMethod {
+                        name = resolver.getMethod(OBJ_PATH, "saveFile")
+                        parameterCount = 6
+                    }.invoke(fullPath, context, type, filename, mime, callback)
             }
         }
     }

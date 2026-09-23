@@ -1,6 +1,6 @@
 package com.aoya.telegami.core.obfuscate
 
-import android.content.res.XModuleResources
+import com.aoya.telegami.core.ModuleAssets
 import com.aoya.telegami.util.logd
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -65,10 +65,8 @@ class JsonResolver(
             modulePath: String,
             variantName: String,
         ): JsonResolver {
-            val moduleRes = XModuleResources.createInstance(modulePath, null)
             val jsonString =
-                moduleRes.assets
-                    .open("obfuscation_mappings/${variantName.lowercase()}.json")
+                ModuleAssets.open(modulePath, "obfuscation_mappings/${variantName.lowercase()}.json")
                     .bufferedReader()
                     .use { it.readText() }
 

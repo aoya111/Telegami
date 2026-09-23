@@ -1,6 +1,6 @@
 package com.aoya.telegami.virt.tgnet
 
-import de.robv.android.xposed.XposedHelpers.callMethod
+import com.highcapable.kavaref.KavaRef.Companion.asResolver
 import com.aoya.telegami.core.obfuscate.ResolverManager as resolver
 
 class RequestDelegate(
@@ -11,10 +11,11 @@ class RequestDelegate(
     fun run(
         res: Any,
         error: Any?,
-    ) = callMethod(
-        instance,
-        resolver.getMethod(objPath, "run"),
-        res,
-        error,
-    )
+    ) {
+        instance
+            .asResolver()
+            .firstMethod {
+                name = resolver.getMethod(objPath, "run")
+            }.invoke(res, error)
+    }
 }

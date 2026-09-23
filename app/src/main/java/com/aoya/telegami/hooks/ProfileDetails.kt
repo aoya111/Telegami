@@ -1,33 +1,37 @@
 package com.aoya.telegami.hooks
 
+import android.util.Log
 import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import com.aoya.telegami.Telegami
+import com.aoya.telegami.util.findMethod
 import com.aoya.telegami.virt.messenger.AndroidUtilities
 import com.aoya.telegami.virt.messenger.ChatObject
 import com.aoya.telegami.virt.messenger.LocaleController
 import com.aoya.telegami.virt.messenger.UserObject
 import com.aoya.telegami.virt.ui.ProfileActivity
 import com.aoya.telegami.virt.ui.components.ItemOptions
-import com.highcapable.kavaref.KavaRef.Companion.resolve
-import com.highcapable.yukihookapi.hook.entity.YukiBaseHooker
+import io.github.libxposed.api.XposedInterface
 import com.aoya.telegami.core.i18n.TranslationManager as i18n
 import com.aoya.telegami.core.obfuscate.ResolverManager as resolver
 
-object ProfileDetails : YukiBaseHooker() {
+object ProfileDetails {
     const val PROFILE_ACTIVITY_CN = "org.telegram.ui.ProfileActivity"
-    val profileActivityClass by lazyClass(resolver.get(PROFILE_ACTIVITY_CN))
 
-    override fun onHook() {
-        profileActivityClass
-            .resolve()
-            .firstMethod {
-                name = resolver.getMethod(PROFILE_ACTIVITY_CN, "processOnClickOrPress")
-            }.hook {
-                before {
-                    val o = ProfileActivity(instance)
+    fun install(
+        xposed: XposedInterface,
+        classLoader: ClassLoader,
+    ) {
+        val method = classLoader.findMethod(PROFILE_ACTIVITY_CN, "processOnClickOrPress")
+        xposed.hook(method).intercept { chain ->
+            val args = chain.args.toMutableList()
+            var result: Any? = null
+            var hasResult = false
+            try {
+                run before@{
+                    val o = ProfileActivity(chain.thisObject!!)
 
                     val rowIdx = args[0] as Int
                     if (rowIdx != o.usernameRow) return@before
@@ -89,8 +93,17 @@ object ProfileDetails : YukiBaseHooker() {
                             },
                         )
                     itemOptions.show()
-                    resultFalse()
+                    result = false
+                    hasResult = true
                 }
+            } catch (throwable: Throwable) {
+                Log.e("Telegami", "Hook callback failed before ${method.name}", throwable)
             }
+            if (!hasResult) {
+                result = chain.proceed(args.toTypedArray())
+                hasResult = true
+            }
+            result
+        }
     }
 }

@@ -1,9 +1,8 @@
 package com.aoya.telegami.virt.messenger
 
+import com.highcapable.kavaref.KavaRef.Companion.resolve
 import com.aoya.telegami.Telegami
 import com.aoya.telegami.virt.tgnet.TLRPC
-import de.robv.android.xposed.XposedHelpers.callStaticMethod
-import de.robv.android.xposed.XposedHelpers.getStaticBooleanField
 import com.aoya.telegami.core.obfuscate.ResolverManager as resolver
 
 class ChatObject {
@@ -11,17 +10,9 @@ class ChatObject {
         private const val OBJ_PATH = "org.telegram.messenger.ChatObject"
 
         fun isPublic(chat: TLRPC.Chat): Boolean =
-            callStaticMethod(
-                Telegami.loadClass(resolver.get(OBJ_PATH)),
-                resolver.getMethod(OBJ_PATH, "isPublic"),
-                chat.getNativeInstance(),
-            ) as Boolean
+            (Telegami.loadClass(resolver.get(OBJ_PATH)) as Class<Any>).resolve().firstMethod { this.name = resolver.getMethod(OBJ_PATH, "isPublic"); parameters(*arrayOf(chat.getNativeInstance()?.javaClass ?: Any::class.java)) }.invoke(chat.getNativeInstance())!! as Boolean
 
         fun getPublicUsername(chat: TLRPC.Chat): String? =
-            callStaticMethod(
-                Telegami.loadClass(resolver.get(OBJ_PATH)),
-                resolver.getMethod(OBJ_PATH, "getPublicUsername"),
-                chat.getNativeInstance(),
-            ) as? String
+            (Telegami.loadClass(resolver.get(OBJ_PATH)) as Class<Any>).resolve().firstMethod { this.name = resolver.getMethod(OBJ_PATH, "getPublicUsername"); parameters(*arrayOf(chat.getNativeInstance()?.javaClass ?: Any::class.java)) }.invoke(chat.getNativeInstance())!! as? String
     }
 }

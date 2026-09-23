@@ -12,7 +12,6 @@ import androidx.fragment.app.Fragment
 import com.aoya.telegami.BuildConfig
 import com.aoya.telegami.R
 import com.aoya.telegami.databinding.FragmentHomeBinding
-import com.aoya.telegami.service.PrefManager
 import com.aoya.telegami.ui.util.ThemeUtils.attrDrawable
 import com.aoya.telegami.ui.util.ThemeUtils.getColor
 import com.aoya.telegami.ui.util.ThemeUtils.homeItemBackgroundColor
@@ -20,12 +19,10 @@ import com.aoya.telegami.ui.util.ThemeUtils.themeColor
 import com.aoya.telegami.ui.util.navigate
 import com.aoya.telegami.ui.util.setEdge2EdgeFlags
 import com.aoya.telegami.ui.util.setupToolbar
-import com.highcapable.yukihookapi.YukiHookAPI
 import dev.androidbroadcast.vbpd.viewBinding
 
 class HomeFragment : Fragment(R.layout.fragment_home) {
     private val binding by viewBinding(FragmentHomeBinding::bind)
-    private val moduleIsActive by lazy { YukiHookAPI.Status.isXposedModuleActive }
 
     override fun onViewCreated(
         view: View,
@@ -49,27 +46,15 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     }
 
     fun setupStatusCard() {
-        var color =
-            if (moduleIsActive) {
-                getColor(R.color.invalid)
-            } else {
-                themeColor(android.R.attr.colorPrimary)
-            }
+        val color = themeColor(android.R.attr.colorPrimary)
 
         with(binding.statusCard) {
             root.setCardBackgroundColor(color)
             root.outlineAmbientShadowColor = color
             root.outlineSpotShadowColor = color
 
-            if (moduleIsActive) {
-                moduleStatusIcon.setImageResource(R.drawable.sentiment_calm_24px)
-                val versionNameSimple = BuildConfig.VERSION_NAME.substringBefore(".r")
-                moduleStatus.text =
-                    getString(R.string.home_xposed_activated, versionNameSimple)
-            } else {
-                moduleStatusIcon.setImageResource(R.drawable.sentiment_very_dissatisfied_24px)
-                moduleStatus.setText(R.string.home_xposed_not_activated)
-            }
+            moduleStatusIcon.setImageResource(R.drawable.sentiment_calm_24px)
+            moduleStatus.text = getString(R.string.home_module_version, BuildConfig.VERSION_NAME)
         }
     }
 
@@ -160,11 +145,9 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             text1.text = getString(R.string.title_features)
             icon.setImageResource(R.drawable.outline_extension_24)
             root.setOnClickListener {
-                if (moduleIsActive) {
-                    navigate(R.id.nav_features)
-                }
+                navigate(R.id.nav_features)
             }
-            root.alpha = if (moduleIsActive) 1f else 0.5f
+            root.alpha = 1f
         }
 
         with(binding.navSettings) {

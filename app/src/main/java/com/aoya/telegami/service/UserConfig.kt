@@ -1,12 +1,12 @@
 package com.aoya.telegami.service
 
 import android.content.Context
+import android.content.SharedPreferences
 import com.aoya.telegami.util.logd
 import com.aoya.telegami.util.loge
+import com.aoya.telegami.util.logi
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import com.highcapable.yukihookapi.hook.factory.prefs
-import com.highcapable.yukihookapi.hook.xposed.prefs.YukiHookPrefsBridge
 
 typealias UserId = Long
 
@@ -29,24 +29,27 @@ data class UserPref(
 
 object UserConfig {
     private var localConfig: UserPref = UserPref()
-    private var userPref: YukiHookPrefsBridge? = null
+    private var userPref: SharedPreferences? = null
 
     private var user: User = User()
 
-    fun init(context: Context) {
+    fun init(
+        context: Context,
+        preferences: SharedPreferences? = null,
+    ) {
         logd("Initializing Config")
-        userPref = context.prefs("telegami")
+        userPref = preferences ?: context.getSharedPreferences("telegami", Context.MODE_PRIVATE)
         localConfig = readConfig()
     }
 
     fun setUser(user: User) {
-        logd("Setting User")
+        logi("Setting user")
         if (this.user.id != user.id) {
-            logd("Setting user: ${user.username} (${user.id})")
+            logi("User configured")
             this.user = user
             localConfig = readConfig()
         } else {
-            logd("Same user (${user.id}), skipping")
+            logi("Current user unchanged")
         }
     }
 
@@ -73,7 +76,7 @@ object UserConfig {
     fun writeConfig() {
         try {
             if (user.id != 0L) {
-                userPref?.edit { putString(user.id.toString(), Gson().toJson(localConfig)) }
+                userPref?.edit()?.putString(user.id.toString(), Gson().toJson(localConfig))?.apply()
             }
             logd("Config written successfully")
         } catch (e: Exception) {

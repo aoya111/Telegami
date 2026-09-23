@@ -2,9 +2,7 @@ package com.aoya.telegami.virt.ui.actionbar
 
 import android.graphics.drawable.Drawable
 import com.aoya.telegami.virt.ui.actionbar.ActionBarMenu
-import de.robv.android.xposed.XposedHelpers.callMethod
-import de.robv.android.xposed.XposedHelpers.getObjectField
-import de.robv.android.xposed.XposedHelpers.newInstance
+import com.highcapable.kavaref.KavaRef.Companion.asResolver
 import com.aoya.telegami.core.obfuscate.ResolverManager as resolver
 
 class ActionBar(
@@ -12,8 +10,28 @@ class ActionBar(
 ) {
     private val objPath = "org.telegram.ui.ActionBar.ActionBar"
 
-    val menu: ActionBarMenu?
-        get() = getObjectField(instance, resolver.getField(objPath, "menu"))?.let { ActionBarMenu(it) }
+    private val fieldMenu by lazy {
+        instance
+            .asResolver()
+            .firstField {
+                name = resolver.getField(objPath, "menu")
+                superclass()
+            }
+    }
 
-    fun createMenu(): ActionBarMenu = ActionBarMenu(callMethod(instance, resolver.getMethod(objPath, "createMenu")))
+    val menu: ActionBarMenu?
+        get() =
+            fieldMenu
+                .get()
+                ?.let { ActionBarMenu(it) }
+
+    fun createMenu(): ActionBarMenu =
+        ActionBarMenu(
+            instance
+                .asResolver()
+                .firstMethod {
+                    name = resolver.getMethod(objPath, "createMenu")
+                    superclass()
+                }.invoke()!!,
+        )
 }

@@ -1,7 +1,6 @@
 package com.aoya.telegami.virt.messenger
 
-import de.robv.android.xposed.XposedHelpers.callMethod
-import de.robv.android.xposed.XposedHelpers.getLongField
+import com.highcapable.kavaref.KavaRef.Companion.asResolver
 import com.aoya.telegami.core.obfuscate.ResolverManager as resolver
 
 class UserConfig(
@@ -10,11 +9,8 @@ class UserConfig(
     private val objPath = "org.telegram.messenger.UserConfig"
 
     val userId: Long
-        get() = getLongField(instance, "userId")
+        get() = instance.asResolver().firstField { this.name = "userId" }.get<Long>()!!
 
     fun getClientUserId(): Long =
-        callMethod(
-            instance,
-            resolver.getMethod(objPath, "getClientUserId"),
-        ) as? Long ?: 0L
+        instance.asResolver().firstMethod { this.name = resolver.getMethod(objPath, "getClientUserId"); parameters() }.invoke()!! as? Long ?: 0L
 }

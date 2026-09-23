@@ -10,8 +10,7 @@
     <string name="follow_system">Follow system</string>
 
     <!-- Home -->
-    <string name="home_xposed_activated">Module Activated [%s]</string>
-    <string name="home_xposed_not_activated">Module Not Activated</string>
+    <string name="home_module_version">v%s</string>
 
     <!-- Features -->
     <string name="feat_category_privacy">Privacy</string>

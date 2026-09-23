@@ -1,7 +1,7 @@
 package com.aoya.telegami.virt.messenger
 
+import com.highcapable.kavaref.KavaRef.Companion.asResolver
 import android.graphics.Bitmap
-import de.robv.android.xposed.XposedHelpers.callMethod
 import com.aoya.telegami.core.obfuscate.ResolverManager as resolver
 
 class ImageReceiver(
@@ -10,8 +10,5 @@ class ImageReceiver(
     private val objPath = "org.telegram.messenger.ImageReceiver"
 
     fun getBitmap(): Bitmap =
-        callMethod(
-            instance,
-            resolver.getMethod(objPath, "getBitmap"),
-        ) as Bitmap
+        instance.asResolver().firstMethod { this.name = resolver.getMethod(objPath, "getBitmap"); parameters() }.invoke()!! as Bitmap
 }

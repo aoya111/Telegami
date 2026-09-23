@@ -1,10 +1,9 @@
 package com.aoya.telegami.virt.messenger
 
+import com.highcapable.kavaref.KavaRef.Companion.asResolver
+import com.highcapable.kavaref.KavaRef.Companion.resolve
 import com.aoya.telegami.Telegami
 import com.aoya.telegami.virt.tgnet.TLRPC
-import de.robv.android.xposed.XposedHelpers.callMethod
-import de.robv.android.xposed.XposedHelpers.callStaticMethod
-import de.robv.android.xposed.XposedHelpers.getObjectField
 import com.aoya.telegami.core.obfuscate.ResolverManager as resolver
 
 class MessageObject(
@@ -18,22 +17,18 @@ class MessageObject(
     private val methodIsSecretMedia by lazy { resolver.getMethod(objPath, "isSecretMedia") }
 
     val messageOwner: TLRPC.Message
-        get() = TLRPC.Message(getObjectField(instance, fieldMessageOwner))
+        get() = TLRPC.Message(instance.asResolver().firstField { this.name = fieldMessageOwner }.get()!!)
 
-    fun getId(): Int = callMethod(instance, methodGetId) as Int
+    fun getId(): Int = instance.asResolver().firstMethod { this.name = methodGetId; parameters() }.invoke()!! as Int
 
-    fun getDialogId(): Long = callMethod(instance, methodGetDialogId) as Long
+    fun getDialogId(): Long = instance.asResolver().firstMethod { this.name = methodGetDialogId; parameters() }.invoke()!! as Long
 
-    fun isSecretMedia(): Boolean = callMethod(instance, methodIsSecretMedia) as Boolean
+    fun isSecretMedia(): Boolean = instance.asResolver().firstMethod { this.name = methodIsSecretMedia; parameters() }.invoke()!! as Boolean
 
     companion object {
         private const val OBJ_PATH = "org.telegram.messenger.MessageObject"
 
         fun getMedia(o: Any): Any =
-            callStaticMethod(
-                Telegami.loadClass(resolver.get(OBJ_PATH)),
-                resolver.getMethod(OBJ_PATH, "getMedia"),
-                o,
-            )
+            (Telegami.loadClass(resolver.get(OBJ_PATH)) as Class<Any>).resolve().firstMethod { this.name = resolver.getMethod(OBJ_PATH, "getMedia"); parameters(*arrayOf(o?.javaClass ?: Any::class.java)) }.invoke(o)!!
     }
 }

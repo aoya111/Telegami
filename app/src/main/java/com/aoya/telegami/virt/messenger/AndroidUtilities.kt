@@ -2,7 +2,7 @@ package com.aoya.telegami.virt.messenger
 
 import com.aoya.telegami.Telegami
 import com.aoya.telegami.virt.tgnet.TLRPC
-import de.robv.android.xposed.XposedHelpers.callStaticMethod
+import com.highcapable.kavaref.KavaRef.Companion.resolve
 import com.aoya.telegami.core.obfuscate.ResolverManager as resolver
 
 class AndroidUtilities {
@@ -13,18 +13,21 @@ class AndroidUtilities {
         private val methodAddToClipboard by lazy { resolver.getMethod(OBJ_PATH, "addToClipboard") }
         private val methodDp by lazy { resolver.getMethod(OBJ_PATH, "dp") }
 
-        fun addToClipboard(text: String): Unit? =
-            callStaticMethod(
-                classAndroidUtilities,
-                methodAddToClipboard,
-                text,
-            ) as? Unit
+        fun addToClipboard(text: CharSequence) {
+            (classAndroidUtilities as Class<Any>)
+                .resolve()
+                .firstMethod {
+                    name = methodAddToClipboard
+                    parameters(CharSequence::class.java)
+                }.invoke(text)
+        }
 
         fun dp(value: Float): Int =
-            callStaticMethod(
-                classAndroidUtilities,
-                methodDp,
-                value,
-            ) as Int
+            (classAndroidUtilities as Class<Any>)
+                .resolve()
+                .firstMethod {
+                    name = methodDp
+                    parameters(Float::class.javaPrimitiveType!!)
+                }.invoke(value)!! as Int
     }
 }

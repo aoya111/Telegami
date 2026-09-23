@@ -1,7 +1,7 @@
 package com.aoya.telegami.virt.ui.actionbar
 
+import com.highcapable.kavaref.KavaRef.Companion.asResolver
 import android.graphics.drawable.Drawable
-import de.robv.android.xposed.XposedHelpers.callMethod
 import com.aoya.telegami.core.obfuscate.ResolverManager as resolver
 
 class ActionBarMenuItem(
@@ -9,11 +9,11 @@ class ActionBarMenuItem(
 ) {
     private val objPath = "org.telegram.ui.ActionBar.ActionBarMenuItem"
 
-    fun lazilyAddColoredGap() = callMethod(instance, resolver.getMethod(objPath, "lazilyAddColoredGap"))
+    fun lazilyAddColoredGap() = instance.asResolver().firstMethod { this.name = resolver.getMethod(objPath, "lazilyAddColoredGap"); parameters() }.invoke()!!
 
     fun lazilyAddSubItem(
         id: Int,
         iconDrawable: Drawable?,
         text: String,
-    ) = callMethod(instance, resolver.getMethod(objPath, "lazilyAddSubItem"), id, iconDrawable, text)
+    ) = instance.asResolver().firstMethod { this.name = resolver.getMethod(objPath, "lazilyAddSubItem"); parameters(*arrayOf(id?.javaClass ?: Any::class.java, iconDrawable?.javaClass ?: Any::class.java, text?.javaClass ?: Any::class.java)) }.invoke(id, iconDrawable, text)!!
 }

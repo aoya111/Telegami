@@ -10,6 +10,7 @@ class TelegamiApp : Application() {
     override fun onCreate() {
         super.onCreate()
         telegamiApp = this
+        PrefManager.init()
 
         runCatching {
             AppCompatDelegate.setDefaultNightMode(PrefManager.darkTheme)
