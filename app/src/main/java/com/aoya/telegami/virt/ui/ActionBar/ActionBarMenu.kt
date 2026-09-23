@@ -20,11 +20,11 @@ class ActionBarMenu(
                 parameters(Int::class.javaPrimitiveType!!, Drawable::class.java)
             }.invoke(id, drawable)!!
 
-    fun getItem(id: Int): Any =
+    fun getItem(id: Int): Any? =
         instance
             .asResolver()
             .firstMethod {
                 name = resolver.getMethod(objPath, "getItem")
                 parameters(Int::class.javaPrimitiveType!!)
-            }.invoke(id)!!
+            }.invoke(id)
 }

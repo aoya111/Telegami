@@ -66,8 +66,8 @@ class SecretMediaViewer(
     val secretDeleteTimer: Any
         get() = fieldSecretDeleteTimer.get()!!
 
-    val currentMessageObject: MessageObject
-        get() = MessageObject(fieldCurrentMessageObject.get()!!)
+    val currentMessageObject: MessageObject?
+        get() = fieldCurrentMessageObject.get()?.let(::MessageObject)
 
     val isVideo: Boolean
         get() = fieldIsVideo.get<Boolean>()!!

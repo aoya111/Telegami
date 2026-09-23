@@ -33,7 +33,9 @@ object ProfileDetails {
                 run before@{
                     val o = ProfileActivity(chain.thisObject!!)
 
-                    val rowIdx = args[0] as Int
+                    // Nekogram 12.10.3 adds two leading callback arguments.
+                    val argumentOffset = if (args.size >= 4) 2 else 0
+                    val rowIdx = args[argumentOffset] as Int
                     if (rowIdx != o.usernameRow) return@before
 
                     val chatId = o.chatId
@@ -63,7 +65,7 @@ object ProfileDetails {
 
                     val contentView = o.contentView as? ViewGroup ?: return@before
                     val resourcesProvider = o.resourcesProvider
-                    val view = args[1] as View
+                    val view = args[argumentOffset + 1] as View
                     val msgCopyId = Telegami.getResource("msg_copy", "drawable") ?: 0
 
                     val itemOptions = ItemOptions.makeOptions(contentView, resourcesProvider, view, false)
