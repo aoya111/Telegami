@@ -53,6 +53,28 @@
       },
       "obfuscated": "org.telegram.messenger.b"
     },
+    "org.telegram.messenger.ApplicationLoaderImpl": {
+      "fields": {},
+      "hint": null,
+      "methods": {
+        "showUpdateAppPopup": {
+          "hint": null,
+          "obfuscated": "Y"
+        }
+      },
+      "obfuscated": "org.telegram.messenger.ApplicationLoaderImpl"
+    },
+    "org.telegram.ui.Components.UpdateLayout": {
+      "fields": {},
+      "hint": null,
+      "methods": {
+        "updateAppUpdateViews": {
+          "hint": null,
+          "obfuscated": "updateAppUpdateViews"
+        }
+      },
+      "obfuscated": "org.telegram.ui.Components.m5"
+    },
     "org.telegram.messenger.ChatObject": {
       "fields": {},
       "hint": "\"remove from speaking \"",

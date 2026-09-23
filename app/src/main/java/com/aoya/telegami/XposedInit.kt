@@ -9,7 +9,7 @@ import com.aoya.telegami.hooks.ApplyTheme
 import com.aoya.telegami.hooks.BoostDownload
 import com.aoya.telegami.hooks.DisableAds
 import com.aoya.telegami.hooks.FakePremium
-import com.aoya.telegami.hooks.HideBetaUpdate
+import com.aoya.telegami.hooks.HideUpdate
 import com.aoya.telegami.hooks.HideStoryViewStatus
 import com.aoya.telegami.hooks.LocaleController
 import com.aoya.telegami.hooks.MarkMessages
@@ -53,7 +53,7 @@ class XposedInit : XposedModule() {
         MarkMessages.install(this, classLoader)
         AllowScreenshots.install(this, classLoader)
         ProfileDetails.install(this, classLoader)
-        HideBetaUpdate.install(this, classLoader)
+        HideUpdate.install(this, classLoader)
         Privacy.install(this, classLoader)
         HideStoryViewStatus.install(this, classLoader)
         ShowDeletedMessages.install(this, classLoader)
