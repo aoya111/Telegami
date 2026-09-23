@@ -85,7 +85,7 @@ object MessageHelper {
                     "drawable",
                 ).takeIf { it != 0 } ?: return ""
 
-        val drawable = Telegami.context.getDrawable(drawableResId)?.mutate()
+        val drawable = Telegami.context.getDrawable(drawableResId)?.mutate() ?: return ""
         val span = ColoredImageSpan.newInstance(drawable)
         span.setSize(Theme.chatTimePaint.textSize.toInt())
 

@@ -1,7 +1,6 @@
 package com.aoya.telegami.virt.messenger
 
-import de.robv.android.xposed.XposedHelpers.getIntField
-import de.robv.android.xposed.XposedHelpers.setIntField
+import com.highcapable.kavaref.KavaRef.Companion.asResolver
 import com.aoya.telegami.core.obfuscate.ResolverManager as resolver
 
 class FileLoadOperation(
@@ -9,19 +8,48 @@ class FileLoadOperation(
 ) {
     private val objPath = "org.telegram.messenger.FileLoadOperation"
 
+    private val fieldDownloadChunkSizeBig by lazy {
+        instance
+            .asResolver()
+            .firstField {
+                name = resolver.getField(objPath, "downloadChunkSizeBigcolor")
+            }
+    }
+    private val fieldMaxDownloadRequests by lazy {
+        instance
+            .asResolver()
+            .firstField {
+                name = resolver.getField(objPath, "maxDownloadRequests")
+            }
+    }
+    private val fieldMaxDownloadRequestsBig by lazy {
+        instance
+            .asResolver()
+            .firstField {
+                name = resolver.getField(objPath, "maxDownloadRequestsBig")
+            }
+    }
+    private val fieldMaxCdnParts by lazy {
+        instance
+            .asResolver()
+            .firstField {
+                name = resolver.getField(objPath, "maxCdnParts")
+            }
+    }
+
     var downloadChunkSizeBig: Int
-        get() = getIntField(instance, resolver.getField(objPath, "downloadChunkSizeBig"))
-        set(value) = setIntField(instance, resolver.getField(objPath, "downloadChunkSizeBig"), value)
+        get() = fieldDownloadChunkSizeBig.get<Int>()!!
+        set(value) = fieldDownloadChunkSizeBig.set(value)
 
     var maxDownloadRequests: Int
-        get() = getIntField(instance, resolver.getField(objPath, "maxDownloadRequests"))
-        set(value) = setIntField(instance, resolver.getField(objPath, "maxDownloadRequests"), value)
+        get() = fieldMaxDownloadRequests.get<Int>()!!
+        set(value) = fieldMaxDownloadRequests.set(value)
 
     var maxDownloadRequestsBig: Int
-        get() = getIntField(instance, resolver.getField(objPath, "maxDownloadRequestsBig"))
-        set(value) = setIntField(instance, resolver.getField(objPath, "maxDownloadRequestsBig"), value)
+        get() = fieldMaxDownloadRequestsBig.get<Int>()!!
+        set(value) = fieldMaxDownloadRequestsBig.set(value)
 
     var maxCdnParts: Int
-        get() = getIntField(instance, resolver.getField(objPath, "maxCdnParts"))
-        set(value) = setIntField(instance, resolver.getField(objPath, "maxCdnParts"), value)
+        get() = fieldMaxCdnParts.get<Int>()!!
+        set(value) = fieldMaxCdnParts.set(value)
 }

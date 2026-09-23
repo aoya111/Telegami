@@ -1,45 +1,37 @@
 package com.aoya.telegami.hooks
 
 import com.aoya.telegami.service.Config
-import com.highcapable.kavaref.KavaRef.Companion.resolve
-import com.highcapable.yukihookapi.hook.entity.YukiBaseHooker
-import com.aoya.telegami.core.obfuscate.ResolverManager as resolver
+import com.aoya.telegami.util.findMethod
+import io.github.libxposed.api.XposedInterface
+import android.util.Log
 
-object DisableAds : YukiBaseHooker() {
+object DisableAds {
     const val CHAT_ACTIVITY_CN = "org.telegram.ui.ChatActivity"
     const val MESSAGES_CONTROLLER_CN = "org.telegram.messenger.MessagesController"
 
-    val chatActivityClass by lazyClass(resolver.get(CHAT_ACTIVITY_CN))
-    val messagesControllerClass by lazyClass(resolver.get(MESSAGES_CONTROLLER_CN))
-
-    override fun onHook() {
+    fun install(xposed: XposedInterface, classLoader: ClassLoader) {
         if (!Config.isFeatureEnabled("DisableAds")) return
-        chatActivityClass
-            .resolve()
-            .firstMethod {
-                name = resolver.getMethod(CHAT_ACTIVITY_CN, "addSponsoredMessages")
-            }.hook {
-                before {
-                    resultNull()
+        listOf(
+            classLoader.findMethod(CHAT_ACTIVITY_CN, "addSponsoredMessages") to null,
+            classLoader.findMethod(CHAT_ACTIVITY_CN, "getSponsoredMessagesCount") to 0,
+            classLoader.findMethod(MESSAGES_CONTROLLER_CN, "getSponsoredMessages") to null,
+        ).forEach { (method, value) ->
+            xposed.hook(method).intercept { chain ->
+                val args = chain.args.toMutableList()
+                var result: Any? = null
+                var hasResult = false
+                try {
+                    result = value
+                    hasResult = true
+                } catch (throwable: Throwable) {
+                    Log.e("Telegami", "Hook callback failed before ${method.name}", throwable)
                 }
-            }
-        chatActivityClass
-            .resolve()
-            .firstMethod {
-                name = resolver.getMethod(CHAT_ACTIVITY_CN, "getSponsoredMessagesCount")
-            }.hook {
-                before {
-                    result = 0
+                if (!hasResult) {
+                    result = chain.proceed(args.toTypedArray())
+                    hasResult = true
                 }
+                result
             }
-        messagesControllerClass
-            .resolve()
-            .firstMethod {
-                name = resolver.getMethod(MESSAGES_CONTROLLER_CN, "getSponsoredMessages")
-            }.hook {
-                before {
-                    resultNull()
-                }
-            }
+        }
     }
 }

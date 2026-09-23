@@ -3,7 +3,7 @@ package com.aoya.telegami.virt.ui.actionbar
 import android.content.Context
 import com.aoya.telegami.virt.messenger.MessagesController
 import com.aoya.telegami.virt.messenger.UserConfig
-import de.robv.android.xposed.XposedHelpers.callMethod
+import com.highcapable.kavaref.KavaRef.Companion.asResolver
 import com.aoya.telegami.core.obfuscate.ResolverManager as resolver
 
 open class BaseFragment(
@@ -11,12 +11,39 @@ open class BaseFragment(
 ) {
     private val objPath = "org.telegram.ui.ActionBar.BaseFragment"
 
-    fun getContext() = callMethod(instance, resolver.getMethod(objPath, "getContext")) as Context
+    fun getContext() =
+        instance
+            .asResolver()
+            .firstMethod {
+                name = resolver.getMethod(objPath, "getContext")
+                superclass()
+            }.invoke()!! as Context
 
     fun getMessagesController(): MessagesController =
-        MessagesController(callMethod(instance, resolver.getMethod(objPath, "getMessagesController")))
+        MessagesController(
+            instance
+                .asResolver()
+                .firstMethod {
+                    name = resolver.getMethod(objPath, "getMessagesController")
+                    superclass()
+                }.invoke()!!,
+        )
 
-    fun getUserConfig(): UserConfig = UserConfig(callMethod(instance, resolver.getMethod(objPath, "getUserConfig")))
+    fun getUserConfig(): UserConfig =
+        UserConfig(
+            instance
+                .asResolver()
+                .firstMethod {
+                    name = resolver.getMethod(objPath, "getUserConfig")
+                    superclass()
+                }.invoke()!!,
+        )
 
-    fun presentFragment(fragment: Any) = callMethod(instance, "presentFragment", fragment) as Boolean
+    fun presentFragment(fragment: Any) =
+        instance
+            .asResolver()
+            .firstMethod {
+                this.name = "presentFragment"
+                parameters(*arrayOf(fragment?.javaClass ?: Any::class.java))
+            }.invoke(fragment)!! as Boolean
 }

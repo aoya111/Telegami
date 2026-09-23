@@ -1,7 +1,7 @@
 package com.aoya.telegami.virt.sqlite
 
+import com.highcapable.kavaref.KavaRef.Companion.asResolver
 import com.aoya.telegami.virt.sqlite.SQLiteCursor
-import de.robv.android.xposed.XposedHelpers.callMethod
 import com.aoya.telegami.core.obfuscate.ResolverManager as resolver
 
 class SQLiteDatabase(
@@ -12,5 +12,5 @@ class SQLiteDatabase(
     fun queryFinalized(
         sql: String,
         vararg args: Any,
-    ): SQLiteCursor? = callMethod(instance, resolver.getMethod(objPath, "queryFinalized"), sql, args)?.let { SQLiteCursor(it) }
+    ): SQLiteCursor? = instance.asResolver().firstMethod { this.name = resolver.getMethod(objPath, "queryFinalized"); parameters(*arrayOf(sql?.javaClass ?: Any::class.java, args?.javaClass ?: Any::class.java)) }.invoke(sql, args)!!?.let { SQLiteCursor(it) }
 }

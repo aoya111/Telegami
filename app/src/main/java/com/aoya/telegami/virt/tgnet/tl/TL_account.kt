@@ -1,7 +1,6 @@
 package com.aoya.telegami.virt.tgnet.tl
 
-import de.robv.android.xposed.XposedHelpers.getBooleanField
-import de.robv.android.xposed.XposedHelpers.setBooleanField
+import com.highcapable.kavaref.KavaRef.Companion.asResolver
 import com.aoya.telegami.core.obfuscate.ResolverManager as resolver
 
 class TLAccount(
@@ -15,7 +14,7 @@ class TLAccount(
         private val objPath = "org.telegram.tgnet.tl.TL_account\$updateStatus"
 
         var offline: Boolean
-            get() = getBooleanField(instance, resolver.getField(objPath, "offline"))
-            set(value) = setBooleanField(instance, resolver.getField(objPath, "offline"), value)
+            get() = instance.asResolver().firstField { this.name = resolver.getField(objPath, "offline") }.get<Boolean>()!!
+            set(value) = instance.asResolver().firstField { this.name = resolver.getField(objPath, "offline") }.set(value)
     }
 }

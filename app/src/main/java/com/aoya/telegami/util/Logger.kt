@@ -2,16 +2,14 @@ package com.aoya.telegami.util
 
 import android.util.Log
 import com.aoya.telegami.BuildConfig
-import de.robv.android.xposed.XposedBridge
 
 object Logger {
     private const val TAG = "Telegami"
+    private var xposedLogger: ((Int, String, String, Throwable?) -> Unit)? = null
 
-    private fun shouldLogToXposed(level: Int): Boolean =
-        when {
-            BuildConfig.DEBUG -> level >= Log.WARN
-            else -> level >= Log.ERROR // Only errors in release
-        }
+    fun attachXposedLogger(logger: (Int, String, String, Throwable?) -> Unit) {
+        xposedLogger = logger
+    }
 
     // Verbose - debug builds only, never to Xposed
     fun v(
@@ -66,12 +64,10 @@ object Logger {
                 "$message: ${throwable.message}"
             }
 
-        XposedBridge.log("[$TAG] ERROR: $fullMessage")
-        XposedBridge.log(Log.getStackTraceString(throwable))
-
         if (BuildConfig.ENABLE_LOGS) {
             Log.e(TAG, fullMessage, throwable)
         }
+        xposedLogger?.invoke(Log.ERROR, TAG, fullMessage, throwable)
     }
 
     private fun log(
@@ -82,12 +78,11 @@ object Logger {
     ) {
         val fullMessage = if (source != null) "[$source] $message" else message
 
-        if (forceXposed || shouldLogToXposed(level)) {
-            XposedBridge.log("[$TAG] $fullMessage")
-        }
-
         if (BuildConfig.ENABLE_LOGS) {
             Log.println(level, TAG, fullMessage)
+        }
+        if (forceXposed) {
+            xposedLogger?.invoke(level, TAG, fullMessage, null)
         }
     }
 }

@@ -2,9 +2,8 @@ package com.aoya.telegami.virt.messenger
 
 import com.aoya.telegami.Telegami
 import com.aoya.telegami.virt.tgnet.TLRPC
-import de.robv.android.xposed.XposedHelpers.callMethod
-import de.robv.android.xposed.XposedHelpers.callStaticMethod
-import de.robv.android.xposed.XposedHelpers.getStaticIntField
+import com.highcapable.kavaref.KavaRef.Companion.asResolver
+import com.highcapable.kavaref.KavaRef.Companion.resolve
 import java.io.File
 import com.aoya.telegami.core.obfuscate.ResolverManager as resolver
 
@@ -14,11 +13,12 @@ class FileLoader(
     private val objPath = OBJ_PATH
 
     fun getPathToMessage(message: TLRPC.Message): File =
-        callMethod(
-            instance,
-            resolver.getMethod(objPath, "getPathToMessage"),
-            message.getNativeInstance(),
-        ) as File
+        instance
+            .asResolver()
+            .firstMethod {
+                name = resolver.getMethod(objPath, "getPathToMessage")
+                parameterCount = 1
+            }.invoke(message.getNativeInstance())!! as File
 
     companion object {
         private const val OBJ_PATH = "org.telegram.messenger.FileLoader"
@@ -31,26 +31,27 @@ class FileLoader(
             if (Telegami.packageName == "xyz.nextalone.nagram") {
                 Telegami.context.getCacheDir()
             } else {
-                callStaticMethod(
-                    Telegami.loadClass(resolver.get(OBJ_PATH)),
-                    resolver.getMethod(OBJ_PATH, "getInternalCacheDir"),
-                ) as File
+                (Telegami.loadClass(resolver.get(OBJ_PATH)) as Class<Any>)
+                    .resolve()
+                    .firstMethod {
+                        name = resolver.getMethod(OBJ_PATH, "getInternalCacheDir")
+                    }.invoke()!! as File
             }
 
         fun getDirectory(type: Int): File =
-            callStaticMethod(
-                Telegami.loadClass(resolver.get(OBJ_PATH)),
-                resolver.getMethod(OBJ_PATH, "getDirectory"),
-                type,
-            ) as File
+            (Telegami.loadClass(resolver.get(OBJ_PATH)) as Class<Any>)
+                .resolve()
+                .firstMethod {
+                    name = resolver.getMethod(OBJ_PATH, "getDirectory")
+                }.invoke(type)!! as File
 
         fun getInstance(num: Int): FileLoader =
             FileLoader(
-                callStaticMethod(
-                    Telegami.loadClass(resolver.get(OBJ_PATH)),
-                    resolver.getMethod(OBJ_PATH, "getInstance"),
-                    num,
-                ),
+                (Telegami.loadClass(resolver.get(OBJ_PATH)) as Class<Any>)
+                    .resolve()
+                    .firstMethod {
+                        name = resolver.getMethod(OBJ_PATH, "getInstance")
+                    }.invoke(num)!!,
             )
     }
 }

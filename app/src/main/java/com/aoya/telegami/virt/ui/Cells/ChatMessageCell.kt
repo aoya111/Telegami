@@ -2,11 +2,7 @@ package com.aoya.telegami.virt.ui.cells
 
 import com.aoya.telegami.Telegami
 import com.aoya.telegami.virt.messenger.MessageObject
-import de.robv.android.xposed.XposedHelpers.callMethod
-import de.robv.android.xposed.XposedHelpers.getIntField
-import de.robv.android.xposed.XposedHelpers.getObjectField
-import de.robv.android.xposed.XposedHelpers.setIntField
-import de.robv.android.xposed.XposedHelpers.setObjectField
+import com.highcapable.kavaref.KavaRef.Companion.asResolver
 import com.aoya.telegami.core.obfuscate.ResolverManager as resolver
 
 class ChatMessageCell(
@@ -18,20 +14,28 @@ class ChatMessageCell(
     private val methodGetMessageObject by lazy { resolver.getMethod(objPath, "getMessageObject") }
 
     var timeWidth: Int
-        get() = getIntField(instance, "timeWidth")
-        set(value) = setIntField(instance, "timeWidth", value)
+        get() = instance.asResolver().firstField { this.name = "timeWidth" }.get<Int>()!!
+        set(value) = instance.asResolver().firstField { this.name = "timeWidth" }.set(value)
 
     var timeTextWidth: Int
-        get() = getIntField(instance, "timeTextWidth")
-        set(value) = setIntField(instance, "timeTextWidth", value)
+        get() = instance.asResolver().firstField { this.name = "timeTextWidth" }.get<Int>()!!
+        set(value) = instance.asResolver().firstField { this.name = "timeTextWidth" }.set(value)
 
     var backgroundWidth: Int
-        get() = getIntField(instance, "backgroundWidth")
-        set(value) = setIntField(instance, "backgroundWidth", value)
+        get() = instance.asResolver().firstField { this.name = "backgroundWidth" }.get<Int>()!!
+        set(value) = instance.asResolver().firstField { this.name = "backgroundWidth" }.set(value)
 
     var currentTimeString: CharSequence
-        get() = getObjectField(instance, fieldCurrentTimeString) as CharSequence
-        set(value) = setObjectField(instance, fieldCurrentTimeString, value)
+        get() = instance.asResolver().firstField { this.name = fieldCurrentTimeString }.get()!! as CharSequence
+        set(value) = instance.asResolver().firstField { this.name = fieldCurrentTimeString }.set(value)
 
-    fun getMessageObject(): MessageObject = MessageObject(callMethod(instance, methodGetMessageObject))
+    fun getMessageObject(): MessageObject =
+        MessageObject(
+            instance
+                .asResolver()
+                .firstMethod {
+                    this.name = methodGetMessageObject
+                    parameters()
+                }.invoke()!!,
+        )
 }

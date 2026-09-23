@@ -1,13 +1,8 @@
 package com.aoya.telegami.virt.tgnet
 
 import com.aoya.telegami.Telegami
-import de.robv.android.xposed.XposedHelpers.getIntField
-import de.robv.android.xposed.XposedHelpers.getLongField
-import de.robv.android.xposed.XposedHelpers.getObjectField
-import de.robv.android.xposed.XposedHelpers.newInstance
-import de.robv.android.xposed.XposedHelpers.setIntField
-import de.robv.android.xposed.XposedHelpers.setLongField
-import de.robv.android.xposed.XposedHelpers.setObjectField
+import com.highcapable.kavaref.KavaRef.Companion.asResolver
+import com.highcapable.kavaref.KavaRef.Companion.resolve
 import com.aoya.telegami.core.obfuscate.ResolverManager as resolver
 
 class TLRPC {
@@ -20,34 +15,74 @@ class TLRPC {
     ) {
         private val objPath = "org.telegram.tgnet.TLRPC\$User"
 
-        private val fieldId by lazy { resolver.getField(objPath, "id") }
-        private val fieldUsername by lazy { resolver.getField(objPath, "username") }
-        private val fieldFlags by lazy { resolver.getField(objPath, "flags") }
-        private val fieldFlags2 by lazy { resolver.getField(objPath, "flags2") }
-        private val fieldColor by lazy { resolver.getField(objPath, "color") }
-        private val fieldProfileColor by lazy { resolver.getField(objPath, "profile_color") }
+        private val fieldId by lazy {
+            instance
+                .asResolver()
+                .firstField {
+                    name = resolver.getField(objPath, "id")
+                    superclass()
+                }
+        }
+        private val fieldUsername by lazy {
+            instance
+                .asResolver()
+                .firstField {
+                    name = resolver.getField(objPath, "username")
+                    superclass()
+                }
+        }
+        private val fieldFlags by lazy {
+            instance.asResolver().firstField {
+                name = resolver.getField(objPath, "flags")
+                superclass()
+            }
+        }
+        private val fieldFlags2 by lazy {
+            instance.asResolver().firstField {
+                name = resolver.getField(objPath, "flags2")
+                superclass()
+            }
+        }
+        private val fieldColor by lazy {
+            instance.asResolver().firstField {
+                name = resolver.getField(objPath, "color")
+                superclass()
+            }
+        }
+        private val fieldProfileColor by lazy {
+            instance.asResolver().firstField {
+                name = resolver.getField(objPath, "profile_color")
+                superclass()
+            }
+        }
 
         val id: Long
-            get() = getLongField(instance, fieldId)
+            get() = fieldId.get<Long>()!!
 
         val username: String
-            get() = (getObjectField(instance, fieldUsername) as? String) ?: ""
+            get() = fieldUsername.get()!! as? String ?: ""
 
         var flags: Int
-            get() = getIntField(instance, fieldFlags)
-            set(value) = setIntField(instance, fieldFlags, value)
+            get() = fieldFlags.get<Int>()!!
+            set(value) = fieldFlags.set(value)
 
         var flags2: Int
-            get() = getIntField(instance, fieldFlags2)
-            set(value) = setIntField(instance, fieldFlags2, value)
+            get() = fieldFlags.get<Int>()!!
+            set(value) = fieldFlags.set(value)
 
         var color: PeerColor?
-            get() = getObjectField(instance, fieldColor)?.let { TLPeerColor(it) }
-            set(value) = setObjectField(instance, fieldColor, value?.getNativeInstance())
+            get() =
+                fieldColor
+                    .get()
+                    ?.let { TLPeerColor(it) }
+            set(value) = fieldColor.set(value?.getNativeInstance())
 
         var profileColor: PeerColor?
-            get() = getObjectField(instance, fieldProfileColor)?.let { TLPeerColor(it) }
-            set(value) = setObjectField(instance, fieldProfileColor, value?.getNativeInstance())
+            get() =
+                fieldProfileColor
+                    .get()
+                    ?.let { TLPeerColor(it) }
+            set(value) = fieldProfileColor.set(value?.getNativeInstance())
 
         fun getNativeInstance() = instance
     }
@@ -57,23 +92,51 @@ class TLRPC {
     ) {
         private val objPath = "org.telegram.tgnet.TLRPC\$Message"
 
-        private val fieldDate by lazy { resolver.getField(objPath, "date") }
-        private val fieldFlags by lazy { resolver.getField(objPath, "flags") }
-        private val fieldTtl by lazy { resolver.getField(objPath, "ttl") }
-        private val fieldMedia by lazy { resolver.getField(objPath, "media") }
+        private val fieldDate by lazy {
+            instance
+                .asResolver()
+                .firstField {
+                    name = resolver.getField(objPath, "date")
+                    superclass()
+                }
+        }
+        private val fieldFlags by lazy {
+            instance
+                .asResolver()
+                .firstField {
+                    name = resolver.getField(objPath, "flags")
+                    superclass()
+                }
+        }
+        private val fieldTtl by lazy {
+            instance
+                .asResolver()
+                .firstField {
+                    name = resolver.getField(objPath, "ttl")
+                    superclass()
+                }
+        }
+        private val fieldMedia by lazy {
+            instance
+                .asResolver()
+                .firstField {
+                    name = resolver.getField(objPath, "media")
+                    superclass()
+                }
+        }
 
         val date: Int
-            get() = getIntField(instance, fieldDate)
+            get() = fieldDate.get<Int>()!!
 
         val flags: Int
-            get() = getIntField(instance, fieldFlags)
+            get() = fieldFlags.get<Int>()!!
 
         var ttl: Int
-            get() = getIntField(instance, fieldTtl)
-            set(value) = setIntField(instance, fieldTtl, value)
+            get() = fieldTtl.get<Int>()!!
+            set(value) = fieldTtl.set(value)
 
         val media: MessageMedia
-            get() = MessageMedia(getObjectField(instance, fieldMedia))
+            get() = MessageMedia(fieldMedia.get()!!)
 
         fun getNativeInstance() = instance
     }
@@ -83,15 +146,29 @@ class TLRPC {
     ) {
         private val objPath = "org.telegram.tgnet.TLRPC\$MessageMedia"
 
-        private val fieldTtl by lazy { resolver.getField(objPath, "ttl") }
-        private val fieldMedia by lazy { resolver.getField(objPath, "media") }
+        private val fieldTtl by lazy {
+            instance
+                .asResolver()
+                .firstField {
+                    name = resolver.getField(objPath, "ttl")
+                    superclass()
+                }
+        }
+        private val fieldMedia by lazy {
+            instance
+                .asResolver()
+                .firstField {
+                    name = resolver.getField(objPath, "media")
+                    superclass()
+                }
+        }
 
         var ttl: Int
-            get() = getIntField(instance, fieldTtl)
-            set(value) = setIntField(instance, fieldTtl, value)
+            get() = fieldTtl.get<Int>()!!
+            set(value) = fieldTtl.set(value)
 
         val media: Any?
-            get() = getObjectField(instance, fieldMedia)
+            get() = fieldMedia.get()!!
 
         fun getNativeInstance() = instance
     }
@@ -109,21 +186,42 @@ class TLRPC {
     ) {
         private val objPath = "org.telegram.tgnet.TLRPC\$PeerColor"
 
-        private val fieldFlags by lazy { resolver.getField(objPath, "flags") }
-        private val fieldColor by lazy { resolver.getField(objPath, "color") }
-        private val fieldBackgroundEmojiId by lazy { resolver.getField(objPath, "background_emoji_id") }
+        private val fieldFlags by lazy {
+            instance
+                .asResolver()
+                .firstField {
+                    name = resolver.getField(objPath, "flags")
+                    superclass()
+                }
+        }
+        private val fieldColor by lazy {
+            instance
+                .asResolver()
+                .firstField {
+                    name = resolver.getField(objPath, "color")
+                    superclass()
+                }
+        }
+        private val fieldBackgroundEmojiId by lazy {
+            instance
+                .asResolver()
+                .firstField {
+                    name = resolver.getField(objPath, "background_emoji_id")
+                    superclass()
+                }
+        }
 
         var flags: Int
-            get() = getIntField(instance, fieldFlags)
-            set(value) = setIntField(instance, fieldFlags, value)
+            get() = fieldFlags.get<Int>()!!
+            set(value) = fieldFlags.set(value)
 
         var color: Int
-            get() = getIntField(instance, fieldColor)
-            set(value) = setIntField(instance, fieldColor, value)
+            get() = fieldColor.get<Int>()!!
+            set(value) = fieldColor.set(value)
 
         var backgroundEmojiId: Long
-            get() = getLongField(instance, fieldBackgroundEmojiId)
-            set(value) = setLongField(instance, fieldBackgroundEmojiId, value)
+            get() = fieldBackgroundEmojiId.get<Long>()!!
+            set(value) = fieldBackgroundEmojiId.set(value)
 
         fun getNativeInstance() = instance
     }
@@ -131,7 +229,16 @@ class TLRPC {
     class TLPeerColor : PeerColor {
         private val objPath = "org.telegram.tgnet.TLRPC\$TL_peerColor"
 
-        constructor() : super(newInstance(Telegami.loadClass(resolver.get("org.telegram.tgnet.TLRPC\$TL_peerColor"))))
+        constructor() : super(
+            (
+                Telegami.loadClass(
+                    resolver.get("org.telegram.tgnet.TLRPC\$TL_peerColor"),
+                ) as Class<Any>
+            ).resolve()
+                .firstConstructor {
+                    parameters()
+                }.create(),
+        )
 
         constructor(instance: Any) : super(instance)
     }
@@ -144,15 +251,17 @@ class TLRPC {
         private val ptsField by lazy { resolver.getField(objPath, "pts") }
         private val ptsCountField by lazy { resolver.getField(objPath, "pts_count") }
 
-        constructor() : this(newInstance(Telegami.loadClass(resolver.get(OBJ_PATH))))
+        constructor() : this(
+            (Telegami.loadClass(resolver.get(OBJ_PATH)) as Class<Any>).resolve().firstConstructor { parameters() }.create(),
+        )
 
         var pts: Int
-            get() = getIntField(instance, ptsField)
-            set(value) = setIntField(instance, ptsField, value)
+            get() = instance.asResolver().firstField { this.name = ptsField }.get<Int>()!!
+            set(value) = instance.asResolver().firstField { this.name = ptsField }.set(value)
 
         var ptsCount: Int
-            get() = getIntField(instance, ptsCountField)
-            set(value) = setIntField(instance, ptsCountField, value)
+            get() = instance.asResolver().firstField { this.name = ptsCountField }.get<Int>()!!
+            set(value) = instance.asResolver().firstField { this.name = ptsCountField }.set(value)
 
         fun getNativeInstance() = instance
 

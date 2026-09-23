@@ -1,7 +1,7 @@
 package com.aoya.telegami.virt.messenger
 
+import com.highcapable.kavaref.KavaRef.Companion.asResolver
 import com.aoya.telegami.virt.sqlite.SQLiteDatabase
-import de.robv.android.xposed.XposedHelpers.getObjectField
 import com.aoya.telegami.core.obfuscate.ResolverManager as resolver
 
 class MessagesStorage(
@@ -10,5 +10,5 @@ class MessagesStorage(
     private val objPath = "org.telegram.messenger.MessagesStorage"
 
     val database: SQLiteDatabase
-        get() = SQLiteDatabase(getObjectField(instance, resolver.getField(objPath, "database")))
+        get() = SQLiteDatabase(instance.asResolver().firstField { this.name = resolver.getField(objPath, "database") }.get()!!)
 }

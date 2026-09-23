@@ -1,10 +1,9 @@
 package com.aoya.telegami.virt.messenger
 
+import com.highcapable.kavaref.KavaRef.Companion.asResolver
+import com.highcapable.kavaref.KavaRef.Companion.resolve
 import com.aoya.telegami.Telegami
 import com.aoya.telegami.virt.messenger.time.FastDateFormat
-import de.robv.android.xposed.XposedHelpers.callMethod
-import de.robv.android.xposed.XposedHelpers.callStaticMethod
-import de.robv.android.xposed.XposedHelpers.getObjectField
 import com.aoya.telegami.core.obfuscate.ResolverManager as resolver
 
 class LocaleController(
@@ -14,10 +13,7 @@ class LocaleController(
 
     fun getFormatterDay(): FastDateFormat =
         FastDateFormat(
-            callMethod(
-                instance,
-                resolver.getMethod(objPath, "getFormatterDay"),
-            ),
+            instance.asResolver().firstMethod { this.name = resolver.getMethod(objPath, "getFormatterDay"); parameters() }.invoke()!!,
         )
 
     companion object {
@@ -25,18 +21,11 @@ class LocaleController(
 
         fun getInstance(): LocaleController =
             LocaleController(
-                callStaticMethod(
-                    Telegami.loadClass(resolver.get(OBJ_PATH)),
-                    resolver.getMethod(OBJ_PATH, "getInstance"),
-                ),
+                (Telegami.loadClass(resolver.get(OBJ_PATH)) as Class<Any>).resolve().firstMethod { this.name = resolver.getMethod(OBJ_PATH, "getInstance"); parameters() }.invoke()!!,
             )
 
         fun getString(id: Int): String =
-            callStaticMethod(
-                Telegami.loadClass(resolver.get(OBJ_PATH)),
-                resolver.getMethod(OBJ_PATH, "getString"),
-                id,
-            ) as String
+            (Telegami.loadClass(resolver.get(OBJ_PATH)) as Class<Any>).resolve().firstMethod { this.name = resolver.getMethod(OBJ_PATH, "getString"); parameters(*arrayOf(id?.javaClass ?: Any::class.java)) }.invoke(id)!! as String
     }
 
     class LocaleInfo(
@@ -45,6 +34,6 @@ class LocaleController(
         private val objPath = "org.telegram.messenger.LocaleController\$LocaleInfo"
 
         val shortName: String
-            get() = getObjectField(instance, resolver.getField(objPath, "shortName")) as String
+            get() = instance.asResolver().firstField { this.name = resolver.getField(objPath, "shortName") }.get()!! as String
     }
 }

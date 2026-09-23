@@ -1,6 +1,6 @@
 package com.aoya.telegami.virt.ui.components
 
-import de.robv.android.xposed.XposedHelpers.callMethod
+import com.highcapable.kavaref.KavaRef.Companion.asResolver
 import java.io.File
 import com.aoya.telegami.core.obfuscate.ResolverManager as resolver
 
@@ -10,8 +10,5 @@ class VideoPlayer(
     private val objPath = "org.telegram.ui.Components.VideoPlayer"
 
     fun getFile(): File =
-        callMethod(
-            instance,
-            resolver.getMethod(objPath, "getFile"),
-        ) as File
+        instance.asResolver().firstMethod { this.name = resolver.getMethod(objPath, "getFile"); parameters() }.invoke()!! as File
 }

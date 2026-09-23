@@ -1,8 +1,6 @@
 package com.aoya.telegami.virt.ui
 
-import de.robv.android.xposed.XposedHelpers.getIntField
-import de.robv.android.xposed.XposedHelpers.getLongField
-import de.robv.android.xposed.XposedHelpers.getObjectField
+import com.highcapable.kavaref.KavaRef.Companion.asResolver
 import com.aoya.telegami.core.obfuscate.ResolverManager as resolver
 
 class PeerColorActivity(
@@ -10,11 +8,26 @@ class PeerColorActivity(
 ) {
     private val objPath = "org.telegram.ui.PeerColorActivity"
 
+    private val fieldProfilePage by lazy {
+        instance
+            .asResolver()
+            .firstField {
+                name = resolver.getField(objPath, "profilePage")
+            }
+    }
+    private val fieldNamePage by lazy {
+        instance
+            .asResolver()
+            .firstField {
+                name = resolver.getField(objPath, "namePage")
+            }
+    }
+
     val profilePage: Page
-        get() = Page(getObjectField(instance, resolver.getField(objPath, "profilePage")))
+        get() = Page(fieldProfilePage.get()!!)
 
     val namePage: Page
-        get() = Page(getObjectField(instance, resolver.getField(objPath, "namePage")))
+        get() = Page(fieldNamePage.get()!!)
 
     class Page(
         private val instance: Any,
@@ -22,9 +35,9 @@ class PeerColorActivity(
         private val objPath = "org.telegram.ui.PeerColorActivity\$Page"
 
         val selectedColor: Int
-            get() = getIntField(instance, resolver.getField(objPath, "selectedColor"))
+            get() = instance.asResolver().firstField { name = resolver.getField(objPath, "selectedColor") }.get<Int>()!!
 
         val selectedEmoji: Long
-            get() = getLongField(instance, resolver.getField(objPath, "selectedEmoji"))
+            get() = instance.asResolver().firstField { name = resolver.getField(objPath, "selectedEmoji") }.get<Long>()!!
     }
 }

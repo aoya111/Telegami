@@ -2,6 +2,7 @@ package com.aoya.telegami
 
 import android.app.Application
 import android.content.Context
+import android.content.SharedPreferences
 import android.graphics.drawable.Drawable
 import android.os.Handler
 import android.widget.Toast
@@ -25,10 +26,11 @@ object Telegami {
     fun init(
         modulePath: String,
         app: Application,
+        featurePreferences: SharedPreferences,
     ) {
         this.context = app
 
-        Config.init(context)
+        Config.init(featurePreferences)
         UserConfig.init(context)
         TranslationManager.init(context, modulePath)
         ResolverManager.init(context.packageName, modulePath)

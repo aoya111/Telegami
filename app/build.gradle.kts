@@ -60,7 +60,7 @@ android {
 
     defaultConfig {
         applicationId = "com.aoya.telegami"
-        minSdk = 24
+        minSdk = 26
         targetSdk = 35
         versionCode = versionProps.getProperty("versionCode").toInt()
         versionName = versionProps.getProperty("versionName")
@@ -136,12 +136,10 @@ dependencies {
     implementation(libs.dev.androidbroadcast.vbpd.reflection)
     implementation(libs.me.zhanghai.android.appiconloader)
 
-    implementation(libs.yukihookapi.api)
+    compileOnly(libs.libxposed.api)
+    implementation(libs.libxposed.service)
     implementation(libs.kavaref.core)
     implementation(libs.kavaref.android)
-    implementation(libs.kavaref.extension)
-    compileOnly(libs.xposed.api)
-    ksp(libs.yukihookapi.ksp.xposed)
 
     ksp(libs.room.compiler)
     implementation(libs.room.ktx)

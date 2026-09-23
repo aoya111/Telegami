@@ -12,7 +12,6 @@ import com.aoya.telegami.ui.util.navController
 import com.aoya.telegami.ui.util.setEdge2EdgeFlags
 import com.aoya.telegami.ui.util.setupToolbar
 import com.aoya.telegami.util.toPascalCase
-import com.highcapable.yukihookapi.hook.xposed.prefs.ui.ModulePreferenceFragment
 import dev.androidbroadcast.vbpd.viewBinding
 
 class FeaturesFragment :
@@ -164,8 +163,8 @@ class FeaturesFragment :
         }
     }
 
-    class SettingsPreferenceFragment : ModulePreferenceFragment() {
-        override fun onCreatePreferencesInModuleApp(
+    class SettingsPreferenceFragment : PreferenceFragmentCompat() {
+        override fun onCreatePreferences(
             savedInstanceState: Bundle?,
             rootKey: String?,
         ) {

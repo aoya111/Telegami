@@ -1,6 +1,6 @@
 package com.aoya.telegami.core.i18n
 
-import android.content.res.XModuleResources
+import com.aoya.telegami.core.ModuleAssets
 import com.aoya.telegami.util.logd
 import kotlinx.serialization.json.Json
 
@@ -18,13 +18,12 @@ class JsonResolver(
             }
 
         private fun loadTranslations(
-            moduleRes: XModuleResources,
+            modulePath: String,
             localeCode: String,
         ): Map<String, String> =
             try {
                 val jsonString =
-                    moduleRes.assets
-                        .open("translations/${localeCode.lowercase()}.json")
+                    ModuleAssets.open(modulePath, "translations/${localeCode.lowercase()}.json")
                         .bufferedReader()
                         .use { it.readText() }
                 json.decodeFromString<Map<String, String>>(jsonString)
@@ -36,15 +35,13 @@ class JsonResolver(
             modulePath: String,
             localeCode: String,
         ): JsonResolver {
-            val moduleRes = XModuleResources.createInstance(modulePath, null)
-
-            val fallbackMappings = loadTranslations(moduleRes, "en")
+            val fallbackMappings = loadTranslations(modulePath, "en")
 
             val mappings =
                 if (localeCode.equals("en", ignoreCase = true)) {
                     fallbackMappings
                 } else {
-                    val langMappings = loadTranslations(moduleRes, localeCode)
+                    val langMappings = loadTranslations(modulePath, localeCode)
                     fallbackMappings + langMappings
                 }
 

@@ -3,9 +3,9 @@ package com.aoya.telegami.virt.ui.components
 import android.view.View
 import android.view.ViewGroup
 import com.aoya.telegami.Telegami
-import de.robv.android.xposed.XposedHelpers.callMethod
-import de.robv.android.xposed.XposedHelpers.callStaticMethod
-import de.robv.android.xposed.XposedHelpers.newInstance
+import com.highcapable.kavaref.KavaRef.Companion.asResolver
+import com.highcapable.kavaref.KavaRef.Companion.resolve
+import com.highcapable.kavaref.condition.type.VagueType
 import com.aoya.telegami.core.obfuscate.ResolverManager as resolver
 
 class ItemOptions private constructor(
@@ -15,7 +15,12 @@ class ItemOptions private constructor(
 
     fun setGravity(gravity: Int): ItemOptions =
         apply {
-            callMethod(instance, resolver.getMethod(objPath, "setGravity"), gravity)
+            instance
+                .asResolver()
+                .firstMethod {
+                    name = resolver.getMethod(objPath, "setGravity")
+                    parameters(Int::class.javaPrimitiveType!!)
+                }.invoke(gravity)!!
         }
 
     fun add(
@@ -24,12 +29,26 @@ class ItemOptions private constructor(
         onClickListener: Runnable,
     ): ItemOptions =
         apply {
-            callMethod(instance, resolver.getMethod(objPath, "add"), iconResId, text, onClickListener)
+            instance
+                .asResolver()
+                .firstMethod {
+                    name = resolver.getMethod(objPath, "add")
+                    parameters(
+                        Int::class.javaPrimitiveType!!,
+                        CharSequence::class.java,
+                        Runnable::class.java,
+                    )
+                }.invoke(iconResId, text, onClickListener)!!
         }
 
     fun show(): ItemOptions =
         apply {
-            callMethod(instance, resolver.getMethod(objPath, "show"))
+            instance
+                .asResolver()
+                .firstMethod {
+                    name = resolver.getMethod(objPath, "show")
+                    parameters()
+                }.invoke()!!
         }
 
     companion object {
@@ -42,25 +61,25 @@ class ItemOptions private constructor(
             withoutScrollView: Boolean = true,
             shownFromBottom: Boolean = false,
         ): ItemOptions =
-            newInstance(
-                Telegami.loadClass(resolver.get(OBJ_PATH)),
-                fragment,
-                scrimView,
-                swipeback,
-                withoutScrollView,
-                shownFromBottom,
-            )?.let { ItemOptions(it) } ?: error("instantiation failed")
+            (Telegami.loadClass(resolver.get(OBJ_PATH)) as Class<Any>)
+                .resolve()
+                .firstConstructor {
+                    parameters(VagueType, VagueType, Boolean::class, Boolean::class, Boolean::class)
+                }.create(fragment, scrimView, swipeback, withoutScrollView, shownFromBottom)
+                ?.let { ItemOptions(it) }
+                ?: error("instantiation failed")
 
         fun makeOptions(
             fragment: Any,
             scrimView: View,
         ): ItemOptions =
-            newInstance(
-                Telegami.loadClass(resolver.get(OBJ_PATH)),
-                fragment,
-                null,
-                scrimView,
-            )?.let { ItemOptions(it) } ?: error("instantiation failed")
+            (Telegami.loadClass(resolver.get(OBJ_PATH)) as Class<Any>)
+                .resolve()
+                .firstConstructor {
+                    parameterCount = 3
+                }.create(fragment, null, scrimView)
+                ?.let { ItemOptions(it) }
+                ?: error("instantiation failed")
 
         fun makeOptions(
             container: ViewGroup,
@@ -69,13 +88,12 @@ class ItemOptions private constructor(
             swipeback: Boolean = false,
             shownFromBottom: Boolean = false,
         ): ItemOptions =
-            newInstance(
-                Telegami.loadClass(resolver.get(OBJ_PATH)),
-                container,
-                resourcesProvider,
-                scrimView,
-                swipeback,
-                shownFromBottom,
-            )?.let { ItemOptions(it) } ?: error("instantiation failed")
+            (Telegami.loadClass(resolver.get(OBJ_PATH)) as Class<Any>)
+                .resolve()
+                .firstConstructor {
+                    parameters(VagueType, VagueType, VagueType, Boolean::class, Boolean::class)
+                }.create(container, resourcesProvider, scrimView, swipeback, shownFromBottom)
+                ?.let { ItemOptions(it) }
+                ?: error("instantiation failed")
     }
 }

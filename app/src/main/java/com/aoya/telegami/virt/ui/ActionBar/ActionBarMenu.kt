@@ -1,7 +1,7 @@
 package com.aoya.telegami.virt.ui.actionbar
 
 import android.graphics.drawable.Drawable
-import de.robv.android.xposed.XposedHelpers.callMethod
+import com.highcapable.kavaref.KavaRef.Companion.asResolver
 import com.aoya.telegami.core.obfuscate.ResolverManager as resolver
 
 class ActionBarMenu(
@@ -12,7 +12,19 @@ class ActionBarMenu(
     fun addItem(
         id: Int,
         drawable: Drawable,
-    ): Any = callMethod(instance, resolver.getMethod(objPath, "addItem"), id, drawable)
+    ): Any =
+        instance
+            .asResolver()
+            .firstMethod {
+                name = resolver.getMethod(objPath, "addItem")
+                parameters(Int::class.javaPrimitiveType!!, Drawable::class.java)
+            }.invoke(id, drawable)!!
 
-    fun getItem(id: Int): Any = callMethod(instance, resolver.getMethod(objPath, "getItem"), id)
+    fun getItem(id: Int): Any =
+        instance
+            .asResolver()
+            .firstMethod {
+                name = resolver.getMethod(objPath, "getItem")
+                parameters(Int::class.javaPrimitiveType!!)
+            }.invoke(id)!!
 }

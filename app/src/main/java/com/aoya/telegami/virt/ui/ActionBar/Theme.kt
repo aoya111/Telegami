@@ -1,10 +1,9 @@
 package com.aoya.telegami.virt.ui.actionbar
 
+import com.highcapable.kavaref.KavaRef.Companion.asResolver
+import com.highcapable.kavaref.KavaRef.Companion.resolve
 import android.text.TextPaint
 import com.aoya.telegami.Telegami
-import de.robv.android.xposed.XposedHelpers.callMethod
-import de.robv.android.xposed.XposedHelpers.callStaticMethod
-import de.robv.android.xposed.XposedHelpers.getStaticObjectField
 import com.aoya.telegami.core.obfuscate.ResolverManager as resolver
 
 class Theme(
@@ -19,17 +18,11 @@ class Theme(
 
         val chatTimePaint: TextPaint
             get() =
-                getStaticObjectField(
-                    classTheme,
-                    fieldChatTimePaint,
-                ) as TextPaint
+                (classTheme as Class<Any>).resolve().firstField { this.name = fieldChatTimePaint }.get()!! as TextPaint
 
         fun getActiveTheme(): ThemeInfo =
             ThemeInfo(
-                callStaticMethod(
-                    classTheme,
-                    methodGetActiveTheme,
-                ),
+                (classTheme as Class<Any>).resolve().firstMethod { this.name = methodGetActiveTheme; parameters() }.invoke()!!,
             )
     }
 
@@ -42,6 +35,6 @@ class Theme(
             private val methodIsDark by lazy { resolver.getMethod(OBJ_PATH, "isDark") }
         }
 
-        fun isDark(): Boolean = callMethod(instance, methodIsDark) as Boolean
+        fun isDark(): Boolean = instance.asResolver().firstMethod { this.name = methodIsDark; parameters() }.invoke()!! as Boolean
     }
 }

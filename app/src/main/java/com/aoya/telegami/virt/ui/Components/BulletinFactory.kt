@@ -1,7 +1,7 @@
 package com.aoya.telegami.virt.ui.components
 
 import com.aoya.telegami.Telegami
-import de.robv.android.xposed.XposedHelpers.callStaticMethod
+import com.highcapable.kavaref.KavaRef.Companion.resolve
 import com.aoya.telegami.core.obfuscate.ResolverManager as resolver
 
 class BulletinFactory(
@@ -18,13 +18,12 @@ class BulletinFactory(
             arg3: Any?,
         ): Bulletin =
             Bulletin(
-                callStaticMethod(
-                    Telegami.loadClass(resolver.get(OBJ_PATH)),
-                    resolver.getMethod(OBJ_PATH, "createSaveToGalleryBulletin"),
-                    ctx,
-                    video,
-                    arg3,
-                ),
+                (Telegami.loadClass(resolver.get(OBJ_PATH)) as Class<Any>)
+                    .resolve()
+                    .firstMethod {
+                        name = resolver.getMethod(OBJ_PATH, "createSaveToGalleryBulletin")
+                        parameterCount = 3
+                    }.invoke(ctx, video, arg3)!!,
             )
     }
 }

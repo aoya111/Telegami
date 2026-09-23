@@ -1,8 +1,6 @@
 package com.aoya.telegami.virt.ui
 
-import de.robv.android.xposed.XposedHelpers.getBooleanField
-import de.robv.android.xposed.XposedHelpers.getLongField
-import de.robv.android.xposed.XposedHelpers.setBooleanField
+import com.highcapable.kavaref.KavaRef.Companion.asResolver
 import com.aoya.telegami.core.obfuscate.ResolverManager as resolver
 
 class ChatActivity(
@@ -15,13 +13,13 @@ class ChatActivity(
     private val fieldPagedownButtonShowedByScroll by lazy { resolver.getField(objPath, "pagedownButtonShowedByScroll") }
 
     val dialogId: Long
-        get() = getLongField(instance, fieldDialogId)
+        get() = instance.asResolver().firstField { this.name = fieldDialogId }.get<Long>()!!
 
     var canShowPagedownButton: Boolean
-        get() = getBooleanField(instance, fieldCanShowPagedownButton)
-        set(value) = setBooleanField(instance, fieldCanShowPagedownButton, value)
+        get() = instance.asResolver().firstField { this.name = fieldCanShowPagedownButton }.get<Boolean>()!!
+        set(value) = instance.asResolver().firstField { this.name = fieldCanShowPagedownButton }.set(value)
 
     var pagedownButtonShowedByScroll: Boolean
-        get() = getBooleanField(instance, fieldPagedownButtonShowedByScroll)
-        set(value) = setBooleanField(instance, fieldPagedownButtonShowedByScroll, value)
+        get() = instance.asResolver().firstField { this.name = fieldPagedownButtonShowedByScroll }.get<Boolean>()!!
+        set(value) = instance.asResolver().firstField { this.name = fieldPagedownButtonShowedByScroll }.set(value)
 }
