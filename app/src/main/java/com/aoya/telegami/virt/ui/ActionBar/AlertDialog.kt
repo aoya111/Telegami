@@ -19,8 +19,9 @@ class AlertDialog {
         private var onClickListenerClass: Class<*>
 
         init {
+            val builderClassName = resolver.get("$alertDialogName\$Builder")
             alertDialog =
-                (Telegami.loadClass("$alertDialogName\$Builder") as Class<Any>).resolve().firstConstructor { parameters(*arrayOf(ctx?.javaClass ?: Any::class.java, resourcesProvider?.javaClass ?: Any::class.java)) }.create(ctx, resourcesProvider)
+                (Telegami.loadClass(builderClassName) as Class<Any>).resolve().firstConstructor { parameters(*arrayOf(ctx?.javaClass ?: Any::class.java, resourcesProvider?.javaClass ?: Any::class.java)) }.create(ctx, resourcesProvider)
 
             onClickListenerClass = Telegami.loadClass(resolver.get("$alertDialogName\$OnButtonClickListener"))
         }

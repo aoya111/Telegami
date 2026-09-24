@@ -95,7 +95,7 @@
         "setNegativeButton": { "hint": "String, od", "obfuscated": "h" },
         "show": { "hint": "public final pd n()", "obfuscated": "n" }
       },
-      "obfuscated": "org.telegram.ui.ActionBar.AlertDialog"
+      "obfuscated": "pd"
     },
     "org.telegram.ui.ActionBar.AlertDialog$OnButtonClickListener": {
       "fields": {},
@@ -244,7 +244,14 @@
       "obfuscated": "vbb"
     },
     "org.telegram.ui.PeerColorActivity": {
-      "fields": {},
+      "fields": {
+        "profilePage": {
+          "obfuscated": "p0"
+        },
+        "namePage": {
+          "obfuscated": "q0"
+        }
+      },
       "hint": null,
       "methods": {
         "apply": {
@@ -255,10 +262,17 @@
       "obfuscated": "org.telegram.ui.PeerColorActivity"
     },
     "org.telegram.ui.PeerColorActivity$Page": {
-      "fields": {},
+      "fields": {
+        "selectedColor": {
+          "obfuscated": "a"
+        },
+        "selectedEmoji": {
+          "obfuscated": "a"
+        }
+      },
       "hint": "public class \\w* extends FrameLayout",
       "methods": {},
-      "obfuscated": "org.telegram.ui.PeerColorActivity$n"
+      "obfuscated": "yh8"
     },
     "org.telegram.ui.ProfileActivity": {
       "fields": {

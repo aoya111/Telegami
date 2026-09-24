@@ -65,13 +65,14 @@ class JsonResolver(
             modulePath: String,
             variantName: String,
         ): JsonResolver {
+            val variant = variantName.lowercase()
             val jsonString =
-                ModuleAssets.open(modulePath, "obfuscation_mappings/${variantName.lowercase()}.json")
+                ModuleAssets.open(modulePath, "obfuscation_mappings/$variant.json")
                     .bufferedReader()
                     .use { it.readText() }
 
             val mappings = json.decodeFromString<ObfuscationMappings>(jsonString)
-            logd("Loaded $variantName (${mappings.mappings.size} classes)")
+            logd("Loaded $variant [version=${mappings.version}] (${mappings.mappings.size} classes)")
             return JsonResolver(mappings)
         }
     }
