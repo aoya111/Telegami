@@ -1,13 +1,17 @@
 package com.aoya.telegami.hooks
 
+import android.util.Log
 import com.aoya.telegami.service.Config
 import com.aoya.telegami.util.findMethod
 import io.github.libxposed.api.XposedInterface
-import android.util.Log
 
 object AllowSaveVideos {
     const val STORY_ITEM_HOLDER_CN = "org.telegram.ui.Stories.PeerStoriesView\$StoryItemHolder"
-    fun install(xposed: XposedInterface, classLoader: ClassLoader) {
+
+    fun install(
+        xposed: XposedInterface,
+        classLoader: ClassLoader,
+    ) {
         if (!Config.isFeatureEnabled("AllowSaveVideos")) return
         val method = classLoader.findMethod(STORY_ITEM_HOLDER_CN, "allowScreenshots")
         xposed.hook(method).intercept { chain ->

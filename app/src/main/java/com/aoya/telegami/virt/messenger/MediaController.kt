@@ -3,6 +3,7 @@ package com.aoya.telegami.virt.messenger
 import android.content.Context
 import android.net.Uri
 import com.aoya.telegami.Telegami
+import com.aoya.telegami.util.Logger
 import com.highcapable.kavaref.KavaRef.Companion.resolve
 import java.lang.reflect.Proxy.newProxyInstance
 import com.aoya.telegami.core.obfuscate.ResolverManager as resolver
@@ -27,7 +28,11 @@ class MediaController {
                         arrayOf(callbackClass),
                     ) { _, method, args ->
                         if (method.name == resolver.getMethod("org.telegram.messenger.Utilities\$Callback", "run")) {
-                            lambda(args?.firstOrNull() as? Uri)
+                            try {
+                                lambda(args?.firstOrNull() as? Uri)
+                            } catch (throwable: Throwable) {
+                                Logger.e("Failed to handle saved media", throwable, "MediaController")
+                            }
                         }
                         null
                     }

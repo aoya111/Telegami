@@ -2,7 +2,7 @@
   "variant": "nekogram",
   "package_name": "tw.nekomimi.nekogram",
   "version": "12.10.3",
-  "updated": "2026-09-22",
+  "updated": "2026-09-24",
   "mappings": {
     "org.telegram.ui.Cells.ChatMessageCell": {
       "fields": {
@@ -32,10 +32,6 @@
         "setMessageContent": {
           "hint": "final void \\w*(<MessageObject> \\w*, <MessageObject.GroupedMessages>",
           "obfuscated": "b4"
-        },
-        "openMedia": {
-          "hint": "inlined SecretMediaViewer.openMedia body",
-          "obfuscated": "R"
         }
       },
       "obfuscated": "w32"
@@ -195,9 +191,46 @@
         "show": {
           "hint": "public final void Z()",
           "obfuscated": "Z"
+        },
+        "setGravity": {
+          "hint": "public final void V(int)",
+          "obfuscated": "V"
         }
       },
       "obfuscated": "l75"
+    },
+    "org.telegram.messenger.MediaController": {
+      "fields": {},
+      "hint": null,
+      "methods": {
+        "saveFile": {
+          "hint": "public static void saveFile(String, Context, int, String, String, Utilities.Callback, boolean)",
+          "obfuscated": "saveFile"
+        }
+      },
+      "obfuscated": "org.telegram.messenger.MediaController"
+    },
+    "org.telegram.ui.Components.BulletinFactory": {
+      "fields": {},
+      "hint": null,
+      "methods": {
+        "createSaveToGalleryBulletin": {
+          "hint": "public static jw0 H(FrameLayout, boolean)",
+          "obfuscated": "H"
+        }
+      },
+      "obfuscated": "rw0"
+    },
+    "org.telegram.ui.Components.Bulletin": {
+      "fields": {},
+      "hint": null,
+      "methods": {
+        "show": {
+          "hint": "public jw0 j()",
+          "obfuscated": "j"
+        }
+      },
+      "obfuscated": "jw0"
     },
     "org.telegram.ui.Components.UpdateLayout": {
       "fields": {},
@@ -274,17 +307,17 @@
     },
     "org.telegram.ui.SecretMediaViewer": {
       "fields": {
+        "actionBar": {
+          "hint": "ActionBar",
+          "obfuscated": "R"
+        },
         "activeViewer": {
-          "hint": "static volatile SecretMediaViewer",
+          "hint": "static SecretMediaViewer singleton",
           "obfuscated": "J1"
         },
         "centerImage": {
           "hint": "ImageReceiver",
           "obfuscated": "v"
-        },
-        "actionBar": {
-          "hint": "ActionBar",
-          "obfuscated": "R"
         },
         "containerView": {
           "hint": "FrameLayoutDrawer",
@@ -307,8 +340,8 @@
           "obfuscated": "d"
         },
         "secretDeleteTimer": {
-          "hint": "View",
-          "obfuscated": "x"
+          "hint": "new a29\\(d, parentActivity\\)",
+          "obfuscated": "w"
         }
       },
       "hint": null,

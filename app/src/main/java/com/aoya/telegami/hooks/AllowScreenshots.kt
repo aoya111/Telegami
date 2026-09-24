@@ -1,16 +1,19 @@
 package com.aoya.telegami.hooks
 
+import android.util.Log
 import android.view.WindowManager.LayoutParams
 import android.view.WindowManager.LayoutParams.FLAG_SECURE
 import com.aoya.telegami.util.findMethod
-import android.util.Log
 import io.github.libxposed.api.XposedInterface
 
 object AllowScreenshots {
     const val WINDOW_CN = "android.view.Window"
     const val WINDOW_MANAGER_IMPL_CN = "android.view.WindowManagerImpl"
 
-    fun install(xposed: XposedInterface, classLoader: ClassLoader) {
+    fun install(
+        xposed: XposedInterface,
+        classLoader: ClassLoader,
+    ) {
         val setFlags = classLoader.findMethod(WINDOW_CN, "setFlags")
         xposed.hook(setFlags).intercept { chain ->
             val args = chain.args.toMutableList()
