@@ -88,14 +88,16 @@ object PreventSecretMediaDeletion {
             }
         }
         if (Telegami.packageName == "tw.nekomimi.nekogram") {
-            // Nekogram 12.10.3 inlines openMedia into ChatMessageCell.R.
-            val openMedia = classLoader.findMethod("org.telegram.ui.Cells.ChatMessageCell", "openMedia")
+            // Nekogram 12.10.3 inlines openMedia into u.R(w32, float, float).
+            val openMedia = classLoader.findMethod("org.telegram.ui.u", "R", 3)
             xposed.hook(openMedia).intercept { chain ->
                 val result = chain.proceed(chain.args.toTypedArray())
                 try {
                     val viewerClass = classLoader.loadClass(resolver.get(SECRET_MEDIA_VIEWER_CN))
-                    val field = viewerClass.getDeclaredField(resolver.getField(SECRET_MEDIA_VIEWER_CN, "activeViewer"))
-                    field.isAccessible = true
+                    val field =
+                        viewerClass
+                            .getDeclaredField(resolver.getField(SECRET_MEDIA_VIEWER_CN, "activeViewer"))
+                            .apply { isAccessible = true }
                     val viewer = field.get(null)?.let(::SecretMediaViewer) ?: return@intercept result
                     val msgObj = viewer.currentMessageObject ?: return@intercept result
                     if (msgObj.isSecretMedia()) addDownloadItem(viewer, msgObj)

@@ -2,7 +2,7 @@
   "variant": "telegram",
   "package_name": "org.telegram.messenger",
   "version": "12.10.3",
-  "updated": "2026-09-22",
+  "updated": "2026-09-24",
   "mappings": {
     "org.telegram.ui.Cells.ChatMessageCell": {
       "fields": {
@@ -112,6 +112,37 @@
       },
       "obfuscated": "org.telegram.ui.ActionBar.o5"
     },
+    "org.telegram.ui.ActionBar.ActionBar": {
+      "fields": {
+        "menu": {
+          "hint": "ActionBarMenu",
+          "obfuscated": "D"
+        }
+      },
+      "hint": null,
+      "methods": {
+        "createMenu": {
+          "hint": "public final ActionBarMenu n()",
+          "obfuscated": "n"
+        }
+      },
+      "obfuscated": "org.telegram.ui.ActionBar.l"
+    },
+    "org.telegram.ui.ActionBar.ActionBarMenu": {
+      "fields": {},
+      "hint": null,
+      "methods": {
+        "addItem": {
+          "hint": "public final ActionBarMenuItem d(int, Drawable)",
+          "obfuscated": "d"
+        },
+        "getItem": {
+          "hint": "public final ActionBarMenuItem k(int)",
+          "obfuscated": "k"
+        }
+      },
+      "obfuscated": "org.telegram.ui.ActionBar.z"
+    },
     "org.telegram.ui.Components.ItemOptions": {
       "fields": {},
       "hint": null,
@@ -121,8 +152,8 @@
           "obfuscated": "c"
         },
         "setGravity": {
-          "hint": "public final void P(int)",
-          "obfuscated": "P"
+          "hint": "public final void V(int)",
+          "obfuscated": "V"
         },
         "show": {
           "hint": "public final void Z()",
@@ -130,6 +161,28 @@
         }
       },
       "obfuscated": "org.telegram.ui.Components.g80"
+    },
+    "org.telegram.ui.Components.BulletinFactory": {
+      "fields": {},
+      "hint": null,
+      "methods": {
+        "createSaveToGalleryBulletin": {
+          "hint": "public static Bulletin F(FrameLayout, boolean)",
+          "obfuscated": "F"
+        }
+      },
+      "obfuscated": "org.telegram.ui.Components.vc"
+    },
+    "org.telegram.ui.Components.Bulletin": {
+      "fields": {},
+      "hint": null,
+      "methods": {
+        "show": {
+          "hint": "public Bulletin j()",
+          "obfuscated": "j"
+        }
+      },
+      "obfuscated": "org.telegram.ui.Components.oc"
     },
     "org.telegram.ui.Stories.StoriesController": {
       "fields": {},
@@ -141,6 +194,17 @@
         }
       },
       "obfuscated": "sg.o5"
+    },
+    "org.telegram.ui.Stories.PeerStoriesView$StoryItemHolder": {
+      "fields": {},
+      "hint": "https://t.me/%1",
+      "methods": {
+        "allowScreenshots": {
+          "hint": null,
+          "obfuscated": "d"
+        }
+      },
+      "obfuscated": "sg.i3"
     },
     "org.telegram.ui.PeerColorActivity": {
       "fields": {
@@ -179,9 +243,29 @@
     },
     "org.telegram.ui.ProfileActivity": {
       "fields": {
+        "chatId": {
+          "hint": "arguments.getLong(\"chat_id\", 0L)",
+          "obfuscated": "e1"
+        },
+        "myProfile": {
+          "hint": "arguments.getBoolean(\"my_profile\", false)",
+          "obfuscated": "r1"
+        },
         "onlineTextView": {
           "hint": "SimpleTextView[4]",
           "obfuscated": "r"
+        },
+        "topicId": {
+          "hint": "arguments.getLong(\"topic_id\", 0L)",
+          "obfuscated": "f1"
+        },
+        "userId": {
+          "hint": "arguments.getLong(\"user_id\", 0L)",
+          "obfuscated": "d1"
+        },
+        "usernameRow": {
+          "hint": "public username row index",
+          "obfuscated": "K3"
         }
       },
       "hint": null,
@@ -203,21 +287,21 @@
     },
     "org.telegram.ui.SecretMediaViewer": {
       "fields": {
-        "activeViewer": {
-          "hint": "static SecretMediaViewer singleton",
-          "obfuscated": "f34358w1"
-        },
         "actionBar": {
           "hint": "ActionBar",
           "obfuscated": "E"
         },
-        "containerView": {
-          "hint": "FrameLayoutDrawer",
-          "obfuscated": "f34371e"
+        "activeViewer": {
+          "hint": "static SecretMediaViewer singleton",
+          "obfuscated": "w1"
         },
         "centerImage": {
           "hint": "ImageReceiver",
           "obfuscated": "h"
+        },
+        "containerView": {
+          "hint": "FrameLayoutDrawer",
+          "obfuscated": "e"
         },
         "currentAccount": {
           "hint": "int",
@@ -236,12 +320,8 @@
           "obfuscated": "b"
         },
         "secretDeleteTimer": {
-          "hint": "SecretDeleteTimer",
+          "hint": "new t51\\(f14, parentActivity\\)",
           "obfuscated": "n"
-        },
-        "videoPlayer": {
-          "hint": "VideoPlayer",
-          "obfuscated": "y"
         }
       },
       "hint": null,

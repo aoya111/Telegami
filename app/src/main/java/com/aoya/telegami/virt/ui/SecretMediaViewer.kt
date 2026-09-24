@@ -29,9 +29,6 @@ class SecretMediaViewer(
     private val fieldCenterImage by lazy {
         instance.asResolver().firstField { name = resolver.getField(objPath, "centerImage") }
     }
-    private val fieldVideoPlayer by lazy {
-        instance.asResolver().firstField { name = resolver.getField(objPath, "videoPlayer") }
-    }
     private val fieldActionBar by lazy {
         instance.asResolver().firstField { name = resolver.getField(objPath, "actionBar") }
     }
@@ -56,9 +53,6 @@ class SecretMediaViewer(
 
     val centerImage: ImageReceiver
         get() = ImageReceiver(fieldCenterImage.get()!!)
-
-    val videoPlayer: VideoPlayer
-        get() = VideoPlayer(fieldVideoPlayer.get()!!)
 
     val actionBar: ActionBar
         get() = ActionBar(fieldActionBar.get()!!)
