@@ -16,69 +16,17 @@ import requests
 
 # Telegram variants to track
 TELEGRAM_VARIANTS = {
-    "it.octogram.android": {
-        "name": "Octogram",
-        "github": "OctogramApp/Octogram",
-        "apkmirror": "octogram",
-        "package_name": "it.octogram.android",
-    },
-    "nu.gpu.nagram": {
-        "name": "NagramX",
-        "github": "risin42/NagramX",
-        "apkmirror": "octogram",
-        "package_name": "nu.gpu.nagram",
-    },
-    "org.forkclient.messenger.beta": {
-        "name": "Forkgram (github)",
-        "github": "Forkgram/TelegramAndroid",
-        "package_name": "org.forkclient.messenger.beta",
-    },
-    "org.forkgram.messenger": {
-        "name": "Forkgram",
-        "apkmirror": "forkgram/forkgram-f-droid-version",
-        "package_name": "org.forkgram.messenger",
-    },
     "org.telegram.messenger": {
         "name": "Telegram (Official)",
         "github": None,
         "apkmirror": "telegram-fz-llc/telegram",
         "package_name": "org.telegram.messenger",
     },
-    "org.telegram.messenger.beta": {
-        "name": "Telegram Beta",
-        "github": None,
-        "apkmirror": "telegram-fz-llc/telegram-beta",
-        "package_name": "org.telegram.messenger.beta",
-    },
-    "org.telegram.messenger.web": {
-        "name": "Telegram Web",
-        "github": None,
-        "apkmirror": "telegram-fz-llc/telegram-web-version",
-        "package_name": "org.telegram.messenger.web",
-    },
-    "org.telegram.plus": {
-        "name": "Plus Messenger",
-        "github": None,
-        "apkmirror": "rafalense/plus-messenger",
-        "package_name": "org.telegram.plus",
-    },
     "tw.nekomimi.nekogram": {
         "name": "Nekogram",
         "github": "Nekogram/Nekogram",
         "apkmirror": "mimiworks/nekogram",
         "package_name": "tw.nekomimi.nekogram",
-    },
-    "uz.unnarsx.cherrygram": {
-        "name": "Cherrygram",
-        "github": "arsLan4k1390/Cherrygram",
-        "apkmirror": "cherrygram",
-        "package_name": "uz.unnarsx.cherrygram",
-    },
-    "xyz.nextalone.nagram": {
-        "name": "Nagram",
-        "github": "NextAlone/Nagram",
-        "apkmirror": "nagram",
-        "package_name": "xyz.nextalone.nagram",
     },
 }
 

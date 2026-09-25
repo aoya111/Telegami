@@ -59,11 +59,10 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           repository: Xposed-Modules-Repo/com.aoya.telegami
+          token: ${{ secrets.XPOSED_REPO_TOKEN }}
           tag_name: ${{ steps.release.outputs.tag }}
           name: ${{ steps.release.outputs.name }}
           body_path: release_body.md
           files: |
             *.apk
             *.sha256
-        env:
-          GITHUB_TOKEN: ${{ secrets.XPOSED_REPO_TOKEN }}
