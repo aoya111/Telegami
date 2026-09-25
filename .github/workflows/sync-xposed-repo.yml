@@ -4,24 +4,64 @@ on:
   release:
     types: [published]
 
+  # Run manually to sync the latest release (or a specific tag) to the Xposed repo
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Release tag to sync (defaults to the latest release)"
+        required: false
+        type: string
+
+permissions:
+  contents: read
+
 jobs:
   sync:
     runs-on: ubuntu-latest
     steps:
+      - name: Resolve release
+        id: release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          RELEASE_TAG: ${{ github.event.release.tag_name }}
+          INPUT_TAG: ${{ github.event.inputs.tag }}
+        run: |
+          set -euo pipefail
+
+          if [ -n "$INPUT_TAG" ]; then
+            TAG="$INPUT_TAG"
+          elif [ -n "$RELEASE_TAG" ]; then
+            TAG="$RELEASE_TAG"
+          else
+            TAG="$(gh release list --repo "$GITHUB_REPOSITORY" --limit 1 --exclude-drafts --json tagName --jq '.[0].tagName')"
+          fi
+
+          if [ -z "$TAG" ]; then
+            echo "No release found to sync" >&2
+            exit 1
+          fi
+
+          NAME="$(gh release view "$TAG" --repo "$GITHUB_REPOSITORY" --json name --jq '.name')"
+          gh release view "$TAG" --repo "$GITHUB_REPOSITORY" --json body --jq '.body // ""' > release_body.md
+
+          echo "Syncing release $TAG ($NAME)"
+          echo "tag=$TAG" >> "$GITHUB_OUTPUT"
+          echo "name=$NAME" >> "$GITHUB_OUTPUT"
+
       - name: Download release assets
         uses: robinraju/release-downloader@v1
         with:
-          repository: "aoya111/Telegami"
-          tag: ${{ github.event.release.tag_name }}
+          repository: ${{ github.repository }}
+          tag: ${{ steps.release.outputs.tag }}
           fileName: "*.apk*"
 
       - name: Create release in Xposed repo
         uses: softprops/action-gh-release@v2
         with:
           repository: Xposed-Modules-Repo/com.aoya.telegami
-          tag_name: ${{ github.event.release.tag_name }}
-          name: ${{ github.event.release.name }}
-          body: ${{ github.event.release.body }}
+          tag_name: ${{ steps.release.outputs.tag }}
+          name: ${{ steps.release.outputs.name }}
+          body_path: release_body.md
           files: |
             *.apk
             *.sha256
