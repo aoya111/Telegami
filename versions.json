@@ -3,11 +3,11 @@
     "name": "Telegram (Official)",
     "package_name": "org.telegram.messenger",
     "current_version": "12.10.3",
-    "latest_version": "12.10.4",
-    "latest_version_url": "https://www.apkmirror.com/apk/telegram-fz-llc/telegram/",
-    "source": "apkmirror",
-    "update_available": true,
-    "last_checked": "2026-09-26T00:26:30.922130+08:00"
+    "latest_version": "Unknown",
+    "latest_version_url": "",
+    "source": "none",
+    "update_available": false,
+    "last_checked": "2026-09-26T04:30:45.929545+00:00"
   },
   "tw.nekomimi.nekogram": {
     "name": "Nekogram",
