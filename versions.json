@@ -13,10 +13,10 @@
     "name": "Nekogram",
     "package_name": "tw.nekomimi.nekogram",
     "current_version": "12.10.3",
-    "latest_version": "13.0.2",
-    "latest_version_url": "https://github.com/Nekogram/Nekogram/releases/tag/v13.0.2",
+    "latest_version": "13.0.3",
+    "latest_version_url": "https://github.com/Nekogram/Nekogram/releases/tag/v13.0.3",
     "source": "github",
     "update_available": true,
-    "last_checked": "2026-10-15T04:07:53.806546+00:00"
+    "last_checked": "2026-10-25T04:09:52.556488+00:00"
   }
 }
