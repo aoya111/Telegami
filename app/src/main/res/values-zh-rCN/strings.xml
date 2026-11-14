@@ -1,7 +1,24 @@
 <resources>
     <string name="app_name">Telegami</string>
 
+    <!-- Titles -->
+    <string name="title_features">功能</string>
+    <string name="title_settings">设置</string>
+    <string name="title_about">关于</string>
+    <string name="title_about_fork">关于本分支</string>
+
+    <string name="follow_system">跟随系统</string>
+
+    <!-- Home -->
+    <string name="home_module_version">v%s</string>
+
+    <!-- Features -->
+    <string name="feat_category_privacy">隐私</string>
+    <string name="feat_category_messages">消息</string>
+    <string name="feat_category_misc">其他</string>
+
     <string name="feat_hide_seen">隐藏已读状态</string>
+    <string name="feat_hide_seen_desc">隐藏消息的已读状态</string>
     <string name="feat_hide_seen_private_chat">私聊</string>
     <string name="feat_hide_seen_channel">频道</string>
     <string name="feat_hide_story_view_status">隐藏故事观看状态</string>
@@ -9,19 +26,71 @@
     <string name="feat_hide_online_status">隐藏在线状态</string>
     <string name="feat_hide_online_status_desc">隐藏在线状态</string>
     <string name="feat_hide_typing">隐藏正在输入</string>
-    <string name="feat_hide_typing_desc">隐藏正在输入</string>
+    <string name="feat_hide_typing_desc">隐藏正在输入状态</string>
     <string name="feat_show_deleted_messages">显示已删除的消息</string>
     <string name="feat_show_deleted_messages_desc">显示已删除的消息</string>
-    <string name="feat_mark_messages_deleted">标记已删除的消息</string>
-    <string name="feat_mark_messages_edited">标记已编辑的消息</string>
+    <string name="feat_mark_messages">标记消息</string>
+    <string name="feat_mark_messages_desc">在聊天中标记消息</string>
+    <string name="feat_mark_messages_deleted">已删除</string>
+    <string name="feat_mark_messages_edited">已编辑</string>
     <string name="feat_prevent_secret_media_deletion">防止删除秘密媒体</string>
-    <string name="feat_prevent_secret_media_deletion_desc">防止删除秘密媒体</string>
-    <string name="feat_unlock_channel_features">解锁频道的所有受限和加密功能</string>
+    <string name="feat_prevent_secret_media_deletion_desc">防止秘密聊天中的媒体被删除</string>
+    <string name="feat_unlock_channel_features">解锁频道功能</string>
     <string name="feat_unlock_channel_features_desc">解锁频道的所有受限和加密功能</string>
-    <string name="feat_allow_save_videos">允许将视频保存到图库</string>
-    <string name="feat_allow_save_videos_desc">允许将视频保存到图库</string>
-    <string name="feat_disable_ads">Disable Advertisement</string>
-    <string name="feat_disable_ads_desc">Disable Advertisement</string>
-    <string name="feat_fake_premium">Fake Premium</string>
-    <string name="feat_fake_premium_desc">Fake Premium</string>
+    <string name="feat_allow_save_videos">允许保存视频</string>
+    <string name="feat_allow_save_videos_desc">允许将视频保存到相册</string>
+    <string name="feat_disable_ads">禁用广告</string>
+    <string name="feat_disable_ads_desc">禁用广告</string>
+    <string name="feat_fake_premium">启用 Telegram 本地会员</string>
+    <string name="feat_fake_premium_desc">在本地启用 Telegram Premium 功能</string>
+    <string name="feat_boost_download">下载加速</string>
+    <string name="feat_boost_download_desc">提高下载速度</string>
+    <string name="feat_boost_download_off">关闭</string>
+    <string name="feat_boost_download_on">开启</string>
+    <string name="feat_boost_download_extreme">极速</string>
+
+    <!-- Settings -->
+    <string name="settings_theme">主题</string>
+    <string name="settings_system_theme_color">动态配色</string>
+    <string name="settings_theme_color">主题色</string>
+    <string name="settings_dark_theme">深色模式</string>
+    <string name="settings_pure_black_dark_theme">纯黑</string>
+    <string name="settings_pure_black_dark_theme_summary">深色模式下使用纯黑主题</string>
+
+    <string name="settings_module">模块</string>
+    <string name="settings_hide_icon">在桌面隐藏模块图标</string>
+    <string name="settings_hide_icon_summary">你仍然可以在 Xposed 管理器中打开本应用</string>
+
+    <!-- About -->
+    <string name="about_description">Telegami 是一个 Xposed 模块，旨在通过丰富的隐私和实用功能增强你的 Telegram 体验。\n\n本模块允许你隐藏在线状态、正在输入提示、消息和故事的已读状态等。它还可以显示已删除的消息，并防止秘密聊天中的媒体被删除。</string>
+    <string name="about_fork_description">Telegami 是 TeleVip-Lsposed（@mustafa1dev）的分支，旨在作为一个开源项目继续开发，并提供更多功能和改进。</string>
+    <string name="about_developer">开发者</string>
+    <string name="about_credit">致谢</string>
+    <string name="about_support">支持与反馈</string>
+
+    <!-- Colors -->
+    <string name="color_sakura">樱花</string>
+    <string name="color_red">红色</string>
+    <string name="color_pink">粉色</string>
+    <string name="color_purple">紫色</string>
+    <string name="color_deep_purple">深紫</string>
+    <string name="color_indigo">靛青</string>
+    <string name="color_blue">蓝色</string>
+    <string name="color_light_blue">浅蓝</string>
+    <string name="color_cyan">青色</string>
+    <string name="color_teal">青绿</string>
+    <string name="color_green">绿色</string>
+    <string name="color_light_green">浅绿</string>
+    <string name="color_lime">青柠</string>
+    <string name="color_yellow">黄色</string>
+    <string name="color_amber">琥珀</string>
+    <string name="color_orange">橙色</string>
+    <string name="color_deep_orange">深橙</string>
+    <string name="color_brown">棕色</string>
+    <string name="color_blue_grey">灰蓝</string>
+
+    <!-- Dark theme modes -->
+    <string name="dark_theme">深色主题</string>
+    <string name="dark_theme_off">始终关闭</string>
+    <string name="dark_theme_on">始终开启</string>
 </resources>
