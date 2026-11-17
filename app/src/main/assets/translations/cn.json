@@ -1,4 +1,5 @@
 {
   "CopiedToClipboardHint": "已复制 '{item}' 到剪贴板",
-  "ProfileStatusOffline": "离线"
+  "ProfileStatusOffline": "离线",
+  "ProfileCopyUsername": "复制用户名"
 }

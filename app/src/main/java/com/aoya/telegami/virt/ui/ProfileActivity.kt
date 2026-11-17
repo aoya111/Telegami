@@ -48,20 +48,42 @@ class ProfileActivity(
                 instance.asResolver().firstField { name = resolver.getField(objPath, "resourcesProvider") }.get()
             }
 
-    val onlineTextView: Array<SimpleTextView>
-        get() {
-            val nativeArray =
-                instance
-                    .asResolver()
-                    .firstField {
-                        name =
-                            resolver.getField(
-                                objPath,
-                                "onlineTextView",
-                            )
-                    }.get()!! as Array<Any>
-            return Array(nativeArray.size) { index ->
-                nativeArray[index].let { SimpleTextView(it) }
-            }
+    fun setStatusText(text: String) {
+        val field =
+            instance
+                .asResolver()
+                .firstField {
+                    name = resolver.getField(objPath, "onlineTextView")
+                }.get()
+        when (field) {
+            is Array<*> -> field.getOrNull(1)?.let { SimpleTextView(it).setText(text) }
+            null -> Unit
+            else -> setSingleStatusText(field, text)
         }
+    }
+
+    private fun setSingleStatusText(
+        view: Any,
+        text: String,
+    ) {
+        // 13.x uses an AnimatedClickableSmallTextView. Its own M(CharSequence,
+        // boolean) animates and can trigger profile layout work; the base class
+        // still has the plain D(CharSequence, boolean) text setter. Use that
+        // when available so the status can be replaced without side effects.
+        val plainSetter =
+            view.javaClass.superclass?.methods?.firstOrNull {
+                it.parameterCount == 2 &&
+                    it.parameterTypes[0] == CharSequence::class.java &&
+                    it.parameterTypes[1] == Boolean::class.javaPrimitiveType
+            }
+        if (plainSetter != null) {
+            plainSetter.invoke(view, text, false)
+            return
+        }
+        view
+            .asResolver()
+            .firstMethod {
+                parameters(CharSequence::class.java, Boolean::class.javaPrimitiveType!!)
+            }.invoke(text, true)
+    }
 }

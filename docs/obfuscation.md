@@ -13,6 +13,9 @@
 
 This document explains how to create and update JSON mapping files for new obfuscated Telegram variants (e.g., forks like Nekogram) used by Telegami’s `JsonResolver`.
 
+For the automated R8-mapping-based update workflow used for Nekogram 13.2.2,
+see [obfuscation-mapping-update.md](obfuscation-mapping-update.md).
+
 ## 1. JSON Location and Naming
 
 JSON files are loaded from the Xposed module APK assets:

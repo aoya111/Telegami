@@ -4,6 +4,7 @@ import android.util.Log
 import com.aoya.telegami.Telegami
 import com.aoya.telegami.service.Config
 import com.aoya.telegami.util.findMethod
+import com.aoya.telegami.util.logw
 import com.aoya.telegami.virt.messenger.FileLoadOperation
 import com.aoya.telegami.virt.messenger.FileLoader
 import io.github.libxposed.api.XposedInterface
@@ -21,7 +22,12 @@ object BoostDownload {
         classLoader: ClassLoader,
     ) {
         if (Telegami.packageName in EXCLUDED_PACKAGE) return
-        val method = classLoader.findMethod(FILE_LOAD_OPERATION_CN, "updateParams")
+        val method =
+            runCatching { classLoader.findMethod(FILE_LOAD_OPERATION_CN, "updateParams") }.getOrNull()
+        if (method == null) {
+            logw("BoostDownload skipped: FileLoadOperation.updateParams is not mapped")
+            return
+        }
         xposed.hook(method).intercept { chain ->
             val args = chain.args.toMutableList()
             val result = chain.proceed(args.toTypedArray())

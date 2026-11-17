@@ -95,7 +95,13 @@ object MarkMessages {
                 }
                 if (!isDeleted) {
                     if (isMarkEditedEnabled) {
-                        timeStr = MessageHelper.replaceWithIcon(timeStr)
+                        val replaced = MessageHelper.replaceWithIcon(timeStr)
+                        timeStr =
+                            if (replaced === timeStr) {
+                                MessageHelper.replaceEditedMarker(timeStr, msgObj)
+                            } else {
+                                replaced
+                            }
                         val newWidth = ceil(Theme.chatTimePaint.measureText(timeStr, 0, timeStr.length)).toInt()
 
                         val dwidth = newWidth - oldWidth

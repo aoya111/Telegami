@@ -4,7 +4,6 @@ import com.aoya.telegami.util.findMethod
 import com.aoya.telegami.service.User
 import com.aoya.telegami.service.UserConfig
 import com.aoya.telegami.util.loge
-import com.aoya.telegami.util.logi
 import com.aoya.telegami.virt.tgnet.TLRPC
 import io.github.libxposed.api.XposedInterface
 
@@ -20,12 +19,10 @@ object Settings {
             try {
                 val tgUser = TLRPC.User(chain.args[0]!!)
                 UserConfig.setUser(User(tgUser.id, tgUser.username))
-                logi("Captured current Telegram user")
             } catch (throwable: Throwable) {
                 loge("Failed to capture current Telegram user", throwable)
             }
             result
         }
-        logi("Installed setCurrentUser hook")
     }
 }

@@ -1,5 +1,6 @@
 package com.aoya.telegami.hooks
 
+import com.aoya.telegami.Telegami
 import com.aoya.telegami.service.Config
 import com.aoya.telegami.util.logd
 import com.aoya.telegami.virt.tgnet.RequestDelegate
@@ -49,30 +50,66 @@ object Privacy {
                         TLAccount.UpdateStatus(o).offline = true
                     }
 
-                    if ((
-                            (
-                                tlMessagesReadHistoryClass.isInstance(o) || tlMessagesReadEncHistoryClass.isInstance(o) ||
-                                    tlMessagesReadDiscussionClass.isInstance(o) ||
-                                    tlMessagesReadMessageContentsClass.isInstance(o)
-                            ) && Config.isFeatureEnabled("HideSeenPrivateChat")
-                        ) ||
-                        (
-                            (
-                                tlChannelsReadHistoryClass.isInstance(o) ||
-                                    tlChannelsReadMessageContentsClass.isInstance(o)
-                            ) && Config.isFeatureEnabled("HideSeenChannel")
-                        )
+                    val isNeko = Telegami.packageName == "tw.nekomimi.nekogram"
+                    val channelRead =
+                        if (isNeko) {
+                            (tlChannelsReadHistoryClass.isInstance(o) && byteField(o) == 2) ||
+                                (tlChannelsReadMessageContentsClass.isInstance(o) && byteField(o) == 1)
+                        } else {
+                            tlChannelsReadHistoryClass.isInstance(o) ||
+                                tlChannelsReadMessageContentsClass.isInstance(o)
+                        }
+                    val encryptedRead =
+                        isNeko &&
+                            tlMessagesReadEncHistoryClass.isInstance(o) &&
+                            byteField(o) == 2
+                    val privateRead =
+                        if (isNeko) {
+                            (tlMessagesReadHistoryClass.isInstance(o) && byteField(o) == 5) ||
+                                (tlMessagesReadMessageContentsClass.isInstance(o) && byteField(o) == 9) ||
+                                encryptedRead
+                        } else {
+                            tlMessagesReadHistoryClass.isInstance(o) ||
+                                tlMessagesReadDiscussionClass.isInstance(o) ||
+                                tlMessagesReadMessageContentsClass.isInstance(o)
+                        }
+
+                    if ((privateRead && Config.isFeatureEnabled("HideSeenPrivateChat")) ||
+                        (channelRead && Config.isFeatureEnabled("HideSeenChannel"))
                     ) {
                         logd("[PrivacyHook] should HideSeen")
-                        val fakeRes = TLRPC.TLMessagesAffectedMessages()
-                        fakeRes.pts = -1
-                        fakeRes.ptsCount = 0
                         val onComplete = args[1]
-                        onComplete?.let {
-                            RequestDelegate(it).run(fakeRes.getNativeInstance(), null)
+                        // 13.2.2 channel read-history and encrypted-history
+                        // responses are Bool. Returning affectedMessages here
+                        // makes the host callback cast it to messages_Messages
+                        // and crash.
+                        val boolResponse = isNeko && (encryptedRead || channelRead)
+                        if (onComplete != null && boolResponse) {
+                            val boolTrue = TLRPC.TLBoolTrue.allocate()
+                            if (boolTrue != null) {
+                                RequestDelegate(onComplete).run(boolTrue.getNativeInstance(), null)
+                                result = null
+                                hasResult = true
+                            } else {
+                                logd("[PrivacyHook] fake bool response unavailable")
+                            }
+                        } else if (onComplete != null && !boolResponse) {
+                            val fakeRes = TLRPC.TLMessagesAffectedMessages.allocate()
+                            // Private read responses process pts; a fake -1
+                            // corrupts the update state, so use the real pts.
+                            val pts = if (isNeko) currentPts(classLoader) else -1
+                            if (fakeRes != null && (!isNeko || pts >= 0)) {
+                                fakeRes.pts = pts
+                                fakeRes.ptsCount = 0
+                                RequestDelegate(onComplete).run(fakeRes.getNativeInstance(), null)
+                                result = null
+                                hasResult = true
+                            } else {
+                                logd("[PrivacyHook] fake read response unavailable")
+                            }
+                        } else {
+                            logd("[PrivacyHook] fake read response unavailable")
                         }
-                        result = null
-                        hasResult = true
                     }
                 }
             } catch (throwable: Throwable) {
@@ -91,19 +128,93 @@ object Privacy {
                 val args = chain.args.toMutableList()
                 val result = chain.proceed(args.toTypedArray())
                 try {
-                        val o = ProfileActivity(chain.thisObject!!)
-
-                        val clientUserId = o.getUserConfig().getClientUserId()
-                        val userId = o.userId
-
-                        if (clientUserId != 0L && userId != 0L && userId == clientUserId) {
-                            o.onlineTextView.getOrNull(1)?.setText(i18n.get("ProfileStatusOffline"))
-                        }
+                    val o = ProfileActivity(chain.thisObject!!)
+                    if (isSelfProfile(o)) {
+                        o.setStatusText(i18n.get("ProfileStatusOffline"))
+                    }
                 } catch (throwable: Throwable) {
                     Log.e("Telegami", "Hook callback failed after ${updateProfileData.name}", throwable)
                 }
                 result
             }
+
+            // Some clients re-render the status without calling updateProfileData
+            // again (for example when the online state changes). Re-apply the
+            // offline label after the renderer runs so it cannot stick.
+            runCatching {
+                val updateOnlineText = classLoader.findMethod(PROFILE_ACTIVITY_CN, "updateOnlineText", 0)
+                xposed.hook(updateOnlineText).intercept { chain ->
+                    val result = chain.proceed(chain.args.toTypedArray())
+                    try {
+                        val o = ProfileActivity(chain.thisObject!!)
+                        if (isSelfProfile(o)) {
+                            o.setStatusText(i18n.get("ProfileStatusOffline"))
+                        }
+                    } catch (throwable: Throwable) {
+                        Log.e("Telegami", "Hook callback failed after ${updateOnlineText.name}", throwable)
+                    }
+                    result
+                }
+            }.onFailure {
+                Log.w("Telegami", "HideOnlineStatus updateOnlineText unavailable: ${it.message}")
+            }
         }
     }
+
+    private fun messagesController(classLoader: ClassLoader): Any? =
+        runCatching {
+            val userConfigClass = classLoader.loadClass(resolver.get("org.telegram.messenger.UserConfig"))
+            val accountField =
+                userConfigClass
+                    .getDeclaredField(
+                        resolver.getField("org.telegram.messenger.UserConfig", "selectedAccount"),
+                    ).apply { isAccessible = true }
+            val account = accountField.getInt(null)
+
+            val controllerClass = classLoader.loadClass(resolver.get("org.telegram.messenger.MessagesController"))
+            val getInstance =
+                controllerClass
+                    .getDeclaredMethod(
+                        resolver.getMethod("org.telegram.messenger.MessagesController", "getInstance"),
+                        Int::class.javaPrimitiveType,
+                    ).apply { isAccessible = true }
+            getInstance.invoke(null, account)
+        }.getOrNull()
+
+    private fun messagesStorage(classLoader: ClassLoader): Any? {
+        val controller = messagesController(classLoader) ?: return null
+        return runCatching {
+            controller.javaClass.getMethod("getMessagesStorage").invoke(controller)
+        }.getOrNull()
+    }
+
+    private fun currentPts(classLoader: ClassLoader): Int {
+        val storage = messagesStorage(classLoader) ?: return -1
+        return runCatching {
+            storage.javaClass
+                .getField(
+                    resolver.getField("org.telegram.messenger.MessagesStorage", "lastPtsValue"),
+                ).apply { isAccessible = true }
+                .getInt(storage)
+        }.getOrDefault(-1)
+    }
+
+    private fun findField(
+        target: Any,
+        name: String,
+    ): Any? {
+        var clazz: Class<*>? = target.javaClass
+        while (clazz != null) {
+            try {
+                return clazz.getDeclaredField(name).apply { isAccessible = true }.get(target)
+            } catch (_: NoSuchFieldException) {
+                clazz = clazz.superclass
+            }
+        }
+        return null
+    }
+
+    private fun byteField(request: Any): Int? = (findField(request, "a") as? Byte)?.toInt()
+
+    private fun isSelfProfile(o: ProfileActivity): Boolean = o.myProfile
 }

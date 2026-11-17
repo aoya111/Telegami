@@ -21,12 +21,25 @@ class ColoredImageSpan(
     }
 
     fun setOverrideColor(color: Int) {
-        instance
-            .asResolver()
-            .firstMethod {
-                name = resolver.getMethod(objPath, "setOverrideColor")
-                parameters(Int::class.javaPrimitiveType!!)
-            }.invoke(color)
+        // 13.2.2 removed ColoredImageSpan.setOverrideColor(int); the field
+        // still exists. Calling setColorKey with an ARGB value makes the span
+        // use the text paint color instead, so set the field directly.
+        val fieldApplied =
+            runCatching {
+                instance
+                    .asResolver()
+                    .firstField {
+                        name = resolver.getField(objPath, "overrideColor")
+                    }.set(color)
+            }.isSuccess
+        if (!fieldApplied) {
+            instance
+                .asResolver()
+                .firstMethod {
+                    name = resolver.getMethod(objPath, "setOverrideColor")
+                    parameters(Int::class.javaPrimitiveType!!)
+                }.invoke(color)
+        }
     }
 
     fun getNativeInstance() = instance

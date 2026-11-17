@@ -1,31 +1,46 @@
 package com.aoya.telegami.hooks
 
+import android.util.Log
 import com.aoya.telegami.service.Config
 import com.aoya.telegami.util.findMethod
+import com.aoya.telegami.virt.tgnet.TLRPC
 import io.github.libxposed.api.XposedInterface
-import android.util.Log
 
 object UnlockChannelFeatures {
     const val MESSAGES_CONTROLLER_CN = "org.telegram.messenger.MessagesController"
 
-    fun install(xposed: XposedInterface, classLoader: ClassLoader) {
+    fun install(
+        xposed: XposedInterface,
+        classLoader: ClassLoader,
+    ) {
         if (!Config.isFeatureEnabled("UnlockChannelFeatures")) return
-        val method = classLoader.findMethod(MESSAGES_CONTROLLER_CN, "isChatNoForwards")
-        xposed.hook(method).intercept { chain ->
-            val args = chain.args.toMutableList()
-            var result: Any? = null
-            var hasResult = false
-            try {
-                result = false
-                hasResult = true
-            } catch (throwable: Throwable) {
-                Log.e("Telegami", "Hook callback failed before ${method.name}", throwable)
+
+        listOf("isChatNoForwards", "isChatNoForwardsById").forEach { name ->
+            runCatching {
+                val method = classLoader.findMethod(MESSAGES_CONTROLLER_CN, name, 1)
+                xposed.hook(method).intercept { false }
+            }.onFailure {
+                Log.w("Telegami", "UnlockChannelFeatures $name unavailable: ${it.message}")
             }
-            if (!hasResult) {
-                result = chain.proceed(args.toTypedArray())
-                hasResult = true
+        }
+
+        // Some client-side code reads chat.noforwards directly instead of
+        // calling isChatNoForwards(). Clear it on the cached chat objects.
+        runCatching {
+            val getChat = classLoader.findMethod(MESSAGES_CONTROLLER_CN, "getChat", 1)
+            xposed.hook(getChat).intercept { chain ->
+                val result = chain.proceed(chain.args.toTypedArray())
+                try {
+                    if (result != null) {
+                        TLRPC.Chat(result).noforwards = false
+                    }
+                } catch (throwable: Throwable) {
+                    Log.e("Telegami", "Failed to clear chat noforwards", throwable)
+                }
+                result
             }
-            result
+        }.onFailure {
+            Log.w("Telegami", "UnlockChannelFeatures getChat unavailable: ${it.message}")
         }
     }
 }

@@ -21,7 +21,7 @@ object SecretMedia {
         val encryptedFile = File(encFile.absolutePath + ".enc")
         if (!encryptedFile.exists()) return null
 
-        val keyFile = File(FileLoader.getInternalCacheDir(), "${encryptedFile.name}.key")
+        val keyFile = File(Telegami.context.cacheDir, "${encryptedFile.name}.key")
         if (!keyFile.exists()) return null
 
         val extension = if (isVideo) "mp4" else "jpg"

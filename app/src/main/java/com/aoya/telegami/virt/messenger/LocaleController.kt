@@ -24,8 +24,38 @@ class LocaleController(
                 (Telegami.loadClass(resolver.get(OBJ_PATH)) as Class<Any>).resolve().firstMethod { this.name = resolver.getMethod(OBJ_PATH, "getInstance"); parameters() }.invoke()!!,
             )
 
-        fun getString(id: Int): String =
-            (Telegami.loadClass(resolver.get(OBJ_PATH)) as Class<Any>).resolve().firstMethod { this.name = resolver.getMethod(OBJ_PATH, "getString"); parameters(*arrayOf(id?.javaClass ?: Any::class.java)) }.invoke(id)!! as String
+        fun getString(
+            id: Int,
+            fallback: String? = null,
+        ): String =
+            if (Telegami.packageName == "tw.nekomimi.nekogram") {
+                val result = getStringWithFallback(id, fallback)
+                if (result.startsWith("LOC_ERR:")) fallback ?: "" else result
+            } else {
+                // 13.2.2 no longer exposes string names in resources.arsc, so
+                // name-based lookups return 0. Honour the caller's fallback
+                // instead of asking Telegram for resource 0 (LOC_ERR:null).
+                if (id == 0) return fallback ?: ""
+                val result =
+                    (Telegami.loadClass(resolver.get(OBJ_PATH)) as Class<Any>)
+                        .resolve()
+                        .firstMethod {
+                            this.name = resolver.getMethod(OBJ_PATH, "getString")
+                            parameters(*arrayOf(id.javaClass))
+                        }.invoke(id)!! as String
+                if (result.startsWith("LOC_ERR:")) fallback ?: "" else result
+            }
+
+        private fun getStringWithFallback(
+            id: Int,
+            fallback: String?,
+        ): String =
+            (Telegami.loadClass(resolver.get(OBJ_PATH)) as Class<Any>)
+                .resolve()
+                .firstMethod {
+                    this.name = resolver.getMethod(OBJ_PATH, "getStringWithFallback")
+                    parameters(Int::class.javaPrimitiveType!!, String::class.java)
+                }.invoke(id, fallback)!! as String
     }
 
     class LocaleInfo(

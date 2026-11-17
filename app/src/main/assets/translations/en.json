@@ -3,6 +3,7 @@
   "chat_scroll_to_top": "Scroll to top",
   "CopiedToClipboardHint": "'{item}' copied",
   "ProfileStatusOffline": "offline",
+  "ProfileCopyUsername": "Copy username",
   "ProfileCopyUserId": "Copy ID",
   "ProfileCopyChatId": "Copy ID"
 }

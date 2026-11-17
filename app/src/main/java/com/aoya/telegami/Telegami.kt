@@ -69,7 +69,7 @@ object Telegami {
     ): Int = context?.resources?.getIdentifier(name, type, packageName) ?: 0
 
     fun getDrawableResource(name: String): Drawable? =
-        getResource("msg_gallery", "drawable")?.takeIf { it != 0 }?.let {
-            context?.getDrawable(it)
+        getResource(name, "drawable").takeIf { it != 0 }?.let {
+            context.getDrawable(it)
         }
 }

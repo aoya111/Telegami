@@ -2,7 +2,6 @@ package com.aoya.telegami.hooks
 
 import android.content.SharedPreferences
 import android.util.Log
-import com.aoya.telegami.core.obfuscate.ResolverManager
 import com.aoya.telegami.service.Config
 import com.aoya.telegami.util.findMethod
 import io.github.libxposed.api.XposedInterface
@@ -42,37 +41,31 @@ object DisableAds {
         classLoader: ClassLoader,
     ) {
         try {
-            val controllerClass = classLoader.loadClass(ResolverManager.get(MESSAGES_CONTROLLER_CN))
-            val promoCheck =
-                controllerClass.declaredMethods.firstOrNull {
-                    it.name.startsWith("lambda\$checkPromoInfo") && it.parameterCount == 1
-                } ?: return
-            val removePromoDialog =
-                controllerClass.declaredMethods.firstOrNull {
-                    it.name == "removePromoDialog" && it.parameterCount == 0
-                } ?: return
-            val globalSettings =
-                controllerClass.declaredMethods.firstOrNull {
-                    it.name == "getGlobalMainSettings" && it.parameterCount == 0
-                } ?: return
+            val promoCheck = classLoader.findMethod(MESSAGES_CONTROLLER_CN, "checkPromoInfoInternal", 1)
+            val removePromoDialog = classLoader.findMethod(MESSAGES_CONTROLLER_CN, "removePromoDialog", 0)
+            val globalSettings = classLoader.findMethod(MESSAGES_CONTROLLER_CN, "getGlobalMainSettings", 0)
 
-            promoCheck.isAccessible = true
-            removePromoDialog.isAccessible = true
-            globalSettings.isAccessible = true
-            xposed.hook(promoCheck).intercept { chain ->
-                val result = chain.proceed()
-                try {
-                    removePromoDialog.invoke(chain.thisObject)
+            fun clearPromoPrefs() {
+                runCatching {
                     (globalSettings.invoke(null) as? SharedPreferences)
                         ?.edit()
                         ?.remove("proxy_dialog")
                         ?.remove("proxyDialogAddress")
                         ?.remove("nextPromoInfoCheckTime")
+                        ?.remove("promo_dialog_type")
+                        ?.remove("promo_psa_message")
+                        ?.remove("promo_psa_type")
                         ?.commit()
-                } catch (throwable: Throwable) {
-                    Log.e("Telegami", "Failed to hide proxy sponsor", throwable)
+                }.onFailure {
+                    Log.w("Telegami", "Failed to clear proxy promo prefs: ${it.message}")
                 }
-                result
+            }
+
+            xposed.hook(promoCheck).intercept { chain ->
+                runCatching { removePromoDialog.invoke(chain.thisObject) }
+                    .onFailure { Log.e("Telegami", "Failed to remove proxy promo dialog", it) }
+                clearPromoPrefs()
+                null
             }
         } catch (throwable: Throwable) {
             Log.w("Telegami", "Unable to install proxy sponsor hook", throwable)

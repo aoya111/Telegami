@@ -24,8 +24,8 @@ object ModifyDeletedMessagesMenu {
                     val arrayList3 = args[3] as? ArrayList<Int> ?: return@intercept chain.proceed(args.toTypedArray())
 
                     if (Globals.isDeletedMessage(msgObj.getDialogId(), msgObj.getId())) {
-                        arrayList2.add(LocaleController.getString(Telegami.getResource("Copy", "string")))
-                        arrayList2.add(LocaleController.getString(Telegami.getResource("Delete", "string")))
+                        arrayList2.add(LocaleController.getString(Telegami.getResource("Copy", "string"), "Copy"))
+                        arrayList2.add(LocaleController.getString(Telegami.getResource("Delete", "string"), "Delete"))
                         arrayList3.add(3)
                         arrayList3.add(1)
                         arrayList.add(Telegami.getResource("msg_copy", "drawable"))

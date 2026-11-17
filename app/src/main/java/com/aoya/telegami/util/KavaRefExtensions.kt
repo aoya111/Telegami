@@ -16,12 +16,14 @@ fun ClassLoader.findMethod(
     while (targetClass != null) {
         val currentClass = targetClass
         val method =
-            currentClass
-                .resolve()
-                .firstMethodOrNull {
-                    name = resolvedMethodName
-                    if (parameterCount != null) parameterCount(parameterCount)
-                }?.self
+            runCatching {
+                currentClass
+                    .resolve()
+                    .firstMethodOrNull {
+                        name = resolvedMethodName
+                        if (parameterCount != null) parameterCount(parameterCount)
+                    }?.self
+            }.getOrNull()
         if (method != null) return method
         targetClass = currentClass.superclass
     }

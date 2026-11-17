@@ -48,6 +48,33 @@ object MessageHelper {
             }
         }
 
+    /**
+     * Telegram 13.2.2 moved localized strings out of resources.arsc, so the
+     * "EditedMessage" label cannot be looked up by name. Rebuild the marker
+     * from the message time instead: the edited time string is
+     * "<label> <time>", so keep everything from the formatted time onwards.
+     */
+    fun replaceEditedMarker(
+        text: CharSequence,
+        msgObj: MessageObject,
+    ): CharSequence {
+        val owner = msgObj.messageOwner ?: return text
+        if (owner.editDate == 0) return text
+        val time =
+            LocaleController
+                .getInstance()
+                .getFormatterDay()
+                .format(owner.date.toLong() * 1000)
+        val str = text.toString()
+        val index = str.indexOf(time)
+        if (index < 0) return text
+        return SpannableStringBuilder().apply {
+            append(icons["edit"])
+            append(' ')
+            append(str.substring(index))
+        }
+    }
+
     fun replaceWithIcon(text: CharSequence): CharSequence {
         val label = editedLabel
         if (label.isEmpty()) return text
@@ -71,7 +98,10 @@ object MessageHelper {
                     resourceName,
                     "string",
                 ).takeIf { it != 0 } ?: return ""
-        return LocaleController.getString(strResId)
+        return LocaleController.getString(
+            strResId,
+            resourceName.removeSuffix("Message").lowercase(),
+        )
     }
 
     private fun createIconSpan(

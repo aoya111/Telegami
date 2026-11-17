@@ -213,3 +213,8 @@ devenv.local.nix
 
 # pre-commit
 .pre-commit-config.yaml
+.opencode/
+
+# Python
+__pycache__/
+*.pyc

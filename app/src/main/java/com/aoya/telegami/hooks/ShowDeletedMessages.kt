@@ -29,7 +29,13 @@ object ShowDeletedMessages {
             result
         }
 
-        val markMessages = classLoader.findMethod(MESSAGES_STORAGE_CN, "markMessagesAsDeletedInternal", 5)
+        // 13.2.2 takes 6 params; older official builds took 5.
+        val markMessages =
+            runCatching {
+                classLoader.findMethod(MESSAGES_STORAGE_CN, "markMessagesAsDeletedInternal", 6)
+            }.getOrElse {
+                classLoader.findMethod(MESSAGES_STORAGE_CN, "markMessagesAsDeletedInternal", 5)
+            }
         xposed.hook(markMessages).intercept { chain ->
             val args = chain.args.toMutableList()
             var result: Any? = null
@@ -76,47 +82,59 @@ object ShowDeletedMessages {
         }
 
         if (!Globals.isDeletionAllowed()) {
-            val method = classLoader.findMethod(MESSAGES_CONTROLLER_CN, "markDialogMessageAsDeleted")
-            xposed.hook(method).intercept { chain ->
+            runCatching {
+                val method = classLoader.findMethod(MESSAGES_CONTROLLER_CN, "markDialogMessageAsDeleted")
+                xposed.hook(method).intercept { chain ->
+                    val args = chain.args.toMutableList()
+                    var result: Any? = Unit
+                    var hasResult = true
+                    try { result = Unit } catch (throwable: Throwable) {
+                        hasResult = false
+                        Log.e("Telegami", "Hook callback failed before ${method.name}", throwable)
+                    }
+                    if (!hasResult) result = chain.proceed(args.toTypedArray())
+                    result
+                }
+            }.onFailure {
+                Log.w("Telegami", "markDialogMessageAsDeleted hook unavailable: ${it.message}")
+            }
+        }
+
+        runCatching {
+            val postNotification = classLoader.findMethod(NOTIFICATION_CENTER_CN, "postNotificationName")
+            xposed.hook(postNotification).intercept { chain ->
+                val args = chain.args.toMutableList()
+                var result: Any? = null
+                var hasResult = false
+                try {
+                    if (Globals.isDeletionAllowed()) return@intercept chain.proceed(args.toTypedArray())
+                    val id = args[0] as? Int ?: 0
+                    if (id == NotificationCenter.MESSAGES_DELETED) hasResult = true
+                } catch (throwable: Throwable) {
+                    Log.e("Telegami", "Hook callback failed before ${postNotification.name}", throwable)
+                }
+                if (!hasResult) result = chain.proceed(args.toTypedArray())
+                result
+            }
+        }.onFailure {
+            Log.w("Telegami", "postNotificationName hook unavailable: ${it.message}")
+        }
+
+        runCatching {
+            val removeDeleted = classLoader.findMethod(NOTIFICATIONS_CONTROLLER_CN, "removeDeletedMessagesFromNotifications")
+            xposed.hook(removeDeleted).intercept { chain ->
                 val args = chain.args.toMutableList()
                 var result: Any? = Unit
                 var hasResult = true
                 try { result = Unit } catch (throwable: Throwable) {
                     hasResult = false
-                    Log.e("Telegami", "Hook callback failed before ${method.name}", throwable)
+                    Log.e("Telegami", "Hook callback failed before ${removeDeleted.name}", throwable)
                 }
                 if (!hasResult) result = chain.proceed(args.toTypedArray())
                 result
             }
-        }
-
-        val postNotification = classLoader.findMethod(NOTIFICATION_CENTER_CN, "postNotificationName")
-        xposed.hook(postNotification).intercept { chain ->
-            val args = chain.args.toMutableList()
-            var result: Any? = null
-            var hasResult = false
-            try {
-                    if (Globals.isDeletionAllowed()) return@intercept chain.proceed(args.toTypedArray())
-                    val id = args[0] as? Int ?: 0
-                    if (id == NotificationCenter.MESSAGES_DELETED) hasResult = true
-            } catch (throwable: Throwable) {
-                Log.e("Telegami", "Hook callback failed before ${postNotification.name}", throwable)
-            }
-            if (!hasResult) result = chain.proceed(args.toTypedArray())
-            result
-        }
-
-        val removeDeleted = classLoader.findMethod(NOTIFICATIONS_CONTROLLER_CN, "removeDeletedMessagesFromNotifications")
-        xposed.hook(removeDeleted).intercept { chain ->
-            val args = chain.args.toMutableList()
-            var result: Any? = Unit
-            var hasResult = true
-            try { result = Unit } catch (throwable: Throwable) {
-                hasResult = false
-                Log.e("Telegami", "Hook callback failed before ${removeDeleted.name}", throwable)
-            }
-            if (!hasResult) result = chain.proceed(args.toTypedArray())
-            result
+        }.onFailure {
+            Log.w("Telegami", "removeDeletedMessagesFromNotifications unavailable: ${it.message}")
         }
         ModifyDeletedMessagesMenu.install(xposed, classLoader)
     }

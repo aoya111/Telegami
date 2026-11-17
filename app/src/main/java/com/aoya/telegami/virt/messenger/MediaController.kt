@@ -38,20 +38,24 @@ class MediaController {
                     }
                 }
 
-            if (Telegami.packageName in listOf("it.octogram.android", "tw.nekomimi.nekogram")) {
-                (Telegami.loadClass(resolver.get(OBJ_PATH)) as Class<Any>)
+            val clazz = Telegami.loadClass(resolver.get(OBJ_PATH)) as Class<Any>
+            val saveMethodName = resolver.getMethod(OBJ_PATH, "saveFile")
+            val sixArg =
+                runCatching {
+                    clazz.resolve().firstMethod {
+                        name = saveMethodName
+                        parameterCount = 6
+                    }
+                }.getOrNull()
+            if (sixArg != null) {
+                sixArg.invoke(fullPath, context, type, filename, mime, callback)
+            } else {
+                clazz
                     .resolve()
                     .firstMethod {
-                        name = resolver.getMethod(OBJ_PATH, "saveFile")
+                        name = saveMethodName
                         parameterCount = 7
                     }.invoke(fullPath, context, type, filename, mime, callback, true)
-            } else {
-                (Telegami.loadClass(resolver.get(OBJ_PATH)) as Class<Any>)
-                    .resolve()
-                    .firstMethod {
-                        name = resolver.getMethod(OBJ_PATH, "saveFile")
-                        parameterCount = 6
-                    }.invoke(fullPath, context, type, filename, mime, callback)
             }
         }
     }

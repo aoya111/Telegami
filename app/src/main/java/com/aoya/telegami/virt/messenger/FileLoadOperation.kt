@@ -12,7 +12,7 @@ class FileLoadOperation(
         instance
             .asResolver()
             .firstField {
-                name = resolver.getField(objPath, "downloadChunkSizeBigcolor")
+                name = resolver.getField(objPath, "downloadChunkSizeBig")
             }
     }
     private val fieldMaxDownloadRequests by lazy {

@@ -25,7 +25,6 @@ import io.github.libxposed.api.XposedModuleInterface.PackageLoadedParam
 
 class XposedInit : XposedModule() {
     override fun onPackageLoaded(param: PackageLoadedParam) {
-        if (param.packageName !in Constants.SUPPORTED_TELEGRAM_PACKAGES) return
         Logger.attachXposedLogger { priority, tag, message, throwable ->
             if (throwable == null) {
                 log(priority, tag, message)
@@ -33,16 +32,21 @@ class XposedInit : XposedModule() {
                 log(priority, tag, message, throwable)
             }
         }
+        if (param.packageName !in Constants.SUPPORTED_TELEGRAM_PACKAGES) return
         val attach = Application::class.java.getDeclaredMethod("attach", Context::class.java)
         hook(attach).intercept { chain ->
             val result = chain.proceed()
-            val application = chain.thisObject as Application
-            Telegami.init(
-                getModuleApplicationInfo().sourceDir,
-                application,
-                getRemotePreferences("features"),
-            )
-            installHooks(param.defaultClassLoader)
+            try {
+                val application = chain.thisObject as Application
+                Telegami.init(
+                    getModuleApplicationInfo().sourceDir,
+                    application,
+                    getRemotePreferences("features"),
+                )
+                installHooks(param.defaultClassLoader)
+            } catch (t: Throwable) {
+                Logger.e("Module init failed", t)
+            }
             result
         }
     }
@@ -55,7 +59,16 @@ class XposedInit : XposedModule() {
             try {
                 hook()
             } catch (throwable: Throwable) {
-                Logger.e("Failed to install $name", throwable)
+                val mappingFailure =
+                    throwable is ClassNotFoundException ||
+                        throwable is NoSuchMethodException ||
+                        throwable is NoSuchFieldException ||
+                        throwable.message?.startsWith("Unable to find") == true
+                if (mappingFailure) {
+                    Logger.w("Skipped $name: ${throwable.message}")
+                } else {
+                    Logger.e("Failed to install $name", throwable)
+                }
             }
         }
 

@@ -14,20 +14,20 @@ class ChatMessageCell(
     private val methodGetMessageObject by lazy { resolver.getMethod(objPath, "getMessageObject") }
 
     var timeWidth: Int
-        get() = instance.asResolver().firstField { name = resolver.getField(objPath, "timeWidth") }.get<Int>()!!
-        set(value) = instance.asResolver().firstField { name = resolver.getField(objPath, "timeWidth") }.set(value)
+        get() = instance.asResolver().firstField { name = resolver.getField(objPath, "timeWidth"); superclass() }.get<Int>()!!
+        set(value) = instance.asResolver().firstField { name = resolver.getField(objPath, "timeWidth"); superclass() }.set(value)
 
     var timeTextWidth: Int
-        get() = instance.asResolver().firstField { name = resolver.getField(objPath, "timeTextWidth") }.get<Int>()!!
-        set(value) = instance.asResolver().firstField { name = resolver.getField(objPath, "timeTextWidth") }.set(value)
+        get() = instance.asResolver().firstField { name = resolver.getField(objPath, "timeTextWidth"); superclass() }.get<Int>()!!
+        set(value) = instance.asResolver().firstField { name = resolver.getField(objPath, "timeTextWidth"); superclass() }.set(value)
 
     var backgroundWidth: Int
-        get() = instance.asResolver().firstField { name = "backgroundWidth" }.get<Int>()!!
-        set(value) = instance.asResolver().firstField { name = "backgroundWidth" }.set(value)
+        get() = instance.asResolver().firstField { name = "backgroundWidth"; superclass() }.get<Int>()!!
+        set(value) = instance.asResolver().firstField { name = "backgroundWidth"; superclass() }.set(value)
 
     var currentTimeString: CharSequence
-        get() = instance.asResolver().firstField { this.name = fieldCurrentTimeString }.get()!! as CharSequence
-        set(value) = instance.asResolver().firstField { this.name = fieldCurrentTimeString }.set(value)
+        get() = instance.asResolver().firstField { this.name = fieldCurrentTimeString; superclass() }.get()!! as CharSequence
+        set(value) = instance.asResolver().firstField { this.name = fieldCurrentTimeString; superclass() }.set(value)
 
     fun getMessageObject(): MessageObject =
         MessageObject(

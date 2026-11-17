@@ -62,6 +62,9 @@ class ItemOptions private constructor(
 
     companion object {
         private const val OBJ_PATH = "org.telegram.ui.Components.ItemOptions"
+
+        fun from(instance: Any): ItemOptions = ItemOptions(instance)
+
         private val FOUR_ARGUMENT_ADD_CLIENTS =
             setOf(
                 "org.telegram.messenger",

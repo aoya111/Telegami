@@ -2,21 +2,21 @@
   "org.telegram.messenger": {
     "name": "Telegram (Official)",
     "package_name": "org.telegram.messenger",
-    "current_version": "12.10.3",
+    "current_version": "13.2.2",
     "latest_version": "13.2.2",
     "latest_version_url": "https://www.apkmirror.com/apk/telegram-fz-llc/telegram/",
     "source": "apkmirror",
-    "update_available": true,
+    "update_available": false,
     "last_checked": "2026-11-11T05:40:41.862204+00:00"
   },
   "tw.nekomimi.nekogram": {
     "name": "Nekogram",
     "package_name": "tw.nekomimi.nekogram",
-    "current_version": "12.10.3",
+    "current_version": "13.2.2",
     "latest_version": "13.2.2",
     "latest_version_url": "https://github.com/Nekogram/Nekogram/releases/tag/v13.2.2",
     "source": "github",
-    "update_available": true,
+    "update_available": false,
     "last_checked": "2026-11-14T05:51:21.839503+00:00"
   }
 }

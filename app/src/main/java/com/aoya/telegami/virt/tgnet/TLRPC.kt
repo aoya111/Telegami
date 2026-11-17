@@ -62,6 +62,19 @@ class TLRPC {
         val username: String
             get() = fieldUsername.get()!! as? String ?: ""
 
+        private val fieldPremium by lazy {
+            instance
+                .asResolver()
+                .firstField {
+                    name = resolver.getField(objPath, "premium")
+                    superclass()
+                }
+        }
+
+        var premium: Boolean
+            get() = fieldPremium.get<Boolean>()!!
+            set(value) = fieldPremium.set(value)
+
         var flags: Int
             get() = fieldFlags.get<Int>()!!
             set(value) = fieldFlags.set(value)
@@ -124,12 +137,23 @@ class TLRPC {
                     superclass()
                 }
         }
+        private val fieldEditDate by lazy {
+            instance
+                .asResolver()
+                .firstField {
+                    name = resolver.getField(objPath, "edit_date")
+                    superclass()
+                }
+        }
 
         val date: Int
             get() = fieldDate.get<Int>()!!
 
         val flags: Int
             get() = fieldFlags.get<Int>()!!
+
+        val editDate: Int
+            get() = runCatching { fieldEditDate.get<Int>()!! }.getOrDefault(0)
 
         var ttl: Int
             get() = fieldTtl.get<Int>()!!
@@ -177,6 +201,31 @@ class TLRPC {
         private val instance: Any,
     ) {
         private val objPath = "org.telegram.tgnet.TLRPC\$Chat"
+
+        private val fieldUsername by lazy {
+            instance
+                .asResolver()
+                .firstField {
+                    name = resolver.getField(objPath, "username")
+                    superclass()
+                }
+        }
+
+        val username: String
+            get() = fieldUsername.get() as? String ?: ""
+
+        private val fieldNoForwards by lazy {
+            instance
+                .asResolver()
+                .firstField {
+                    name = resolver.getField(objPath, "noforwards")
+                    superclass()
+                }
+        }
+
+        var noforwards: Boolean
+            get() = fieldNoForwards.get<Boolean>()!!
+            set(value) = fieldNoForwards.set(value)
 
         fun getNativeInstance() = instance
     }
@@ -241,6 +290,44 @@ class TLRPC {
         )
 
         constructor(instance: Any) : super(instance)
+
+        companion object {
+            fun allocate(): TLPeerColor? =
+                runCatching {
+                    val clazz = Telegami.loadClass(resolver.get("org.telegram.tgnet.TLRPC\$TL_peerColor"))
+                    val unsafeClass = Class.forName("sun.misc.Unsafe")
+                    val theUnsafe =
+                        unsafeClass.getDeclaredField("theUnsafe").apply { isAccessible = true }.get(null)
+                    val instance =
+                        unsafeClass
+                            .getMethod("allocateInstance", Class::class.java)
+                            .invoke(theUnsafe, clazz)
+                    TLPeerColor(instance)
+                }.getOrNull()
+        }
+    }
+
+    class TLBoolTrue(
+        private val instance: Any,
+    ) {
+        fun getNativeInstance() = instance
+
+        companion object {
+            private const val OBJ_PATH = "org.telegram.tgnet.TLRPC\$TL_boolTrue"
+
+            fun allocate(): TLBoolTrue? =
+                runCatching {
+                    val clazz = Telegami.loadClass(resolver.get(OBJ_PATH))
+                    val unsafeClass = Class.forName("sun.misc.Unsafe")
+                    val theUnsafe =
+                        unsafeClass.getDeclaredField("theUnsafe").apply { isAccessible = true }.get(null)
+                    val instance =
+                        unsafeClass
+                            .getMethod("allocateInstance", Class::class.java)
+                            .invoke(theUnsafe, clazz)
+                    TLBoolTrue(instance)
+                }.getOrNull()
+        }
     }
 
     class TLMessagesAffectedMessages(
@@ -267,6 +354,23 @@ class TLRPC {
 
         companion object {
             const val OBJ_PATH = "org.telegram.tgnet.TLRPC\$TL_messages_affectedMessages"
+
+            /**
+             * Allocate without invoking a constructor. R8 may remove the
+             * no-arg constructor from TL classes in newer builds.
+             */
+            fun allocate(): TLMessagesAffectedMessages? =
+                runCatching {
+                    val clazz = Telegami.loadClass(resolver.get(OBJ_PATH))
+                    val unsafeClass = Class.forName("sun.misc.Unsafe")
+                    val theUnsafe =
+                        unsafeClass.getDeclaredField("theUnsafe").apply { isAccessible = true }.get(null)
+                    val instance =
+                        unsafeClass
+                            .getMethod("allocateInstance", Class::class.java)
+                            .invoke(theUnsafe, clazz)
+                    TLMessagesAffectedMessages(instance)
+                }.getOrNull()
         }
     }
 }

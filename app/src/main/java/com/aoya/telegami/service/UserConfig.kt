@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.SharedPreferences
 import com.aoya.telegami.util.logd
 import com.aoya.telegami.util.loge
-import com.aoya.telegami.util.logi
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 
@@ -42,15 +41,12 @@ object UserConfig {
         localConfig = readConfig()
     }
 
-    fun setUser(user: User) {
-        logi("Setting user")
-        if (this.user.id != user.id) {
-            logi("User configured")
-            this.user = user
-            localConfig = readConfig()
-        } else {
-            logi("Current user unchanged")
-        }
+    fun setUser(user: User): Boolean {
+        if (this.user.id == user.id) return false
+        this.user = user
+        localConfig = readConfig()
+        logd("User configured: ${user.id}")
+        return true
     }
 
     @Synchronized
